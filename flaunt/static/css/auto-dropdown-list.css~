@@ -1,0 +1,53 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\000031}}
+span[data-acts-as-select] {
+  min-width: 130px;
+  height: 23px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid gray;
+  background-color: lightgray;
+  font-family: Georgia; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000311}}
+  span[data-acts-as-select] > span {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000320}}
+  span[data-acts-as-select]:after {
+    position: absolute;
+    content: '▾';
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 18px;
+    line-height: 23px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000329}}
+  span[data-acts-as-select] label {
+    display: none;
+    white-space: nowrap;
+    line-height: 23px;
+    padding: 0 5px;
+    cursor: pointer; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000336}}
+    span[data-acts-as-select] label:hover {
+      background-color: lightblue; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000341}}
+  span[data-acts-as-select] input[type=radio] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0); }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000345}}
+    span[data-acts-as-select] input[type=radio]:checked + label {
+      display: block;
+      position: absolute;
+      bottom: 100%;
+      left: 0; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000351}}
+      span[data-acts-as-select] input[type=radio]:checked + label:hover {
+        background-color: transparent; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/hero\/real_project\/flaunt\/static\/scss\/auto-dropdown-list\.scss}line{font-family:\0000357}}
+  span[data-acts-as-select]:hover label {
+    display: block; }

@@ -1,0 +1,44 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+	{% block main %}
+	{{ block.super }}
+		<div class="wrap">
+            <div class="container inner_content">
+				<div id="options">                                           
+                    <ul id="filters" class="option-set" data-option-key="filter">
+						<li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
+		    			{% for category in categories %}
+                        	<li><a href="#filter" data-option-value=".{{category}}" class="btn dark_btn">{{ category }}</a></li>
+		    			{% endfor %}
+                    </ul>                                           
+                    <div class="clear"></div>
+                </div>
+				<div class="span12">
+					{% editable page.portfolio.content %}
+					{{ page.portfolio.content|richtext_filters|safe }}
+					{% endeditable %}
+				</div>
+				<div class="row">
+					<div class="projects">
+						{% for item in items %} 
+		    				<div class="span{{ page.portfolio.columns }} element {{ item.categories.all.0 }}" data-category="{{ item.categories.all.0 }}">
+								<div class="hover_img">
+			    					<img src="{{ MEDIA_URL }}{% thumbnail item.featured_image 370 300 %}" alt="" />
+			    					<span class="portfolio_zoom"><a href="{{ MEDIA_URL }}{% thumbnail item.featured_image 1200 0 %}" ></a></span>
+			    					{% url 'mezzanine.pages.views.page' item.slug as the_url %}
+			    					<span class="portfolio_link"><a href="{{ the_url }}">View item</a></span>
+								</div>
+								<div class="item_description">
+			    					<h6>{{ item.short_description }}</h6>
+								</div>                                    
+		    				</div>
+						{% endfor %}
+					</div>
+				</div>
+	    	</div>
+		</div>
+	{% endblock %}
+
+{% block right_panel %}{% endblock %}

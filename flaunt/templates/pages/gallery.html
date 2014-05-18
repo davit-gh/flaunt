@@ -1,0 +1,30 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+{% block main_wrapper %}
+<div class="span12">
+{% editable page.gallery.content %}
+{{ page.gallery.content|richtext_filters|safe }}
+{% endeditable %}
+</div>
+
+
+{% with page.gallery.images.all as images %}
+{% for image in images %}                                 
+    <div class="span3 element">
+        <div class="hover_img">
+            <img src="{{ MEDIA_URL }}{% thumbnail image.file 320 185 %}" alt="" />
+            <span class="portfolio_zoom"><a href="{{ MEDIA_URL }}{% thumbnail image.file 1200 0 %}" rel="prettyPhoto[portfolio1]"></a></span>
+        </div>
+        <div class="item_description">
+            <h6>{{ image.description }}</h6>
+        </div>                                    
+    </div>
+{% endfor %}
+{% endwith %}
+
+{% endblock %}
+
+
+{% block right_panel_wrapper %}{% endblock %}

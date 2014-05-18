@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+<link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+{% ifinstalled mezzanine.blog %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+{% endifinstalled %}
+
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+{% compress css %}
+<link href="{% static "css/prettyPhoto.css" %}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" id="camera-css"  href="{% static "css/camera.css" %}" type="text/css" media="all">
+<link href="{% static "css/bootstrap.2.1.1.css" %}" rel="stylesheet">
+<link href="{% static "css/theme.css" %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static "css/skins/tango/skin.css" %}" />
+<link href="{% static "css/bootstrap-responsive.2.1.1.css" %}" rel="stylesheet">
+
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/rtl.css" %}">
+{% endif %}
+{% ifinstalled cartridge.shop %}
+<link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+{% endif %}
+{% endifinstalled %}
+{% block extra_css %}{% endblock %}
+{% endcompress %}
+
+{% compress js %}
+    <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/camera.js" %}"></script>
+    <script src="{% static "js/bootstrap.2.1.1.js" %}"></script>
+    <script src="{% static "js/superfish.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.prettyPhoto.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.jcarousel.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.isotope.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/sorting.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.preloader.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/flickr.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/myscript.js" %}"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){	
+			{% block extra_js %}{% endblock %}
+			
+			//prettyPhoto
+			$("a[rel^='prettyPhoto']").prettyPhoto();
+			
+			//Image hover
+			$(".hover_img").live('mouseover',function(){
+					var info=$(this).find("img");
+					info.stop().animate({opacity:0.6},500);
+					$(".preloader").css({'background':'none'});
+				}
+			);
+			$(".hover_img").live('mouseout',function(){
+					var info=$(this).find("img");
+					info.stop().animate({opacity:1},500);
+					$(".preloader").css({'background':'none'});
+				}
+			);	
+			// Preloader
+			$(".projects .element").preloader();
+			//Slider
+			$('#camera_wrap_1').camera();
+			
+			//Featured works & latest posts
+			$('#mycarousel, #mycarousel2, #newscarousel').jcarousel();			
+			
+			//Flickr Integration 36334875@N04
+			$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id={{settings.PHOTO_SHARING_FLICKR_ID}}&lang=en-us&format=json&jsoncallback=?", function(data){
+				$.each(data.items, function(i,item){
+					if(i<=11){ // <— change this number to display more or less images
+						$("<img/>").attr("src", item.media.m.replace('_m', '_s')).appendTo(".FlickrImages ul")
+						.wrap("<li><a href='" + item.link + "' target='_blank' title='Flickr'></a></li>");
+					}
+				});			
+    			});								
+		});		
+	</script>
+
+
+
+
+{% endcompress %}
+<!--[if lt IE 9]>
+<script src="{% static "js/html5shiv.js" %}"></script>
+<script src="{% static "js/respond.min.js" %}"></script>
+<![endif]-->
+
+{% block extra_head %}{% endblock %}
+</head>
+
+<body id="{% block body_id %}body{% endblock %}">
+
+	<!--header-->
+    <div class="header">
+    	<div class="wrap">
+        	<div class="navbar navbar_ clearfix">
+            	<div class="container">
+                    <div class="row">
+                        <div class="span4">
+                        	<div class="logo"><a href="index.html"><h2>{{ settings.SITE_TITLE }}</h2></a></div>                        
+                        </div>
+                        <div class="span8">
+                        	<div class="follow_us">
+                                <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
+                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
+				    {% endif %}
+                                    {% if settings.VIDEO_SHARING_LINK_VIMEO %}
+                                    	<li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
+                                    {% endif %}
+                                    {% if settings.BLOGGING_LINK_TUMBRL %}
+                                    	<li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
+                                    {% endif %}
+                                    {% if settings.SOCIAL_LINK_TWITTER %}
+                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
+                                    {% endif %}
+                                    {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                     	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
+				    {% endif %}
+                                    
+                                </ul>
+                            </div>
+                            <div class="clear"></div>
+                            <nav id="main_menu">
+                                <div class="menu_wrap">
+                                    {% page_menu "pages/menus/dropdown.html" %}
+                                </div>
+                             </nav>                            
+                        </div>
+                    </div>                
+                </div>
+             </div>
+        </div>    
+    </div>
+    <!--//header-->    
+     
+	{% block all_content %}
+    	    <!--page_container-->
+    <div class="page_container">
+	
+	<div class="wrap">
+		<div class="container">
+			<div class="row">
+				{% block main_wrapper %}
+					<div class="span{% block main_span_size %}8{% endblock %} {% block main_class %}middle{% endblock %}">
+						{% block main %}{% endblock %}
+	    				</div>
+				{% endblock main_wrapper%}
+				{% block right_panel_wrapper %}
+					<div class="span4 right">
+						{% block right_panel %}
+							{% include "blog/includes/filter_panel.html" %}
+						{% endblock %}
+					</div>
+				{% endblock right_panel_wrapper %}
+			</div>
+		</div>
+	</div>
+    </div>
+    <!--//page_container-->
+    {% endblock all_content %}
+
+    <!--footer-->
+    <div id="footer">
+    	<div class="wrap">
+    		<div class="container">
+            	<div class="row">
+                	<div class="span3">
+                    	<h2 class="title">Latest tweets</h2>
+                        <div class="tweet_block"></div>                       
+                    </div>
+                    <div class="span3">
+                    	<h2 class="title">Get in touch!</h2>
+                        <form action="#" method="post">
+                        	<input class="span3" type="text" name="name" id="name" value="Name" onFocus="if (this.value == 'Name') this.value = '';" onBlur="if (this.value == '') this.value = 'Name';" />
+                            <input class="span3" type="text" name="email" id="email" value="Email" onFocus="if (this.value == 'Email') this.value = '';" onBlur="if (this.value == '') this.value = 'Email';" />
+                            <textarea name="message" id="message" class="span3" onFocus="if (this.value == 'Message') this.value = '';" onBlur="if (this.value == '') this.value = 'Message';" >Message</textarea>
+                            <div class="clear"></div>
+                            <input type="reset" class="btn dark_btn" value="Clear form" />
+                            <input type="submit" class="btn send_btn" value="Send!" />
+                            <div class="clear"></div>
+                        </form>
+                    </div> 
+                    <div class="span3">
+                    	<h2 class="title">Testimonials</h2>
+                        <ul>
+                        	<li>
+                            	<span class="testimonials_arrow"></span>Orci nisi, luctus vitae imperdiet a, iquam vel urna. Pellentesque tincidunt laoreet est, in tristique sapien consequat a purus at ullamcorper pulvinar, massa libero magna.
+                            	<div class="clear"></div>
+                                <div class="author">Anna Smith, Company inc.</div>
+                            </li>
+                            <li>
+                            	<span class="testimonials_arrow"></span>Luctus vitae imperdiet a, iquamorci nisi lorem. Pellentesque tincidunt laoreet est, in tristique sapien consequat a purus at ullam pulvinar, massa libero consequat egestas mas.
+                            	<div class="clear"></div>
+                                <div class="author">John Doe, Company inc.</div>
+                            </li>
+                        </ul>                     
+                    </div>
+		{% if settings.PHOTO_SHARING_FLICKR_ID %}
+                    <div class="span3">
+                    	<h2 class="title">flickr photostream</h2>
+                        <div class="flickrs">
+                            <div class="FlickrImages">
+                                <ul></ul>
+                                <div class="clear"></div>
+                            </div>
+                        </div> 
+                    </div>      
+		{% endif %}   	
+            	</div>
+        	</div>            
+        </div>
+        
+        <div class="footer_bottom">
+            <div class="wrap">
+            	<div class="container">
+                	<div class="row">
+                		<div class="span5">
+                        	<div class="foot_logo"><a href="index.html"><img src="{% static "img/foot_logo.png" %}" alt="" /></a></div>    
+                        	<div class="copyright">&copy; 2014 DK. Worldwide marketplace. All Rights Reserved.</div>                        
+                        </div>
+                        <div class="span7">
+                        	<div class="foot_right_block">
+                            	<div class="fright">
+                                	<form action="{% url 'search' %}" method="get">
+                                        <input class="inp_search" name="q" type="text" value="Search the Site" onfocus="if (this.value == 'Search the Site') this.value = '';" onblur="if (this.value == '') this.value = 'Search the Site';" />                                        
+                                    </form>
+                                </div>
+                                <div class="follow_us">
+                                	<ul>
+						{% if settings.SOCIAL_LINK_FACEBOOK %}
+		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook" class="facebook">Facebook</a></li>
+					    	{% endif %}
+		                           	{% if settings.VIDEO_SHARING_LINK_VIMEO %}
+		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" title="Vimeo" class="vimeo">Vimeo</a></li>
+		                            	{% endif %}
+		                            	{% if settings.BLOGGING_LINK_TUMBRL %}
+		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a></li>
+		                            	{% endif %}
+		                            	{% if settings.SOCIAL_LINK_TWITTER %}
+		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter" class="twitter">Twitter</a></li>
+		                            	{% endif %}
+		                            	{% if settings.SOCIAL_LINK_DELICIOUS %}
+		                             		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" title="Delicious" class="delicious">Delicious</a></li>
+					    	{% endif %}
+		                       </ul>
+                                </div>
+                                <div class="clear"></div>
+                            
+                            	<div class="clear"></div>
+                            	<div class="foot_menu">
+                            		<ul>
+                                        <li><a href="index.html" class="current">Home</a></li>
+                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="scaffolding.html">features</a></li>
+                                        <li><a href="portfolio_2columns.html">Portfolio</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contacts.html">Contacts</a></li>
+                                    </ul>
+                            	</div>
+                            </div>                            
+                        </div>
+                    </div>	
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//footer-->    
+
+
+{% include "includes/footer_scripts.html" %}
+
+</body>
+</html>

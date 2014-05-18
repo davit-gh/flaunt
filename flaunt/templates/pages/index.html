@@ -1,0 +1,160 @@
+{% extends "pages/page.html" %}
+{% load mezzanine_tags static %}
+{% load blog_tags keyword_tags i18n %}
+
+{% block main_wrapper %}
+{{ block.super }}
+<!--
+This template is provided as a custom template for the homepage, for
+when it is configured as an editable page in the navigation tree. Feel
+free to modify it.
+-->
+
+	{% if page.homepage.slides.all %}
+        <!--slider-->
+        <div id="main_slider">
+            <div class="camera_wrap" id="camera_wrap_1">
+		{% for slide in page.homepage.slides.all %}
+                <div data-src="{{ MEDIA_URL }}{% thumbnail slide.image 1920 690 %}"></div>                 
+		{% endfor %}
+            </div><!-- #camera_wrap_1 -->
+            <div class="clear"></div>	
+        </div>        
+        <!--//slider-->
+        {% endif %}
+        <!--planning-->
+        
+        <!--//planning-->
+        
+         
+        <!--featured works-->
+        <div class="wrap block carousel_block">
+            <div class="container">
+            	<h2 class="upper">featured works</h2>
+            	<div class="row">
+                    <div class="span12">
+                        <ul id="mycarousel" class="jcarousel-skin-tango">
+                            <li>
+                            	<div class="hover_img">
+                                	<a href="{% static "img/featured_works/1.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static  "img/featured_works/1.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="hover_img">
+                                	<a href="{% static "img/featured_works/2.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static  "img/featured_works/2.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li>
+                            <li>
+                                <div class="hover_img">
+                                	<a href="{% static "img/featured_works/3.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static  "img/featured_works/3.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li> 
+                            <li>
+                                <div class="hover_img">
+                                	<a href="{% static "img/featured_works/4.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static "img/featured_works/4.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="hover_img">
+                                	<a href="{% static "img/featured_works/1.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static "img/featured_works/1.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="hover_img">
+                                	<a href="{% static "img/featured_works/2.jpg" %}" rel="prettyPhoto[portfolio1]"><img src="{% static "img/featured_works/2.jpg" %}" alt="" /><span class="portfolio_zoom1"></span></a>                                    
+                                </div>
+                            </li>                                                       
+                        </ul>                         
+                    </div>                
+                </div>                
+            </div>
+        </div>        
+        <!--//featured works-->
+        
+        <!--Latest news-->
+        <div class="wrap block">
+        	<div class="container">
+        		<div class="row news_block">
+        			<div class="span6">
+                    	<h2 class="title">egestas sed convallis metus!</h2>
+                        <p>Vestibulum tincidunt ultricies aliquam. Donec porta mi nec tortor sagittis rhoncus. Nunc ante arcu, ornaresit gravida rutrum ut, facilisis et lacus. Aliquam mauris arcu, interdum eu fermentum tincidunt.</p>
+                        <ul class="the-icons grey">
+                        	<li><i class="icon-time"></i> Curabitur eu placerat massa.</li>
+                            <li><i class="icon-star"></i> Integer adipiscing velit nec purus facilisis ut pharetra!</li>
+                            <li><i class="icon-camera"></i> Nunc mollis, nisl vel tincidunt vestibulum, lacus libero mollis urna, eu dapibus lacus nisi et nulla.</li>
+                            <li><i class="icon-qrcode"></i> Curabitur veltpat magna. Pellentesque pellentesque dapibus dictum. </li>
+                            <li><i class="icon-user"></i> Nulla ut erat ut massa molestie commodo.</li>
+                        </ul>
+                        <p>Duis vel ligula et libero iaculis facilisis in vel justo. Duis lacinia orci ut tellus interdum dignissim. Fusce eugei scelerisque enim. Phasellus nec libero lectus. Quisque posuere mi non nibh facilisis semper. Donec lorem suscipit est sed mauris eleifend congue. Class taciti sociosqu litora torquent <a href="#" class="arrow_link">per conubia.</a></p>
+                    </div> 
+                    <div class="span6">
+                    	<h2 class="title">Latest news</h2>
+                        <ul id="newscarousel" class="jcarousel-skin-tango">
+                            <li>
+                            	<div class="news_date">15 apr<span>2019</span></div>
+                                <div class="news_t"><a href="#">Sed massa dui, porta corper ac varius!</a></div>
+                                <div class="news">Posted by <a href="#">Anna Smith</a>  /  In <a href="#">City</a><br/>Tags: <a href="#">eget</a>, <a href="#">mauris</a></div>
+                                <div class="news_info">Tristique tincidunt cursus sed, ornare ncidunt eque a tristique. Phasellus porttitor mollis tortor etoq vestibulum. Quisque non lacus tortor, quis cumsan nibh. Lorem ipsum dolor sit amet, consectetur icing elit. Nullam pulvinarteses lorem sed dui euismod eget. <a href="#">Read more...</a></div>
+                                <div class="clear"></div>
+                            </li>
+                            <li>
+                            	<div class="news_date">05 apr<span>2019</span></div>
+                                <div class="news_t"><a href="#">eget &amp; massa viviamu marius mas</a></div>
+                                <div class="news">Posted by <a href="#">Anna Smith</a>  /  In <a href="#">City</a><br/>Tags: <a href="#">eget</a>, <a href="#">mauris</a></div>
+                                <div class="news_info">Cursus sed, aliquet nec odio. Integer ornare tincidunt neque a tristique. Phasellus porttitor millis tortor etoq vestibulum. Quisque ont lacus toirtor uis accumsan nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ulvinarteses em sed. <a href="#">Read more...</a></div>
+                                <div class="clear"></div>
+                            </li>
+                            <li>
+                            	<div class="news_date">15 apr<span>2019</span></div>
+                                <div class="news_t"><a href="#">Sed massa dui, porta corper ac varius!</a></div>
+                                <div class="news">Posted by <a href="#">Anna Smith</a>  /  In <a href="#">City</a><br/>Tags: <a href="#">eget</a>, <a href="#">mauris</a></div>
+                                <div class="news_info">Tristique tincidunt cursus sed, ornare ncidunt eque a tristique. Phasellus porttitor mollis tortor etoq vestibulum. Quisque non lacus tortor, quis cumsan nibh. Lorem ipsum dolor sit amet, consectetur icing elit. Nullam pulvinarteses lorem sed dui euismod eget. <a href="#">Read more...</a></div>
+                                <div class="clear"></div>
+                            </li>
+                            <li>
+                            	<div class="news_date">05 apr<span>2019</span></div>
+                                <div class="news_t"><a href="#">eget &amp; massa viviamu marius mas</a></div>
+                                <div class="news">Posted by <a href="#">Anna Smith</a>  /  In <a href="#">City</a><br/>Tags: <a href="#">eget</a>, <a href="#">mauris</a></div>
+                                <div class="news_info">Cursus sed, aliquet nec odio. Integer ornare tincidunt neque a tristique. Phasellus porttitor millis tortor etoq vestibulum. Quisque ont lacus toirtor uis accumsan nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ulvinarteses em sed. <a href="#">Read more...</a></div>
+                                <div class="clear"></div>
+                            </li>
+                         </ul> 
+                    </div>       		
+            	</div>
+        	</div>
+        </div>
+        <!--Latest news-->
+        
+        <!--latest posts-->
+        <div class="wrap block carousel_block">
+            <div class="container">
+            	<h2 class="upper">latest posts</h2>
+            	<div class="row">
+                    <div class="span12">
+                        <ul id="mycarousel2" class="jcarousel-skin-tango">
+			{% blog_recent_posts 5 as recent_posts %}
+			{% if recent_posts %}
+				<h2>Recent Posts</h2>
+			{% for recent_post in recent_posts %}
+                            <li>
+                            	<div class="post_carousel">
+                                	<img src="{{ MEDIA_URL }}{% thumbnail recent_post.featured_image 600 600 %}" alt="" />
+                                	<div class="title_t"><a href="{{recent_post.get_absolute_url}}">{{recent_post.title}}</a></div>
+                                    <div class="post_meta">
+                                		Posted by <a href="#">{{ recent_post.user }}</a>  /  {{ recent_post.publish_date|timesince}}{% trans " ago" %}  / In <a href="#">Vacation</a>
+                                    </div>
+                                    {{ recent_post.description_from_content|safe }} <a href="{{recent_post.get_absolute_url}}" class="arrow_link">{% trans "Read more..." %}</a>
+                                </div>	
+                            </li>
+                          {% endfor %}                                     
+			  {% endif %}
+                        </ul>                        
+                    </div>                
+                </div>                
+            </div>
+        </div>        
+        <!--//latest posts--> 
+
+
+{% endblock main_wrapper%}
+{% block right_panel_wrapper %}{% endblock %}

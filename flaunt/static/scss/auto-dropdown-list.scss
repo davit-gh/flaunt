@@ -1,0 +1,61 @@
+span[data-acts-as-select]{
+  min-width: 130px;
+  height: 23px;
+  display: inline-block;
+  position: relative;
+  
+  border: 1px solid gray;
+  background-color: lightgray;
+  font-family: Georgia;
+  
+  & > span{
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+  
+  &:after{
+    position: absolute;
+    content: '▾';
+    display: block;
+    top:0; right:0; bottom:0;
+    width: 18px;
+    line-height: 23px;
+  }
+  
+  label{
+    display: none;
+    white-space: nowrap;
+    line-height: 23px;
+    padding: 0 5px;
+    cursor: pointer;
+    
+    &:hover{
+      background-color: lightblue;
+    }
+  }  
+  
+  input[type=radio]{
+    position: absolute;
+    clip: rect(0,0,0,0);
+    
+    &:checked + label{
+      display: block;
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+          
+      &:hover{
+        background-color: transparent;
+      }
+    }
+  }
+  
+  &:hover label{
+    display: block;
+  }
+    
+}

@@ -1,0 +1,31 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags %}
+
+
+
+{% block main %}
+
+
+    <form class="mezzanine-form" >
+        <h2 class="title"><span>Get In Touch</span></h2>
+                            <div class="contact_form">  
+                            	<div id="note"></div>
+                                <div id="fields">
+                                    <form id="ajax-contact-form" method="post" action="" >
+					{% csrf_token %}
+                                        <input class="span7" type="text" name="name" value="" placeholder="Name (required)" />
+                                        <input class="span7" type="text" name="email" value="" placeholder="Email (required)" />
+                                        <input class="span7" type="text" name="subject" value="" placeholder="Subject" />
+                                        <textarea name="message" id="message" class="span8" placeholder="Message"></textarea>
+                                        <div class="clear"></div>
+                                        <input type="reset" class="btn dark_btn" value="Clear form" />
+                                        <input type="submit" class="btn send_btn" id="sbmt_btn" value="Submit" />
+                                        <div class="clear"></div>
+                                    </form>
+                                </div>
+                            </div> 	
+
+
+{% endblock %}
+

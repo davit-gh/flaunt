@@ -1,0 +1,54 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles %}
+{% block extra_js %}
+
+
+	var frm = $('form');
+	frm.submit(function(){
+		$.ajax({
+			type: frm.attr('method'),
+			url: "/contact/",
+			data: frm.serialize(),
+			success: function(data){
+				console.log(data);
+			},
+			error: function(data){
+				alert(data);
+			}
+		});
+		return false;
+	});
+{% endblock %}
+{% load form_from_page %} <!-- https://gist.github.com/joshcartme/5130702 -->
+	{% block main %}
+{% load widget_tweaks %}
+<div class="contact_form">  
+<form class="row-fluid" method="post" action="/content/">
+{% csrf_token %}
+{{form.errors}}
+	<h2 class="title"><span>Get In Touch</span></h2>
+        {% for hidden in form.hidden_fields %}
+	{{hidden}}
+	{% endfor %}
+	{% for vis in form.visible_fields %}
+		<fieldset class="control-group">
+                    <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+ 
+                    <div class="controls">
+                        {% render_field vis class="span7" %}
+                        
+                    </div>
+                </fieldset>
+	{% endfor %}
+<input type="submit" class="btn send_btn" id="sbmt_btn" value="Submitt"/>
+</form>
+</div>
+	{% endblock %}
+
+{% block right_panel %}
+	<h2 class="title"><span>Contact Info</span></h2>
+                            
+                            <p>3896 Kenwood Place<br/>Fort Lauderdale, FL 33301</p>
+                            <p>Phone: 1-500-677-5694<br/>Fax: 1-500-256-2768<br/>Email: <a href="mailto:#">info@yoursitename.com</a><br/>Web: <a href="#">http://yoursitename.com</a></p>  
+{% endblock %}

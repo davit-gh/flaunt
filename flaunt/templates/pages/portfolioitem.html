@@ -1,0 +1,58 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/responsiveslides.css" %}">
+{% endblock %}
+{% block slider_js %}
+  <script type="text/javascript" src="{% static "js/responsiveslides.min.js" %}"></script>
+{% endblock %}
+
+{% block extra_js %}
+  $("#slider3").responsiveSlides({
+	pager: true,
+        manualControls: '#slider3-pager',
+        maxwidth: 340
+  });
+
+{% endblock %}
+
+{% block main_wrapper %}
+{{ block.super }}
+	<!--slider-->
+        <div id="wrapper">
+            	<ul class="rslides" id="slider3">	
+	{% for image in portfolioitem.images.all %}
+                <li><img src="{{ MEDIA_URL }}{{ image.file }}" alt=""></li>
+	{% endfor %}
+		</ul>
+		<ul id="slider3-pager" class="thumb">
+	{% for image in portfolioitem.images.all %}
+		<li><a href="#"><img src="{{ MEDIA_URL }}{% thumbnail image.file 40 40 %}" alt=""></a></li>                
+	{% endfor %}
+		</ul>
+            </ul>	
+        </div>        
+        <!--//slider-->
+	
+            
+            
+        <div class="item_description">
+            <h6>{{ portfolioitem.short_description }}</h6>
+        </div>     
+	<div>
+		Nam cursus tellus quis magna porta adipiscing. Donec et eros leo, non pellentesque arcu. Curabitur vitae mi enim, at vestibulum magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed sit amet sem a urna rutrum fringilla. Nam vel enim ipsum, et congue ante.
+Aenean iaculis sodales dui, non hendrerit lorem rhoncus ut. Pellentesque ullamcorper venenatis elit id adipiscing. Duis tellus neque, tincidunt eget pulvinar sit amet, rutrum nec urna. Suspendisse pretium laoreet elit vel ultricies.
+	</div>  
+	
+ 
+{% endblock %}
+
+{% block right_panel_wrapper %}
+Proin laoreet venenatis augue, eu commodo ligula fermentum at. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Suspendisse tempor leo at massa laoreet vel tincidunt leo molestie. Proin tristique accumsan nisl, quis sollicitudin urna ullamcorper vel. In consectetur purus eu mauris pellentesque tincidunt. Suspendisse hendrerit pretium tellus, sit amet elementum sapien mollis nec. Etiam sit amet hendrerit enim. Sed ullamcorper nunc non mi aliquam et tincidunt massa congue. Nam pharetra elit convallis urna auctor auctor.
+Etiam vitae felis sit amet libero viverra varius et ut nisi.
+Pellentesque egestas scelerisque turpis, ut dignissim mauris luctus vel.
+Fusce et ante at ligula lobortis congue a in eros.
+In hac habitasse platea dictumst lorem ipsum dolor sit amet, consectetur.
+Phasellus adipiscing varius felis, sit amet feugiat turpis consequat at.
+{% endblock %}
