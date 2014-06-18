@@ -1,0 +1,821 @@
+
+<!doctype html>
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title> | Cotton On</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+
+  
+  <meta name="viewport" content="width=1160">
+  
+
+  <meta property="og:title" content="Cotton On">
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="http://shop.cottonon.com/shop/cart/"/>
+  <meta property="og:image" content="http://d1w0dlwqaslwfs.cloudfront.net/static/media/img/logo-r43.png"/>
+  <meta property="og:site_name" content="Cotton On">
+  <meta property="fb:app_id" content="189208407814129">
+
+  <link rel="shortcut icon" href="http://d1w0dlwqaslwfs.cloudfront.net/static/media/img/favicon.ico">
+  <link rel="apple-touch-icon" href="http://d1w0dlwqaslwfs.cloudfront.net/static/media/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="//d1w0dlwqaslwfs.cloudfront.net/static/css/screen_gen.css?v=6c276c84de" />
+  <link rel="stylesheet" href="http://d1w0dlwqaslwfs.cloudfront.net/static/media/js/css/ui-lightness/jquery-ui-1.8.16.custom.css">
+
+  <script src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/js/libs/modernizr-2.6.2-custom.js"></script>
+
+  
+
+  
+
+  <script type="text/javascript">
+  function vmeCallback(VmeEventType, eventData){
+    var MerchantTrans = eventData.merchTrans;
+    if (VmeEventType == "purchase.success"){
+      
+      postToURL("https://shop.cottonon.com/shop/return-from-checkout-with-vme/", eventData);
+      
+    }
+    else if(VmeEventType == "purchase.init"){
+      //fires when payment widget is launched, update conversion tracking if applicable
+    }
+    else if(VmeEventType == "purchase.cancel"){
+      // TODO fires when customer closes payment widget before completing purchase, update conversion tracking if applicable
+    }
+    else if(VmeEventType == "purchase.pending"){
+      // TODO fires when shipping address or payment info validation fails, inform customer accordingly
+    }
+    else{
+      // error handling
+    }
+  }
+function postToURL(path, params){
+  var form = document.createElement("form");
+  form.setAttribute("method", "post");
+  form.setAttribute("action", path);
+
+    for(var key in params){
+      if(params.hasOwnProperty(key)){
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", params[key]);
+        form.appendChild(hiddenField);
+      }
+    }
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+<style id="antiClickjack">body{display:none;}</style>
+<script type="text/javascript">
+  if (self === top) {
+    var antiClickjack = document.getElementById("antiClickjack");
+    antiClickjack.parentNode.removeChild(antiClickjack);
+  }
+  else {
+    top.location = self.location;
+  }
+</script>
+<script language="javascript">
+if (typeof $ == 'undefined') {
+    document.write('<scr' +
+        'ipt src="/static/mezzanine/js/jquery-1.7.1.min.js"></scr' +
+        'ipt>');
+}
+
+var SHIPPING_OPTIONS = null;
+var URL_SHIPPING = "/cart/ajax/shipping/";
+var INITIAL_SHIPPING = "";
+
+</script>
+
+
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-G2C8" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-G2C8');</script>
+
+  
+
+  <!-- End Google Tag Manager -->
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script></head>
+<body  id="">
+  <div class="wrapper">
+
+    
+      <header class="wrapper">
+        <a href="/" class="header-logo">Cotton On</a>
+        <nav>
+          
+          
+<ul id="primary-menu" class="clearfix"><li><a href="/cottonon/">Women<span></span></a><div class="submenu  totalcols-4 " style=""><div class="cols-2"><h3>Category</h3><ul><li><a href="/shop/women/"><strong>Shop all</strong></a></li><li><a href="/shop/women/new-arrival/"><strong>New Arrivals</strong></a></li><li><a href="/shop/women/exclusives/"><strong>CO. By Cotton On</strong></a></li><li><a href="/shop/women/t-bar/"><strong>t-bar</strong></a></li><li>&nbsp;</li><li><a href="/shop/women/the-one/"><strong>The :One</strong></a></li><li>&nbsp;</li><li><a href="/shop/women/womens-accessories/">Accessories</a></li><li><a href="/shop/women/active/">Active</a></li><li><a href="/shop/women/bags/">Bags &amp; Wallets</a></li><li><a href="/shop/women/bras/">Bras</a></li><li><a href="/shop/women/dresses/">Dresses &amp; Jumpsuits</a></li><li><a href="/shop/women/shoes/">Footwear</a></li><li><a href="/shop/women/jackets/">Jackets</a></li><li><a href="/shop/women/jeans/">Jeans</a></li><li><a href="/shop/women/knitwear/">Knitwear &amp; Jumpers </a></li></ul><ul><li><a href="/shop/women/leggings-trackpants/">Leggings &amp; Trackpants</a></li><li><a href="/shop/women/pants/">Pants</a></li><li><a href="/shop/women/shirts/">Shirts</a></li><li><a href="/shop/women/shorts/">Shorts</a></li><li><a href="/shop/women/skirts/">Skirts</a></li><li><a href="/shop/women/sleepwear/">Sleepwear</a></li><li><a href="/shop/women/swimwear/">Swimwear</a></li><li><a href="/shop/women/t-shirts/">T-Shirts</a></li><li><a href="/shop/women/tops/">Tops</a></li><li><a href="/shop/women/briefs/">Underwear</a></li></ul></div><div class="cols-1"><h3>Offers</h3><ul><li><a href="/shop/women/offers/">Offers</a></li><li><a href="/shop/women/nothing-over-5/">Nothing Over $5</a></li><li><a href="/shop/women/nothing-over-10/">Nothing Over $10</a></li><li><a href="/shop/women/sale/">Sale</a></li></ul></div><div class="cols-1"><h3>Brand</h3><ul><li><a href="/shop/women/">Cotton On Women</a></li><li><a href="/co-women/">CO. by Cotton On</a></li><li><a href="/body/">Cotton On Body</a></li><li><a href="/rubi-shoes/">Rubi Shoes</a></li><li><a href="/t-bar/">t-bar</a></li><li><a href="/cottonon-foundation/">Cotton On Foundation</a></li><li><a href="/shop/women/new-arrival/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/SUPERSTORE/MEGA_04JUNE14_V1_AUS_WOMEN_03.jpg" alt=""></a></a></li></ul></div></div></li><li><a href="/cottonon-men/">Men<span></span></a><div class="submenu  totalcols-3 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/shop/men/"><strong>Shop all</strong></a></li><li><a href="/shop/men/new-arrivals/"><strong>New Arrivals</strong></a></li><li><a href="/shop/men/co-men/"><strong>Co. by cotton on</strong></a></li><li><a href="/shop/men/cotton-on-active-range/"><strong>COAR</strong></a></li><li><a href="/shop/men/t-bar/"><strong>t-bar</strong></a></li><li>&nbsp;</li><li><a href="/shop/men/accessories/">Accessories</a></li><li><a href="/shop/men/cotton-on-active-range/">Active &amp; Performance</a></li><li><a href="/shop/men/shoes/">Footwear</a></li><li><a href="/shop/men/hoodies/">Hoodies &amp; Jumpers</a></li><li><a href="/shop/men/jackets/">Jackets &amp; Coats </a></li><li><a href="/shop/men/jeans/">Jeans</a></li><li><a href="/shop/men/pants/">Pants</a></li><li><a href="/shop/men/shirts/">Shirts</a></li><li><a href="/shop/men/shorts/">Shorts</a></li><li><a href="/shop/men/t-shirts/">T-Shirts &amp; Tanks</a></li></ul></div><div class="cols-1"><h3>Offers</h3><ul><li><a href="/shop/men/offers/">Offers</a></li><li><a href="/shop/men/nothing-over-5/">Nothing Over $5</a></li><li><a href="/shop/men/nothing-over-10/">Nothing Over $10</a></li><li><a href="/shop/men/sale/">Sale</a></li></ul></div><div class="cols-1"><h3>Brands</h3><ul><li><a href="/shop/men/">Cotton On Men</a></li><li><a href="/shop/men/co-men/">CO. by Cotton On</a></li><li><a href="/shop/men/cotton-on-active-range/">COAR</a></li><li><a href="/t-bar/">t-bar</a></li><li><a href="/cottonon-foundation/">Cotton On Foundation</a></li><li><a href="/shop/men/new-arrivals/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/SUPERSTORE/MEGA_04JUNE14_V1_AUS_MEN_03.jpg" alt=""></a></a></li></ul></div></div></li><li><a href="/free-by-cottonon/">Teen<span></span></a><div class="submenu right totalcols-3 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/shop/teen/"><strong>Shop all</strong></a></li><li><a href="/shop/teen/new-arrivals/"><strong>New Arrivals</strong></a></li><li>&nbsp;</li><li><a href="/shop/teen/knitwear/">Knitwear 9-14</a></li><li><a href="/shop/teen/denim-9-14/">Denim 9-14</a></li><li><a href="/shop/teen/tees-9-14/">Tees 9-14</a></li><li><a href="/shop/teen/tops-9-14/">Tops 9-14</a></li><li><a href="/shop/teen/dresses-9-14/">Dresses 9-14</a></li><li><a href="/shop/teen/bottoms-9-14/">Bottoms 9-14</a></li><li><a href="/shop/teen/outerwear-9-14/">outerwear 9-14</a></li><li><a href="/shop/teen/accessories/">Accessories</a></li></ul></div><div class="cols-1"><h3>Offers</h3><ul><li><a href="/shop/teen/offers/">Offers</a></li><li><a href="/shop/teen/sale/">Sale</a></li></ul></div><div class="cols-1"><h3>Brand</h3><ul><li><a href="/shop/teen/teen-girl/">Teen Girl</a></li><li><a href="/shop/teen/teen-boy/">Teen Boy</a></li><li><a href="/cottonon-foundation/">Cotton On Foundation</a></li><li><a href="/shop/teen/sale/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/FREE/FREE-HP-MEGAMENU-02JUN-V1_03.png" alt=""></a></a></li></ul></div></div></li><li><a href="/cotton-on-kids/">Kids<span></span></a><div class="submenu right totalcols-3 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/shop/kids/"><strong>Shop all</strong></a></li><li><a href="/shop/kids/new-arrivals/"><strong>New Arrivals</strong></a></li><li>&nbsp;</li><li><a href="/shop/kids/kids-room/"><strong>Kids Room</strong></a></li><li>&nbsp;</li><li><a href="/shop/kids/baby/">Baby</a></li><li><a href="/shop/kids/girls/">Girls</a></li><li><a href="/shop/kids/boys/">Boys</a></li><li><a href="/shop/kids/sleepwear/">Sleepwear</a></li><li><a href="/shop/kids/swimwear/">Swimwear</a></li><li><a href="/shop/kids/girls/shoes/">Girls Shoes</a></li><li><a href="/shop/kids/boys/shoes/">Boys Shoes</a></li><li><a href="/shop/dressups/">Dress Ups</a></li><li><a href="/shop/kids/accessories/">Accessories</a></li><li><a href="/shop/kids/jewellery/">Jewellery</a></li><li><a href="/shop/kids/stationery/">Stationery for Kids</a></li></ul></div><div class="cols-1"><h3>Offers</h3><ul><li><a href="/shop/kids/offers/">Offers</a></li><li><a href="/shop/kids/sale/">Sale</a></li><li><a href="/shop/kids/nothing-over-5/">nothing over $5</a></li><li><a href="/shop/kids/nothing-over-10/">nothing over $10</a></li></ul></div><div class="cols-1"><h3>Brand</h3><ul><li><a href="/cotton-on-kids/">Cotton On Kids</a></li><li><a href="/cottonon-foundation/">Cotton On Foundation</a></li><li><a href="/shop/kids/new-arrivals/#jackets-vests/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/SUPERSTORE/KIDS-HP-MEGAMENU-19MAY-GENERIC-AU-V3.jpg" alt=""></a></a></li></ul></div></div></li><li><a href="/typoshop/">Typo<span></span></a><div class="submenu right totalcols-3 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/shop/typo/"><strong>Shop all</strong></a></li><li>&nbsp;</li><li><a href="/shop/typo/industrial-living/"><strong>Industrial Living</strong></a></li><li><a href="/shop/typo/tape-it-up/"><strong>Tape It Up</strong></a></li><li>&nbsp;</li><li><a href="/shop/typo/cards/">Cards</a></li><li><a href="/shop/typo/desks/">Desk Accessories</a></li><li><a href="/shop/typo/home/">Home</a></li><li><a href="/shop/typo/journals/">Journals &amp; Notebooks</a></li><li><a href="/shop/typo/craft/">Make &amp; Create</a></li><li><a href="/shop/typo/pens/">Pens &amp; Pencils</a></li><li><a href="/shop/typo/storage-folders/">Storage &amp; Folders</a></li><li><a href="/shop/typo/accessories-tech/">Tech Accessories</a></li><li><a href="/shop/typo/bags/">Travel Accessories &amp; Bags</a></li><li><a href="/shop/typo/wall-art/">Wall Art</a></li><li><a href="/shop/typo/wrap/">Wrap</a></li></ul></div><div class="cols-1"><h3>Offers</h3><ul><li><a href="/shop/typo/offers/">Offers</a></li><li><a href="/shop/typo/sale/">Sale</a></li></ul></div><div class="cols-1"><h3>Brand</h3><ul><li><a href="/cottonon-foundation/">Cotton On Foundation</a></li><li><a href="/shop/typo/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/SUPERSTORE/TYPO-MEGA-26052014-Desk-global.jpg" alt=""></a></a></li></ul></div></div></li><li><a>Brands<span></span></a><div class="submenu  totalcols-9 brandmenu" style="right:-200px; width:1300px;"><div class="cols-9"><h3>Shop your favourite brands</h3><ul style=width:140px;><li class="brand-logo brand-logo-cottonon"><a href="/cottonon/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/cottononnew.png);"></a></li><li><a href="/shop/women">Women</a></li><li><a href="/shop/men">Men</a></li></ul><ul style=width:70px;><li class="brand-logo brand-logo-co"><a href="/co-women/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/co.png);"></a></li><li><a href="/co-women">CO Women</a></li></ul><ul style=width:74px;><li class="brand-logo brand-logo-kids"><a href="/kids/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/kids.png);"></a></li><li><a href="/shop/kids/girls">Girls</a></li><li><a href="/shop/kids/boys">Boys</a></li><li><a href="/shop/kids/baby">Baby</a></li></ul><ul style=width:90px;><li class="brand-logo brand-logo-free"><a href="/free-by-cottonon/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/free.png);"></a></li><li><a href="/shop/teen/teen-girl">Teen Girls</a></li><li><a href="/shop/teen/teen-boy">Teen Boys</a></li></ul><ul style=width:96px;><li class="brand-logo brand-logo-body"><a href="/body/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/body.png);"></a></li><li><a href="/shop/women/active">Active</a></li><li><a href="/shop/women/bras">Bras</a></li><li><a href="/shop/women/briefs">Undies</a></li><li><a href="/shop/women/swimwear">Swim</a></li><li><a href="/shop/women/sleepwear">Sleep</a></li></ul><ul style=width:80px;><li class="brand-logo brand-logo-rubi"><a href="/rubi/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/rubi.png);"></a></li><li><a href="/shop/rubi">Rubi Shoes</a></li></ul><ul style=width:69px;><li class="brand-logo brand-logo-typo"><a href="/typoshop/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/typo.png);"></a></li><li><a href="/shop/typo">Typo</a></li></ul><ul style=width:67px;><li class="brand-logo brand-logo-T-Bar"><a href="/t-bar/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/TBar.png);"></a></li><li><a href="/shop/men/T-Bar">Men</a></li><li><a href="/shop/women/T-Bar">Women</a></li></ul><ul style=width:145px;><li class="brand-logo brand-logo-foundation"><a href="/cottonon-foundation/" style="background-image:url(http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/brandmenu/foundation.png);"></a></li><li><a href="/shop/cotton-on-foundation/">Foundation</a></li></ul></div></div></li><li><a href="/sale">Sale<span></span></a><div class="submenu right totalcols-2 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/shop/women/sale/">Women</a></li><li><a href="/shop/men/sale/">Men</a></li><li><a href="/shop/teen/sale/">Teen</a></li><li><a href="/shop/kids/sale/">Kids</a></li><li><a href="/shop/typo/sale/">Typo</a></li><li><a href="/shop/t-bar/sale/">T-Bar</a></li></ul></div><div class="cols-1"><h3>Brand</h3><ul><li><a href="/shop/women/sale/#cotton-on-women/">Cotton On Women</a></li><li><a href="/shop/men/sale/">Cotton On Men</a></li><li><a href="/shop/kids/sale/">Cotton On Kids</a></li><li><a href="/shop/body/sale/">Cotton On Body</a></li><li><a href="/shop/rubi/sale/">Rubi Shoes</a></li><li><a href="/shop/typo/sale/">Typo</a></li><li><a href="/shop/t-bar/sale/">T-bar</a></li><li><a href="/shop/women/sale/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/SUPERSTORE/APRIL_MEGAMENU_SALE.JPG" alt=""></a></a></li></ul></div></div></li><li><a>Looks<span></span></a><div class="submenu right totalcols-1 " style=""><div class="cols-1"><h3>Category</h3><ul><li><a href="/books/book/cods/">CO. by Cotton On Womens</a></li><li><a href="/books/book/quiet-riot/">CO. by Cotton On Mens</a></li><li><a href="/books/book/coar-launch/">COAR</a></li><li><a href="/books/book/rubi-rebels-heart/">Rubi Shoes - Rebels At Heart</a></li><li><a href="/books/book/smokin-boots/">Rubi Shoes - Smokin&#39; Boots</a></li><li><a href="/books/book/lara-bingle-cotton-body/">Lara Bingle - Cotton On Body</a></li><li><a href="/books/book/baby/">Baby</a></li><li><a href="/books/book/kids-room/">Kids Room</a></li><li><a href="/books/book/cods/"><img src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/uploads/CO_WOMEN_MEGAMENU_May14_V2 (2).jpg" alt=""></a></a></li></ul></div></div></li></ul>
+
+          <!-- primary_menu @ 13th June 2014 09:20:27 -->
+          
+        </nav>
+        <div id="top-bar">
+          <div class="wrapper">
+            <div class="searchform">
+<form method="get" action="/search/" id="search">
+    <label class="visuallyhidden" for="search_input" title="search">Search</label>
+    <input id="search_input" type="search" name="q" value="" placeholder="Search...">
+    <button class="sym" type="submit" title="search">L</button>
+</form>
+</div>
+            <div class="alerts">
+              
+                    
+              
+              <div class="alert added-to-cart"></div>
+              <div class="alert added-to-wishlist"></div>
+            </div>
+            <div class="currency">
+              <div class="currbutton">Australia (AUD)</div>
+                <div class="currencysel">
+                  <strong>Choose your Country</strong>
+                  <ul class="regionselect">
+                  
+                    
+                      <li><a href="#" data-region="Australia" class="active">Australia (AUD)</a></li>
+                    
+                  
+                    
+                      <li><a href="http://asia.cottonon.com/shop/cart/?currency=HKD" data-region="Asia">Hong Kong (HKD)</a></li>
+                    
+                  
+                    
+                      <li><a href="http://asia.cottonon.com/shop/cart/?currency=MYR" data-region="Asia">Malaysia (MYR)</a></li>
+                    
+                  
+                    
+                      <li><a href="http://asia.cottonon.com/shop/cart/?currency=SGD" data-region="Asia">Singapore (SGD)</a></li>
+                    
+                  
+                    
+                      <li><a href="http://us.cottonon.com/shop/cart/" data-region="United States">United States (USD)</a></li>
+                    
+                  
+                  </ul>
+                </div>
+            </div>
+
+            <div class="wishlist">
+              <a href="/shop/wishlist/" title="Wishlist">
+                My wishlist (<span id="wishlist-quantity" data-count="0">0</span>)
+                <span class="header-utility-icon icon-heart"></span>
+              </a>
+            </div>
+
+            
+
+<!-- handlebars template -->
+
+<script id="entry-template" type="text/x-handlebars-template">
+  <ul class="items">
+    {{# each cart_items}}
+    <li>
+      <img src="{{thumbnail}}" alt="">
+      <div class="prod_details">
+        <strong>{{title}}</strong>
+        <dl>
+          <dt>Color</dt> <dd>{{colour}}</dd>
+          <dt>Size</dt> <dd>{{size}}</dd>
+          <dt>Quantity</dt> <dd>{{quantity}}</dd>
+        </dl>
+      </div>
+      <div class="price">
+        {{total}}
+        <a href="" data-cartitem="{{id}}" class="removeitem sym">×</a>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+  <div class="totals">
+    <dl>
+      {{# if discount_total}}
+      <dt>Cart discount</dt> <dd>{{discount_total}}</dd>
+      {{/if}}
+      {{# if shipping_total}}
+      <dt>Shipping</dt> <dd>{{shipping_total}}</dd>
+      {{/if}}
+      <dt class="total">Total</dt> <dd class="total">{{total_price_local}}</dd>
+    </dl>
+  </div>
+</script>
+
+
+<script>
+  var CART_DETAILS = '/cart/ajax/cart_details/',
+      MINICART_JSON = {"total_price": 484.40, "subtotal_price": "A$484.40", "shipping_total": "A$0.00", "cart_items": [{"size": "12", "discount_code_discount": null, "bundle_message": null, "colour_code": "238596-02", "bundle_discount": null, "title": "CO fin angled wrap skirt : 238596-02", "url": "/shop/product/co-fin-angled-wrap-skirt-black/", "colour": "BLACK", "style": "238596-02", "unit_price": "A$39.95", "thumbnail": "http://d1w0dlwqaslwfs.cloudfront.net/static/media/thumbnail/70/95/static/media/product/images/238596/v_af4763ae95d9b84e616f024d75f3e30c_238596-02-2.jpg", "non_discount_price": "A$479.40", "with_purchase_message": null, "total": "A$479.40", "upsell_message": null, "title_without_colour_code": "CO fin angled wrap skirt", "id": 13118969, "discount_code": null, "quantity": 12}, {"size": "M", "discount_code_discount": null, "bundle_message": null, "colour_code": "650578-03", "bundle_discount": null, "title": "Lara Bingle Body Bandeau : 650578-03", "url": "/shop/product/the-lb-body-bandeau-grey-marle/", "colour": "GREY MARLE", "style": "650578-03", "unit_price": "A$5.00", "thumbnail": "http://d1w0dlwqaslwfs.cloudfront.net/static/media/thumbnail/70/95/static/media/product/images/650578/v_7125516ad119fcf5eda730a7e287020b_650578-03-2.jpg", "non_discount_price": "A$5.00", "with_purchase_message": null, "total": "A$5.00", "upsell_message": null, "title_without_colour_code": "Lara Bingle Body Bandeau", "id": 13199716, "discount_code": null, "quantity": 1}], "shipping_total_number": 0, "discount_total": null, "total_price_local": "A$484.40", "quantity": 13},
+      CART_REMOVE  = '/cart/ajax/remove/';
+</script>
+
+<div class="minicart">
+  <a id="cart" href="/shop/cart/">
+    My Cart (<span id="cart-quantity"></span>)
+    <span class="header-utility-icon icon-basket"></span>
+  </a>
+
+  <div id="cartview">
+    <div id="cartview-content"></div>
+    <div class="action">
+      <a href="/shop/cart/" class="button checkout">Checkout<span class="sym">></span></a>
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </header>
+      
+            <ul class="ship-banner">
+            
+                <a href="http://shop.cottonon.com/shop/women/?ici=coo&amp;icn=coo_140422_aunz_freeshipping_TopBanner01">
+                    <li class="onethird">   
+                        <strong>FREE STANDARD SHIPPING ON ORDERS OVER $50!</strong>To Australia and New Zealand!</li>
+                    </li>
+                </a>
+            
+                <a href="https://shop.cottonon.com/shipping-delivery/?ici=coo&amp;icn=coo_140128_aunz_expressship_TopBanner02">
+                    <li class="onethird">   
+                        <strong>Express shipping now available!</strong>Australia only. See Shipping &amp; Delivery page for details.</li>
+                    </li>
+                </a>
+            
+                <a href="http://shop.cottonon.com/shop/women/knitwear/?sort=_unit_price_aud#/">
+                    <li class="onethird">   
+                        <strong>WOMENS KNITWEAR &amp; JUMPERS FROM $10</strong>SELECTED STYLES. PRICES AS MARKED. </li>
+                    </li>
+                </a>
+            
+      </ul>
+
+      <!-- top_banner @ 13th June 2014 14:12:22 -->
+      
+    
+
+    <div id="main" role="main">
+      
+<div class="cart">
+
+  <h2>Your Cart</h2>
+  <!-- cart 12808150 -->
+  
+
+  <div class="cart-products">
+    <form method="post">
+      <div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='aJE3pC09ZkVnCDzSfqh2yezWw6lRLEgJ' /></div>
+      
+      <input type="hidden" name="items-TOTAL_FORMS" value="2" id="id_items-TOTAL_FORMS" /><input type="hidden" name="items-INITIAL_FORMS" value="2" id="id_items-INITIAL_FORMS" /><input type="hidden" name="items-MAX_NUM_FORMS" value="1000" id="id_items-MAX_NUM_FORMS" />
+
+      <!-- handlebars cartitem list template -->
+      
+      <script id="cart-list-template" type="text/x-handlebars-template">
+        <table class="cart-table" summary="Cart product details" cellpadding="0">
+            <thead>
+              <tr>
+                <th id="product-col" scope="col"><span>Product</span></th>
+                <th id="item-col" scope="col"><span>Item&nbsp;price</span></th>
+                <th id="qty-col" scope="col"><span>Quantity</span></th>
+                <th id="total-col" scope="col"><span>Item&nbsp;total</span></th>
+              </tr>
+            </thead>
+          <tbody>
+            {{set_parent}}
+            {{# each cart_items}}
+            <tr data-cartitem="{{id}}">
+              <td class="first-col">
+                <div class="prod_details">
+                  <a href="{{url}}"><img src="{{thumbnail}}" alt="" /><a href="{{url}}">{{title_without_colour_code}}<br><span class="prod_code">{{colour_code}}</span></a>
+                  <dl>
+                    <dt>Color:</dt> <dd>{{colour}}</dd>
+                    <dt>Size:</dt> <dd>{{size}}</dd>
+                  </dl>
+                  <a href="" class="removeitem">remove</a>
+                </div>
+              </td>
+              <td class="item-price">{{parent "currency"}}{{unit_price}}</td>
+              <td class="item-quantity">
+                 <div class="qty">
+                   <div class="qtyfield"><input type="text" data-quantity="{{quantity}}" name="" value="{{quantity}}" /></div>
+                  <a href="" class="update-qty">Update</a>
+                </div>
+                
+
+                
+                  
+                     {{# if with_purchase_message}}
+                       <dl>
+                          <dt class="item-offer">{{with_purchase_message}}</dt>
+                       </dl>
+                     {{else}}
+                       {{# if bundle_discount}}
+                         <dl>
+                            <dt class="item-offer">{{bundle_message}}</dt>
+                         </dl>
+                       {{/if}}
+                       {{# if upsell_message}}
+                         <dl>
+                            <dt class="item-offer">{{upsell_message}}</dt>
+                         </dl>
+                       {{/if}}
+                       {{# if discount_code_discount}}
+                         <dl>
+                            <dt class="item-offer">Promo code {{discount_code}}</dt>
+                         </dl>
+                       {{/if}}
+                     {{/if}}
+                  
+                
+
+                
+                  </td>
+                  <td class="item-total">
+                    {{parent "currency"}}{{non_discount_price}}
+                    {{# if bundle_discount}}
+                      <div class="discount-detail">{{bundle_discount}}</div>
+                    {{/if}}
+                    {{# if discount_code_discount}}
+                      <div class="discount-detail">{{discount_code_discount}}</div>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </script>
+      
+
+      <div id="cart-list"></div>
+
+      <div class="clear">
+        <table class="cart-options">
+          <tr>
+            <td rowspan="4" class="continue"><a class="continue-shopping" href="/">&lt; Keep shopping</a></td>
+            <th id="first-option-col" class="sub-total" scope="row" colspan="3">SUBTOTAL BEFORE DELIVERY</th>
+            <td id="last-option-col" class="subtotal_price"></td>
+          </tr>
+
+          <tr class="row">
+                    <th>Delivery&nbsp;method</th>
+                    
+                    
+                    <td class="fieldWrapper" colspan="2">
+                            
+                            <select name="id" id="id_id">
+<option value="AUSTRALIA" selected="selected">AUSTRALIA (A$) 10.0</option>
+<option value="AUSTRALIA EXPRESS">AUSTRALIA EXPRESS (A$) 12.0</option>
+<option value="NEW ZEALAND">NEW ZEALAND (A$) 10.0</option>
+<option value="REST OF WORLD">REST OF WORLD (A$) 40.0</option>
+</select>
+                    </td>
+                    
+                    
+              <td id="shipping_total"></td>
+            </tr>
+            <tr class="discount-row">
+                    <th scope="row">PROMO&nbsp;CODE</th>
+                    <td class="fieldWrapper enter-discount">
+                    
+                    <input id="id_discount_code" type="text" name="discount_code" maxlength="20" />
+                
+                  <div class="discount-error">
+                    
+                  </div>
+                
+              
+            </td>
+            <td class="verifyWrapper"><button class="verify">Verify</button></td>
+            <td id="discount_total"></td>
+          </tr>
+          <tr class="promo-fineprint">
+            <td colspan="3"><small>Promotional discounts apply to full-priced items only and do not apply to sale, mark downs or any other promotions. Only one promo code can be used per&nbsp;transaction.</small></td>
+          </tr>
+          <tr class="main-total">
+            <td>&nbsp;</td>
+            <th scope="row" colspan="3">Total</th>
+            <td id="total_price"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="option-buttons">
+        <div class="options-label">Your checkout options</div>
+        <div class="option-button"><button class="checkout" onclick="$('form button.checkout').click()">Checkout<span class="sym">$</span></button></div>
+      
+        <div class="option-button divider">or</div>
+        <div class="option-button"><div id="v-root"></div>
+
+<v:init
+   apikey=""
+   logourl="https://d1w0dlwqaslwfs.cloudfront.net/static/media/img/logo-r43.png"
+   id="vme-init">
+</v:init>
+
+<v:buy
+   class="vme-button"
+	 amount=""
+	 apikey=""
+	 callback="vmeCallback"
+   merchantid=""
+   siteid=""
+   
+	 button-style="checkout-link-0"
+	 collect-shipping="true"
+   
+	 currency=""
+	 merch-trans=""
+	 process="validate"
+	 product-desc=""
+	 product-id=""
+	 token="">
+</v:buy>
+
+</div>
+      
+      </div>
+      <!-- option-buttons -->
+    </form>
+  </div>
+
+  <div class="upsell">
+    
+        
+            <h3>You may also like</h3>
+            
+
+      <ul>
+        
+      </ul>
+
+        
+    
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+
+
+    </div>
+
+    
+      <footer>
+        
+        
+
+<nav class="sitemap grid_9">
+  
+  <div>
+      <h4>Shopping</h4>
+      <ul>
+          
+          
+          <li><a href="/gift-cards/">Gift Cards</a></li>
+          
+          
+          
+          <li><a href="/size-guide/">Size Guide</a></li>
+          
+          
+          
+          <li><a href="/kids-size-guide/">Kids Size Guide</a></li>
+          
+          
+          
+          <li><a href="/return-policy/">Refund &amp; Exchange Policy</a></li>
+          
+          
+          
+          <li><a href="/layby-policy/">Layby Policy</a></li>
+          
+          
+          
+          <li><a href="/shipping-delivery/">Shipping &amp; Delivery</a></li>
+          
+          
+          
+          <li><a href="/stores/">Store finder</a></li>
+          
+          
+          
+          <li><a href="/faq/">Terms &amp; Conditions</a></li>
+          
+          
+      </ul>
+  </div>
+  
+  <div>
+      <h4>About us</h4>
+      <ul>
+          
+          
+          <li><a href="/contact-us/">Contact Us</a></li>
+          
+          
+          
+          <li><a href="/media/">Media</a></li>
+          
+          
+          
+          <li><a href="/productrecall/">Product Safety Recall</a></li>
+          
+          
+          
+          <li><a href="/corporate-social-responsibility/">Corporate Social Responsibility</a></li>
+          
+          
+          
+          <li><a href="/product-code-of-conduct/">Vendor Code of Conduct</a></li>
+          
+          
+          
+          <li><a href="/bangladesh-fire-and-safety-accord/">Bangladesh Fire and Safety Accord</a></li>
+          
+          
+          
+          <li><a href="/cottonon-foundation">Cotton On Foundation</a></li>
+          
+          
+          
+          <li><a href="http://cottonongroupcareers.com/">Careers</a></li>
+          
+          
+          
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          
+          
+      </ul>
+  </div>
+  
+  <div>
+      <h4>Our Brands</h4>
+      <ul>
+          
+          
+          <li><a href="/cottonon/">Cotton On Women</a></li>
+          
+          
+          
+          <li><a href="/cottonon-men/">Cotton On Men</a></li>
+          
+          
+          
+          <li><a href="/body/">Cotton On Body</a></li>
+          
+          
+          
+          <li><a href="/cotton-on-kids/">Cotton On Kids</a></li>
+          
+          
+          
+          <li><a href="/rubi-shoes/">Rubi Shoes</a></li>
+          
+          
+          
+          <li><a href="/typoshop/">Typo</a></li>
+          
+          
+          
+          <li><a href="/t-bar/">T-Bar</a></li>
+          
+          
+          
+          <li><a href="/co-women/">CO. by Cotton On</a></li>
+          
+          
+          
+          <li><a href="/free-by-cottonon/">FREE by Cotton On</a></li>
+          
+          
+      </ul>
+  </div>
+  
+  <div>
+    <h4>Connect</h4>
+    <ul>
+      <li><a href="http://www.youtube.com/cottononclothing"><span class="sym">y</span>YouTube</a></li>
+      <li><a href="http://www.facebook.com/cottononclothing"><span class="sym">f</span>Facebook</a></li>
+      <li><a href="http://twitter.com/cottonon"><span class="sym">t</span>Twitter</a></li>
+    </ul>
+  </div>
+</nav>
+
+        <!-- footer1 @ 13th June 2014 09:32:58 -->
+        
+        <div class="subscriber grid_3">
+          <h4>Subscribe</h4>
+          <p>Style, news and exclusive offers!</p>
+          <form action="/subscription-form/" method="POST"> <div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='aJE3pC09ZkVnCDzSfqh2yezWw6lRLEgJ' /></div>
+            <label for="subscribe"><span class="sym">@</span></label>
+            <input id="id_field_3" type="text" name="field_3" placeholder="your email">
+            <button class="sym">j</button>
+          </form>
+        </div>
+      </footer>
+
+      
+
+
+
+  
+
+    <ul class="logos logos-297-toggle-overrides">
+      <li class="first"><a href="/cottonon" class="logos-cottonon">Cotton On</a></li><li><a href="/co-women" class="logos-co">CO Exclusives by Cotton On</a></li><li><a href="/cotton-on-kids" class="logos-kids">Cotton On Kids</a></li><li><a href="/teen" class="logos-free">Free by Cotton On</a></li><li><a href="/body" class="logos-body">Cotton On Body</a></li><li><a href="/rubi-shoes" class="logos-rubi">Rubi Shoes</a></li><li><a href="/typoshop" class="logos-typo">Cotton On Typo</a></li><li><a href="/t-bar" class="logos-tbar">T-bar</a></li><li class="last"><a href="http://www.cottononfoundation.org/" class="logos-foundation">Cotton On Foundation</a></li>
+    </ul>
+
+    
+
+  <!-- footer2 @ 13th June 2014 12:11:32 -->
+
+
+    
+
+  </div>
+
+  
+    <a id="feedback_tab" href="/contact-us/">Feedback &amp; Contact Us</a>
+  
+
+
+
+
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write("<script src='http://d1w0dlwqaslwfs.cloudfront.net/static/media/js/libs/jquery-1.7.2.min.js'>\x3C/script>")</script>
+<script src="http://d1w0dlwqaslwfs.cloudfront.net/static/media/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript" src="//d1w0dlwqaslwfs.cloudfront.net/static/js/libraries_gen.js?v=5"></script>
+<script type="text/javascript" src="//d1w0dlwqaslwfs.cloudfront.net/static/js/cottonon_gen.js?v=6c276c84de"></script>
+
+<script>
+$(function(){
+
+  // datepicker for birthdate popup
+  var date_field = $('#subscribe label:contains("Date")').parent().children('input');
+
+  var test_el = document.createElement("input");
+  test_el.setAttribute('type', 'date');
+
+  // Settings the type will fail in IE/unsupported browsers
+  if(test_el.type === 'text' && date_field.length > 0) {
+    date_field.datepicker({
+      
+      dateFormat:'yy-mm-dd'
+      
+    });
+  }
+
+  //init minicart scrollbar
+  $('#cartview .items').jScrollPane();
+
+  //placeholder polyfil for search
+  $('#search_input').placeholder();
+
+  //region change messaging
+  $('.regionselect a[class!="active"]').on('click', function(){
+
+    var currentRegion = 'Australia';
+    var url = $(this).attr('href');
+
+    // If the same region, just change site without
+    // any warnings
+    if ($(this).data("region") === currentRegion) {
+      window.location = url;
+      return false;
+    }
+
+    if ($('#cart-quantity').html() != "0 items") {
+      $.colorbox({
+        inline:true,
+        href: '#msg_region_change',
+        opacity: 0.6,
+        transition:'none',
+        open: true,
+        onComplete: function() {
+          $('.region_continue').click(function(){
+            window.location = url;
+          });
+          $('.region_cancel').click(function(){
+            $.colorbox.close();
+          });
+        }
+      });
+      return false;
+    }
+  });
+
+});
+</script>
+
+
+<div id="site_msg">
+  <div id="msg_region_change">
+    <h3>Please Note</h3>
+    <p>You are about to change the region you are shopping in.<br>Any items currently in your cart will not be available in your cart for the new region.</p>
+    <p><button class="region_continue">Continue</button> <button class="region_cancel">Cancel</button></p>
+  </div>
+</div>
+
+<script>
+  // Google analytics globals
+  // ========================
+  // GA Custom vars
+
+  // Google Ananlytics
+  
+    var _gaq = _gaq || [['_trackPageview']];
+    _gaq.unshift(['_setCustomVar', 1, 'Currency', 'AUD', 2]);
+    _gaq.unshift(['_setAccount', 'UA-6048450-1']);
+    _gaq.unshift(['_setAllowAnchor', true]);
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.async = true;
+        g.src = '//www.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g, s);
+    })(document, 'script');
+  
+</script>
+
+
+  
+
+<script type="text/javascript">
+    var VME_BUTTON_URL = "/shop/vme-button/"
+    var VME_STATIC_ASSETS_URL = "static.v.me"
+</script>
+
+<script>
+  $("#cart form").validate();
+
+  var URL_INCREASE = "/cart/ajax/increase/", URL_DECREASE = "/cart/ajax/decrease/", URL_QUANTITY = "/cart/ajax/quantity/";
+  var URL_SHIPPING = "/cart/ajax/shipping/";
+  $(function() {
+    initCartPage();
+
+    $('select').selectBox();
+    // Disable alpha input
+    $('.qtyfield').find('input').keydown(function(event) {
+      // Allow: backspace, delete, tab, escape, and enter
+      if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+           // Allow: Ctrl+A
+           (event.keyCode == 65 && event.ctrlKey === true) ||
+           // Allow: home, end, left, right
+           (event.keyCode >= 35 && event.keyCode <= 39)) {
+        // let it happen, don't do anything
+        return;
+      }
+      else {
+        // Ensure that it is a number and stop the keypress
+        if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+          event.preventDefault();
+        }
+      }
+    });
+
+    $('.verify').click(function(evt){
+      verifyDiscount(
+          "/shop/cart/",
+          "aJE3pC09ZkVnCDzSfqh2yezWw6lRLEgJ"
+      )
+      _gaq.push(['_trackEvent', 'Discount', 'Discount Code', 'Verify button click']);
+      evt.preventDefault();
+    });
+
+    $('#id_discount_code').focus(function(){
+      _gaq.push(['_trackEvent', 'Discount', 'Discount Code', 'Input focus']);
+    });
+  });
+</script>
+
+  
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-6H3B" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-6H3B');</script>
+  <!-- End Google Tag Manager -->
+  <!-- 13th June 2014 14:56 -->
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"js-agent.newrelic.com/nr-100.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-2.newrelic.com","1fcf567ddc","2214154","M1YDMkIAW0NWVRZfDgocJxNeAkFZWFhNVQAWRxMPVAZQHkReDUZPEloEEUNbVlFFQg==",0,114,new Date().getTime(),"","","","",""]);</script></body>
+</html>
+

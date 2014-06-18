@@ -1,0 +1,31 @@
+/** Stage container **/
+
+.connected-carousels .stage {
+    width: 330px;
+    margin: 20px auto;
+    position: relative;
+}
+
+.connected-carousels .photo-credits {
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.85);
+    opacity: .66;
+}
+
+.connected-carousels .photo-credits a {
+    color: #fff;
+}
+
+/** Navigation container **/
+
+.connected-carousels .navigation {
+    width: 160px;
+    margin: 20px auto;
+    position: relative;
+}
+
+

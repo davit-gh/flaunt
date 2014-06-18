@@ -1,0 +1,14 @@
+from mezzanine import template
+from mezzanine.forms.forms import FormForForm
+from mezzanine.pages.models import Page
+ 
+register = template.Library()
+ 
+@register.as_tag
+def form_from_page(request, slug="contact"):
+    try:
+        page = Page.objects.get(slug=slug)
+
+    except Page.DoesNotExist:
+        return None
+    return FormForForm(page.form, request, None, None)

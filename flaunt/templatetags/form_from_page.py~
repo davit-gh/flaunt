@@ -1,0 +1,16 @@
+from mezzanine import template
+from mezzanine.forms.forms import FormForForm
+from mezzanine.pages.models import Page
+from django.template import RequestContext
+
+ 
+register = template.Library()
+ 
+@register.as_tag
+def form_from_page(slug):
+    try:
+        page = Page.objects.get(slug=slug)
+	context = new RequestContext()
+    except Page.DoesNotExist:
+        return None
+    return FormForForm(page.form, context)

@@ -1,0 +1,66 @@
+.form-control{
+	border-radius: 10px;
+	border: 1px solid red;
+	font-size: 15px;
+	max-width: 50%;
+	display: inline-block;
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
+input[type=number]{
+	border-radius: 10px;
+	border: 1px solid red;
+	font-size: 15px;
+	max-width: 20%;
+	max-height: 100%;
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
+
+
+.quantity-with-label{
+	margin-left: 20px;
+}
+
+.product_title{
+	position: relative; 
+	top: -15px; 
+	font-size: 35px;
+}
+
+.list-unstyled{
+	list-style-type: none;
+
+}
+
+.center{
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.new-price{
+	font-size: 24px;
+}
+.product-sorting {
+	position: relative;
+	bottom: 28px;
+}
+.panel{
+	position: relative;
+	bottom: 28px;
+}
+#greeting{
+	position: relative;
+	bottom: 15px;
+}
+#main_slider{
+	padding-bottom: 45px;
+}
+select{
+	font-size: 15px;
+	max-width: 70%;
+}
+

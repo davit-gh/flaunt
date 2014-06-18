@@ -1,0 +1,41 @@
+{% load i18n future mezzanine_tags accounts_tags %}
+
+
+    
+    {% if request.user.is_authenticated %}
+        {% url "profile" request.user.username as profile_url %}
+        <li class="divider-vertical"></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">{% trans "Hello " %}{{ request.user.username }}<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+                <li>
+                    {% if profile_url %}
+                        <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>
+                        <a href="{% url "profile_update" %}" class="btn btn-default btn-sm btn-account">
+                        <span class="glyphicon glyphicon-edit"></span> {% trans "Update profile" %}</a>
+                    {% else %}
+                        <a href="{% url "profile_update" %}">{{ request.user|username_or:"email" }}</a>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="{% url "logout" %}?next={{ request.path }}" class="btn btn-sm btn-danger btn-account">
+                    <span class="glyphicon glyphicon-log-out"></span> {% trans "Log out" %}</a>
+                </li>
+            </ul>
+        </li>  
+    {% else %}
+        <li class="divider-vertical"></li>
+        <li><a href="{% url "signup" %}?next={{ request.path }}">{% trans "Sign up" %}</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">{% trans "Log in" %}<strong class="caret"></strong></a>
+            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+              <!-- Login form here -->
+              {% login_form as form%}
+              <form action="{% url "login" %}?next={{ request.path }}" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+              </form>
+            </div>
+        </li>
+    
+    {% endif %}
