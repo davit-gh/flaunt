@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load staticfiles mezzanine_tags shop_tags rating_tags i18n %}
+{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range %}
 
 {% block meta_title %}{{ product.meta_title }}{% endblock %}
 {% block body_id %}category{% endblock %}
@@ -15,19 +15,42 @@
 {{ product.description }}
 {% endmetablock %}{% endblock %}
 
-{% block slider_js %}<script type="text/javascript" src="{% static "js/responsiveslides.min.js" %}"></script>{% endblock %}
+<!--drop down the select menu list on mouseenter using auto_dropdown_select.js-->
+
+{% block slider_js %}
+
+    <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "js/jquery.elevateZoom-3.0.8.min.js" %}"></script>
+    
+{% endblock %}
 
 {% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static "mezzanine/css/magnific-popup.css" %}">
 <link rel="stylesheet" href="{% static "css/responsiveslides.css" %}">
+
+<link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/cart-button.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/elevatezoom.css" %}">
+
 {% endblock %}
 
 {% block extra_js %}
-$("#slider3").responsiveSlides({
-        manualControls: '#slider3-pager',
-        maxwidth: 350
-    });
+
+$('select').on('mouseenter',function(){
+    open($(this));
+});
+    //initiate the plugin and pass the id of the div containing gallery images
+$("#zoom_03").elevateZoom({constrainType:"height", constrainSize:274, zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
+
+//pass the images to Fancybox
+$("#zoom_03").bind("click", function(e) {  
+  var ez =   $('#zoom_03').data('elevateZoom'); 
+    $.fancybox(ez.getGalleryList());
+  return false;
+});
+
 {% endblock %}
 
 {% block extra_head %}
@@ -37,8 +60,11 @@ $("#slider3").responsiveSlides({
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li>{{ product.title }}</li>
+
 {% endblock %}
+
+{% block main_span_size %}10{% endblock %}
+{% block panel_span_size %}2{% endblock %}
 
 {% block title %}
 {% editable product.title %}{{ product.title }}{% endeditable %}
@@ -46,65 +72,103 @@ $("#slider3").responsiveSlides({
 
 {% block main %}
 
-{% if images %}
-{% spaceless %}
-<ul  class="rslides" id="slider3">
-    {% for image in images %}
-    <li><img alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 0 200 %}"></li>
-    {% endfor %}
-</ul>
-<br/>
-{% if images|length != 1 %}
-<ul id="slider3-pager">
-    {% for image in images %}
-    <li><a href="#"><img alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}"></a></li>
-    {% endfor %}
-</ul>
-{% endif %}
+<div class="span10">
+    <p class="product_title">{{ product.title }}</p>
+</div>
 
-{% endspaceless %}
-{% endif %}
+<div class="row" style="padding-top: 40px">
+    <div class="span4">
+        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 330 300 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 800 0 %}"/>
+        <div id="gal1">    
+            {% for image in images %}
+            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 330 300 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 800 0 %}">
+                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+    <div class="span6" style="margin-top: -20px">
+        <div class="row">
+            {% if product.available and has_available_variations %}
+            <div class="span4">
+                {% errors_for add_product_form %}
+                {% load widget_tweaks %}
+                <form method="post" id="add-cart" class="shop-form" style="padding-left: 5px">
+                    {% csrf_token %}
+                
+                            {% for field in add_product_form %}
+                                {% if field.is_hidden %}
+                                    {{ field }}
+                                {% elif not forloop.first %}
+                                    <div class="fields">
+                                        {% if field.label %}
+                                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        {% endif %}
+                                        {% render_field field class="form-control" id=field.label %}
+                                        <br/>
+                                        {% if field.help_text %}
+                                            <p class="help-block">{{ field.help_text }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                    
+                    {% with add_product_form.visible_fields|first as quantity %}
+                        <div class="quantity-with-label">
+                            <label for="{{ quantity.auto_id }}">{{ quantity.label }}</label>
+                            {% render_field quantity %}
+                        </div>
+                    {% endwith %}
+                    <div id="buttons">
+                        <input type="submit" class="action-button shadow animate blue" name="add_cart" value="{% trans "ADD TO CART" %}">
+                        {% if settings.SHOP_USE_WISHLIST %}
+                        <input type="submit" id="wishlist" class="shadow animate" name="add_wishlist" value="{% trans "ADD TO WISHLIST" %}">
+                        {% endif %}
+                    </div>
+                </form>
+            </div>              
+        
+            <div class="span2">
+                <h3  style="margin-left:30px">Price</h3>
+                <ul id="variations" class="list-unstyled">
+                            {% for variation in variations %}
+                            <li id="variation-{{ variation.sku }}"
+                                {% if not variation.default %}style="display:none;"{% endif %}>
+                                {% if variation.has_price %}
+                                    {% if variation.on_sale %}
+                                        <span class="old-price">{{ variation.unit_price|currency }}</span>
+                                        {% trans "On sale:" %}
+                                    {% endif %}
+                                    <span class="new-price">{{ variation.price|currency }}</span>
+                                {% else %}
+                                    {% if has_available_variations %}
+                                    <span class="error-msg">
+                                    {% trans "The selected options are currently unavailable." %}
+                                    </span>
+                                    {% endif %}
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+                <div class="span6">
+                    <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
+                    
 
+                </div>
+            {% endif %}
+
+        </div>          
+    </div>
+</div>
 {% editable product.content %}
 {{ product.content|richtext_filters|safe }}
 {% endeditable %}
 
-{% if product.available and has_available_variations %}
-<ul id="variations" class="list-unstyled">
-    {% for variation in variations %}
-    <li id="variation-{{ variation.sku }}"
-        {% if not variation.default %}style="display:none;"{% endif %}>
-        {% if variation.has_price %}
-            {% if variation.on_sale %}
-                <span class="old-price">{{ variation.unit_price|currency }}</span>
-                {% trans "On sale:" %}
-            {% endif %}
-            <span class="price">{{ variation.price|currency }}</span>
-        {% else %}
-            {% if has_available_variations %}
-            <span class="error-msg">
-            {% trans "The selected options are currently unavailable." %}
-            </span>
-            {% endif %}
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
 
-{% errors_for add_product_form %}
-
-<form method="post" id="add-cart" class="shop-form">
-    {% fields_for add_product_form %}
-    <div class="form-actions">
-        <input type="submit" class="btn btn-primary btn-lg pull-right" name="add_cart" value="{% trans "Buy" %}">
-        {% if settings.SHOP_USE_WISHLIST %}
-        <input type="submit" class="btn btn-default btn-lg pull-left" name="add_wishlist" value="{% trans "Save for later" %}">
-        {% endif %}
-    </div>
-</form>
-{% else %}
-<p class="error-msg">{% trans "This product is currently unavailable." %}</p>
-{% endif %}
 
 {% if settings.SHOP_USE_RATINGS %}
 <div class="panel panel-default rating">
@@ -112,7 +176,10 @@ $("#slider3").responsiveSlides({
 </div>
 {% endif %}
 
-{% if settings.SHOP_USE_RELATED_PRODUCTS and related_products %}
+
+{% endblock %}
+{% block right_panel %}
+    {% if settings.SHOP_USE_RELATED_PRODUCTS and related_products %}
 <h2>{% trans "Related Products" %}</h2>
 <div class="row related-products">
     {% for product in related_products %}
@@ -140,10 +207,4 @@ $("#slider3").responsiveSlides({
     {% endfor %}
 </div>
 {% endif %}
-
-{% endblock %}
-{% block right_panel %}
-    {% nevercache %}
-    {% include "includes/user_panel.html" %}
-    {% endnevercache %}
 {% endblock %}

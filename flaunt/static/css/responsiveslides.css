@@ -57,3 +57,14 @@
   padding: 40;
 }
 
+.carousel {
+    overflow: hidden;
+    position: relative;
+}
+
+.navigation {
+    width: 260px;
+    margin: 20px auto;
+    position: relative;
+}
+

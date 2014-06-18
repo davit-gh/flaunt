@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Setting to turn on featured images for shop categories. Defaults to False.
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
-
+SHOP_USE_RATINGS = False
 # Set an alternative OrderForm class for the checkout process.
 # SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 
@@ -56,10 +56,11 @@ SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 
 # Sequence of value/name pairs for types of product options,
 # eg Size, Colour.
-# SHOP_OPTION_TYPE_CHOICES = (
-#     (1, "Size"),
-#     (2, "Colour"),
-# )
+SHOP_OPTION_TYPE_CHOICES = (
+     (1, "Size"),
+     (2, "Colour"),
+     (3, "Material")
+ )
 
 # Sequence of indexes from the SHOP_OPTION_TYPE_CHOICES setting that
 # control how the options should be ordered in the admin,
@@ -308,6 +309,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
     "flaunt",
+    "widget_tweaks",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -444,3 +446,8 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+########################
+# SOCIAL ICON SETTINGS #
+########################
+SOCIAL_LINK_FACEBOOK = True

@@ -5,28 +5,12 @@
 
 {% block extra_css %}
 {{ block.super }}
-<style type="text/css">
-	.form-control{
-		border-radius: 10px;
-		border: 2px solid red;
-	}
-	#options{
-		display: inline;
-	}
-</style>
+<!-- make the corners of select tag for sorting round and move it 
+upper to allign with its left div. cart/checkout block also moves up (panel class)-->
+<link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
 {% endblock %}
 {% block slider_js %}
-<script type="text/javascript">
-function open(elem) {
-    if (document.createEvent) {
-        var e = document.createEvent("MouseEvents");
-        e.initMouseEvent("mousedown", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        elem[0].dispatchEvent(e);
-    } else if (element.fireEvent) {
-        elem[0].fireEvent("onmousedown");
-    }
-}
-</script>
+<script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
 {% endblock %}
 {% block extra_js %}
     $('.form-control').mouseenter(function() {
@@ -34,7 +18,7 @@ function open(elem) {
     });
 
 {% endblock %}
-
+{% block main_span_size %}12{% endblock %}
 {% block main %}{{ block.super }}
 	
 	{% if slider_images %}
@@ -49,9 +33,13 @@ function open(elem) {
         </div>        
         <!--//slider-->
     {% endif %}
- 
+
+ 	{% editable page.category.content %}
+	{{ page.category.content|safe }}
+	{% endeditable %}
+
 			{% if child_categories %}
-				<div id="options" style="display: inline">
+				<div id="options" style="display: inline-block">
 					{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
 			     		<ul id="filters" class="option-set" data-option-key="filter">
 							<li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
@@ -72,7 +60,7 @@ function open(elem) {
 				</div>
 			{% endif %}
 				
-				<form class="product-sorting" role="form" style="display: inline">
+				<form class="product-sorting" role="form" style="display: inline-block">
     				<div class="form-group">
     					<label class="control-label" for="sorting-select">{% trans "Sort by" %}</label>
         				<select onchange="location.href = this[this.selectedIndex].value;" onmouseover="autofocus" class="form-control" id="sorting-select">
@@ -87,12 +75,11 @@ function open(elem) {
         				</select>
     				</div>
 				</form>
-		
-
+				
 				<div class="row">
 					<div class="projects">
 						{% for product in products.object_list %}
-						    <div class="span4 element {% for cat in product.categories.all %} {{ cat.title }} {% endfor %}" data-category="{% for cat in product.categories.all %} {{ cat.title }} {% endfor %}">
+						    <div class="span3 element {% for cat in product.categories.all %} {{ cat.title }} {% endfor %}" data-category="{% for cat in product.categories.all %} {{ cat.title }} {% endfor %}">
 						      <div class="hover_img">
 						        {% if product.image %}
 						        	<img src="{{ MEDIA_URL }}{% thumbnail product.image 148 148 %}" alt="" />
@@ -123,10 +110,6 @@ function open(elem) {
 
 	
 {% endblock %}
-{% block right_panel %}
-	{% nevercache %}
-    {% include "includes/user_panel.html" %}
-    {% endnevercache %}
-  
-
+{% block right_panel_wrapper %}
+	
 {% endblock %}

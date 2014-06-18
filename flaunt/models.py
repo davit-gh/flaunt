@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
 from mezzanine.core.fields import FileField, RichTextField
@@ -92,4 +93,16 @@ class PortfolioItemCategory(Slugged):
 class AddFieldsToProducts(Orderable):
 	product = models.ForeignKey(Product, related_name="supplementary")
 	short_desco = RichTextField(blank=True)
+
+
+class Countrylist(models.Model):
+	country = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.country
+
+class Carrierlist(models.Model):
+	carrier = models.CharField(max_length=100)
+	countries = models.ManyToManyField(Countrylist)
+	def __unicode__(self):
+		return self.carrier
 

@@ -32,28 +32,34 @@
   border: 0;
   }
 
-#img-slider-pager {
+#slider3-pager {
     padding: 5px 7%;
 }
-#img-slider-pager li{
+#slider3-pager li{
     display: inline;
     padding-right: 3px;
 }
 
-#img-slider-pager a {
+#slider3-pager a {
   display: inline-block;
 }
 
-#img-slider-pager img {
+#slider3-pager img {
   float: right;
 }
 
-#img-slider-pager .rslides_here a {
+#slider3-pager .rslides_here a {
   background: transparent;
   box-shadow: 0 0 0 2px #666;
 }
 
-#img-slider-pager a {
+#slider3-pager a {
   padding: 40;
 }
+
+.carousel {
+    overflow: hidden;
+    position: relative;
+}
+
 

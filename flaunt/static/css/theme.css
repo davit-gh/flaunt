@@ -1014,12 +1014,102 @@ ul.recent_post div a:hover {color:#d00b01;
     text-align: center;
 }
 
+a.button.tealbutton {
+	background-image: url(images/button_teal.png);
 
+	border: 1px solid rgb(40,211,226);
 
+	color: #437b7d;
+	font-size: 14px;
+	text-align: center;
+	padding: 9px 0px 9px 0px;
+	margin: 10px 27px 9px 32px;
+	
+}
 
+a:hover.button.tealbutton {
+	border: 1px solid #7db9bb;
+}
+a.button{
+	font-family: 'Montserrat Alternates', sans-serif;
+	font-size: 15px;
+	border-radius: 10px;
+	color: #42788e;
+	text-shadow: 0 1px 0 rgba(255,255,255, 0.4);
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
 
+a.button.bluebut {
+	background-image: url(images/button_blue.png);	
+	padding: 9px 8px 10px 12px;
+	margin: 8px 12px 8px 12px;
+	border: 1px solid rgb(18,217,255);
+}
 
+a.button.bluebut:hover, a.button.tealbutton:hover{
+	background: rgb(112, 200, 241);
+}
+a.button.redbutton {
+	background-image: url(images/button_red.png);
+	text-align: center;
+	padding: 9px 0px 10px 0px;
+	margin: 8px 12px 8px 12px;
+	border: 1px solid #CD5555;
+}
 
+a.button.redbutton:hover{
+	background: #CD5555;
+}
+.updateprofilebutton:hover{
+	color: #C6E2FF;
+}
+a:hover.button.bluebutton {
+	border: 1px solid #7caec0;
+}
+
+a.buttonnavy {
+	height: 20px;
+	display: inline-block;
+	margin: 0 5px 20px 5px;
+	font-family: 'Montserrat Alternates', sans-serif;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 12px;
+	padding: 8px 10px 0 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow:0 1px 1px rgba(0, 0, 0, 0.08);
+	-moz-box-shadow:0 1px 1px rgba(0, 0, 0, 0.08);
+	box-shadow:0 1px 1px rgba(0, 0, 0, 0.08);
+	background-image: url(images/button_navy.png);
+	border: 1px solid #a2afb8;
+	color: #515f6a;
+	text-shadow: 0 1px 0 rgba(255,255,255, 0.4);
+}
+
+a:hover.buttonnavy {
+	border: 1px solid #8996a0;
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+color: #ffffff;
+background-image: linear-gradient(to bottom, #CD5555, #CD5555);
+}
+
+a.button{
+	font-family: 'Montserrat Alternates', sans-serif;
+	font-size: 15px;
+	border-radius: 10px;
+	color: #42788e;
+	text-shadow: 0 1px 0 rgba(255,255,255, 0.4);
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
 
 
 

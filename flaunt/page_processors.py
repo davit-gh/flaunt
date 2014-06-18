@@ -1,5 +1,7 @@
 from .models import HomePage, Portfolio, PortfolioItem, PortfolioItemCategory, Slide
 from mezzanine.pages.page_processors import processor_for
+from cartridge.shop.models import Cart
+from forms import CountryForm
 
 #for ajax form processor
 from django.http import HttpResponse
@@ -100,4 +102,4 @@ def ajax_form_processor(request, page):
         form_invalid.send(sender=request, form=form)
 	return HttpResponse(simplejson.dumps({'error': True, 'message': '<p>Please submit valid data</p>' }),
                 mimetype='application/json')
-    
+

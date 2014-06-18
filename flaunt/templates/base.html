@@ -15,7 +15,6 @@
 <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
 {% endifinstalled %}
 
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
 {% compress css %}
 <link href="{% static "css/prettyPhoto.css" %}" rel="stylesheet" type="text/css" />
@@ -112,6 +111,11 @@
         	<div class="navbar navbar_ clearfix">
             	<div class="container">
                     <div class="row">
+                        <div >    
+        {% nevercache %}
+        {% include "includes/login_dropdown.html" %}
+        {% endnevercache %}
+</div>
                         <div class="span4">
                         	<div class="logo"><a href="index.html"><h2>{{ settings.SITE_TITLE }}</h2></a></div>                        
                         </div>
@@ -136,6 +140,7 @@
                                 </ul>
                             </div>
                             <div class="clear"></div>
+                            
                             <nav id="main_menu">
                                 <div class="menu_wrap">
                                     {% page_menu "pages/menus/dropdown.html" %}
@@ -162,7 +167,7 @@
 	    				</div>
 				{% endblock main_wrapper%}
 				{% block right_panel_wrapper %}
-					<div class="span4 right">
+					<div class="span{% block panel_span_size %}4{% endblock %} {% block panel_class %}right{% endblock %}">
 						{% block right_panel %}
 							{% include "blog/includes/filter_panel.html" %}
 						{% endblock %}

@@ -1,5 +1,7 @@
-from .models import HomePage, Portfolio, PortfolioItem, PortfolioItemCategory
+from .models import HomePage, Portfolio, PortfolioItem, PortfolioItemCategory, Slide
 from mezzanine.pages.page_processors import processor_for
+from cartridge.shop.models import Cart
+from forms import CountryForm
 
 #for ajax form processor
 from django.http import HttpResponse
@@ -45,7 +47,7 @@ def home_processor(request, page):
 
 @processor_for(Category)
 def shop_processor(request, page):
-	slider_images = HomePage.objects.slider.all()
+	slider_images = Slide.objects.all()
 	return {'slider_images': slider_images}
 
 @processor_for(Form)
@@ -100,4 +102,14 @@ def ajax_form_processor(request, page):
         form_invalid.send(sender=request, form=form)
 	return HttpResponse(simplejson.dumps({'error': True, 'message': '<p>Please submit valid data</p>' }),
                 mimetype='application/json')
-    
+
+from flaunt.forms import CountryForm
+@processor_for("shop/cart")
+def cart_processor(request, page):
+	if request.method == 'POST':
+		country_form = CountryForm(request.POST)
+		if country_form.is_valid():
+			return HttpResponse('OK')
+	else:
+		country_form = CountryForm()
+	return {'country_form':country_form}
