@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load mezzanine_tags shop_tags i18n future country_list %}
+{% load staticfiles mezzanine_tags shop_tags i18n future country_list%}
 
 {% block meta_title %}{% trans "Your Cart" %}{% endblock %}
 {% block title %}{% trans "Your Cart" %}{% endblock %}
@@ -10,109 +10,83 @@
 <li>{% trans "Your Cart" %}</li>
 {% endblock %}
 
+
 {% block slider_js %}
-<script type='text/javascript'>
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    crossDomain: false, // obviates need for sameOrigin test
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type)) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-function getCarriers(sel){
-	
-	$.post('/ajax_country',{'country' : sel.value}, function(data){ 
-		console.log(data);
-		var car = document.getElementById('id_carrier');
-		car.options.length=0;
-		for(opt in data){
-			car.options.add(new Option(data[opt],data[opt]));
-		}	
-	});
-
-}
-</script>
+function updateElementIndex(el, prefix, ndx) {
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
 
 {% endblock %}
 
 {% block extra_js %}
-	$("input[type|='checkbox']").hide();
-        $('#main_form').submit(function(){
-            $.ajax({
-                type: 'POST',
-                url: '/update_cart', 
-                data: $(this).serialize(),
-                success: function(data){
-                    var grand = data['grand'];
-                    var sub = data['sub'];
-                    var total_qty = data['total_qty'];
-                    $('#total_cell').html('<b>Total:&nbsp;$</b>'+grand);
-                    $.each(sub,function(index,element){
-                        var i = parseInt(index)+1;
-                        $('table tr:eq('+i+') td:eq(4)').html('$'+element);
-                        
-                    });
-                    if (total_qty != 1){
-                        $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
-                    }else{
-                        $('#cart_menu').html(' 1 item in cart: $'+grand);
-                    }
-                    console.log(sub);
-                            
-                },
-                error: function(data){console.log('error'+JSON.stringify(data));}
-            });
-            return false;       
-        });
-        $("a[id|='update']").click(function(){
-            $('#main_form').submit();
-            return false;
-        });
-        
-        $("a[id|='rem']").on('click', function(){
-            $(this).parent().parent().fadeOut('slow');
-            var value = $(this).attr('class');
-            var id = $("input[value|="+ value +"]").attr('id');
-            var chkbx_id = id.slice(0,id.length-2) + 'DELETE';
-            $('#'+chkbx_id).prop("checked",true);
-            $('#main_form').submit();
-            var forms = $('.dynamic-form');
-            $('#id_items-TOTAL_FORMS').val(forms.length);
-            for (var i=0, formCount=forms.length; i<formCount; i++) {
-                    $(forms.get(i)).children().not(':last').children().each(function() {
-                        updateElementIndex(this, 'items', i);
-                    });
-            }
-            return false;
-        })
+		$("input[type|='checkbox']").hide();
+		$('#main_form').submit(function(){
+			$.ajax({
+				type: 'POST',
+				url: '/update_cart', 
+				data: $(this).serialize(),
+				success: function(data){
+					var grand = data['grand'];
+					var sub = data['sub'];
+					var total_qty = data['total_qty'];
+					$('#total_cell').html('<b>Total:&nbsp;$</b>'+grand);
+					$.each(sub,function(index,element){
+						var i = parseInt(index)+1;
+						$('table tr:eq('+i+') td:eq(4)').html('$'+element);
+						
+					});
+					if (total_qty != 1){
+						$('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
+					}else{
+						$('#cart_menu').html(' 1 item in cart: $'+grand);
+					}
+					console.log(sub);
+							
+				},
+				error: function(data){console.log('error'+JSON.stringify(data));}
+			});
+			return false;		
+		});
+		$("a[id|='update']").click(function(){
+			$('#main_form').submit();
+			return false;
+		});
+		
+		$("a[id|='rem']").on('click', function(){
+			$(this).parent().parent().fadeOut('slow');
+			var value = $(this).attr('class');
+			var id = $("input[value|="+ value +"]").attr('id');
+			var chkbx_id = id.slice(0,id.length-2) + 'DELETE';
+			$('#'+chkbx_id).prop("checked",true);
+			$('#main_form').submit();
+			var forms = $('.dynamic-form');
+			$('#id_items-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++) {
+		    	    $(forms.get(i)).children().not(':last').children().each(function() {
+		    	        updateElementIndex(this, 'items', i);
+		    	    });
+			}
+			return false;
+		})
 {% endblock %}
 
 {% block main_span_size %}9{% endblock %}
 {% block panel_span_size %}3{% endblock %}
 
 {% block main %}
+{% block messages %} 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
 {% if request.cart.has_items %}
 <form id='main_form' method="post" class="cart-form">
 {% csrf_token %}
@@ -122,7 +96,7 @@ function getCarriers(sel){
 {% endfor %}
 {% endif %}
 {{ cart_formset.management_form }}
-<table class="table table-bordered span8">
+<table id="formtable" class="table table-bordered span8">
     <thead>
     <tr>
         <th colspan="2" class="left">{% trans "Item" %}</th>
@@ -158,16 +132,14 @@ function getCarriers(sel){
         <td colspan="5" id='total_cell'>{% order_totals %}</td>
         <td>&nbsp;</td>
     </tr>
-    
     </tbody>
 </table>
-{% make_form as form %}
-{{ form.as_table }}
+
 <div class="form-actions">
     <a href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
         {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
     </a>
-    <input type="submit" class="btn btn-default btn-lg pull-left" value="{% trans "Update Cart" %}">
+    <input type="submit" name="update_cart" class="btn btn-default btn-lg pull-left" value="{% trans "Update Cart" %}">
 </div>
 </form>
 
