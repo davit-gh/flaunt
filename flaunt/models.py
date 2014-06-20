@@ -100,9 +100,14 @@ class Countrylist(models.Model):
 	def __unicode__(self):
 		return self.country
 
-class Carrierlist(models.Model):
+class CarrierlistPriority(models.Model):
 	carrier = models.CharField(max_length=100)
 	countries = models.ManyToManyField(Countrylist)
 	def __unicode__(self):
 		return self.carrier
 
+class CarrierlistRegular(models.Model):
+    carrier = models.CharField(max_length=100)
+    countries = models.ManyToManyField(Countrylist)
+    def __unicode__(self):
+        return self.carrier

@@ -41,23 +41,41 @@ $.ajaxSetup({
         }
     }
 });
-function getCarriers(sel){
-	
-	$.post('/ajax_country',{'country' : sel.value}, function(data){ 
-		console.log(data);
-		var car = document.getElementById('id_carrier');
-		car.options.length=0;
-		for(opt in data){
-			car.options.add(new Option(data[opt],data[opt]));
-		}	
-	});
+function getCountry(sel){
+	$('#chosen_country').val(sel.value);
+    $('#id_shipping_type').val("");
+    $('#id_carrier').find('option').remove().end().append('<option value="0">Please select a country first</option').val("0");
 
+}
+function setCarriers(s){
+    var country_name = $('#chosen_country').val();
+    $.post('/ajax_country',{'country' : country_name}, function(data){ 
+        console.log(data);
+        var carrier = document.getElementById('id_carrier');
+        var priority = data['carriers_priority'];
+        var regular = data['carriers_regular'];
+        if(s.value == 'priority'){
+            carrier.options.length = 0;
+            for(pri in priority){
+                carrier.options.add(new Option(priority[pri], pri));
+            }   
+        }else{
+            carrier.options.length = 0;
+            for(reg in regular){
+                carrier.options.add(new Option(regular[reg], reg));
+            }   
+        }
+    });
+    
 }
 </script>
 
 {% endblock %}
 
 {% block extra_js %}
+    $("select[name='country'] option:eq(0)").attr('disabled','disabled');
+    $("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
+    $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
 	$("input[type|='checkbox']").hide();
         $('#main_form').submit(function(){
             $.ajax({
@@ -163,6 +181,7 @@ function getCarriers(sel){
 </table>
 {% make_form as form %}
 {{ form.as_table }}
+<input type="hidden" id="chosen_country" />
 <div class="form-actions">
     <a href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
         {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
