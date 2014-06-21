@@ -45,7 +45,10 @@ function getCountry(sel){
 	$('#chosen_country').val(sel.value);
     $('#id_shipping_type').val("");
     $('#id_carrier').find('option').remove().end().append('<option value="0">Please select a country first</option').val("0");
-
+    var shipping_type = document.getElementById('id_shipping_type');
+    shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
+    shipping_type.options.add(new Option('Regular Shipping', 'regular'));
+    
 }
 function setCarriers(s){
     var country_name = $('#chosen_country').val();
@@ -54,25 +57,53 @@ function setCarriers(s){
         var carrier = document.getElementById('id_carrier');
         var priority = data['carriers_priority'];
         var regular = data['carriers_regular'];
+        carrier.name = s.value;
         if(s.value == 'priority'){
-            carrier.options.length = 0;
+            carrier.options.length = 1;
+
             for(pri in priority){
-                carrier.options.add(new Option(priority[pri], pri));
+                carrier.options.add(new Option(priority[pri], priority[pri]));
             }   
         }else{
-            carrier.options.length = 0;
+            carrier.options.length = 1;
             for(reg in regular){
-                carrier.options.add(new Option(regular[reg], reg));
+                carrier.options.add(new Option(regular[reg], regular[reg]));
             }   
         }
     });
     
+}
+function getCarrier(sel){
+    $.ajax({
+        url: '/get_carrier',
+        type: 'POST',
+        data: {'carrier' : sel.value, 'shipping_type' : sel.name}, 
+        success: function(data){ 
+                    console.log(data);
+                    var shipping_type = data.shipping_type;
+                    var shipping_total = data.shipping_total;
+                    $('#subtotal').val(shipping_total);
+                    $('#subtotal').attr('name',shipping_type);
+                    var subtotal = '{{ request | cart_total_price }}';
+                    var total = parseFloat(shipping_total) + parseFloat(subtotal);
+                    shipping_total = parseFloat(shipping_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    subtotal = parseFloat(subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    var html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    $('#total_cell').html(html);
+                },
+        error: function(data){
+            console.log('error '+JSON.stringify(data));
+        }
+    });
 }
 </script>
 
 {% endblock %}
 
 {% block extra_js %}
+    $('#id_shipping_type').val("");
+    $('#id_country').val("");
     $("select[name='country'] option:eq(0)").attr('disabled','disabled');
     $("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
     $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
@@ -83,21 +114,31 @@ function setCarriers(s){
                 url: '/update_cart', 
                 data: $(this).serialize(),
                 success: function(data){
-                    var grand = data['grand'];
-                    var sub = data['sub'];
-                    var total_qty = data['total_qty'];
-                    $('#total_cell').html('<b>Total:&nbsp;$</b>'+grand);
-                    $.each(sub,function(index,element){
-                        var i = parseInt(index)+1;
-                        $('table tr:eq('+i+') td:eq(4)').html('$'+element);
-                        
-                    });
-                    if (total_qty != 1){
-                        $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
+                    if (data.errors){
+                        $('#not_enough_qty').html('Sorry, there is no enough stock.');
                     }else{
-                        $('#cart_menu').html(' 1 item in cart: $'+grand);
+                        $('#not_enough_qty').html('');
+                        console.log(data);
+                        var subtotal = parseFloat(data['grand']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        var shipping_fee = $('#subtotal').val();
+                        var shipping_type = $('#subtotal').attr('name');
+                        var sub = data['sub'];
+                        var total_qty = data['total_qty'];
+                        grand = parseFloat(subtotal) + parseFloat(shipping_fee);
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>$"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                        $('#total_cell').html(html);
+                        $.each(sub,function(index,element){
+                            var i = parseInt(index)+1;
+                            $('table tr:eq('+i+') td:eq(4)').html('$'+parseFloat(element).toFixed(2));
+                            
+                        });
+                        if (total_qty != 1){
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
+                        }else{
+                            $('#cart_menu').html(' 1 item in cart: $'+grand);
+                        }
+                        console.log(sub);
                     }
-                    console.log(sub);
                             
                 },
                 error: function(data){console.log('error'+JSON.stringify(data));}
@@ -174,7 +215,7 @@ function setCarriers(s){
     {% endfor %}
     <tr>
         <td colspan="5" id='total_cell'>{% order_totals %}</td>
-        <td>&nbsp;</td>
+        <td>&nbsp;<input type="hidden" id="subtotal" value="0" /></td><td><div id="not_enough_qty"></div></td>
     </tr>
     
     </tbody>
@@ -199,6 +240,8 @@ function setCarriers(s){
 {{ countryForm.as_p }}
 {% else %}
 <p>{% trans "Your Cart is empty." %}</p>
+{{ request | remove_shipping_info:'shipping_type' }}
+{{ request | remove_shipping_info:'shipping_total' }}
 {% endif %}
 {% endblock %}
 

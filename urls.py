@@ -57,6 +57,7 @@ urlpatterns += patterns('',
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     url(r"^ajax_country", "flaunt.views.ajax_country"),
     url(r"^update_cart", "flaunt.views.update_cart"),
+    url(r"^get_carrier", "flaunt.views.get_carrier"),
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
     # This pattern points the homepage to the blog post listing page,

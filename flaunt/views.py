@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from flaunt.models import Countrylist
 from django.http import HttpResponse
+from cartridge.shop.utils import set_shipping
+from django.template.loader import render_to_string
 import json
 # Create your views here.
 from django.views.decorators.csrf import ensure_csrf_cookie
+import pdb
 @ensure_csrf_cookie
 def ajax_country(request):
 	if request.is_ajax() and request.method == 'POST':
+
 		#message="is ajax"
 		countrylist_country = Countrylist.objects.get(country=request.POST['country'])
 		carriers_priority=map(lambda x: x.carrier,countrylist_country.carrierlistpriority_set.all())
@@ -18,9 +22,10 @@ def ajax_country(request):
 		carriers_regular=[cp[0] + '  '+cp[1]+' days '+cp[2]+'Y' for cp in carriers_regular]
 	else:
 		carriers = "not ajax"
+	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
 	return HttpResponse(json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), mimetype="application/json")
 
-import pdb
+
 from cartridge.shop.forms import CartItemFormSet
 def update_cart(request):
 	if request.is_ajax() and request.method == "POST":
@@ -28,27 +33,32 @@ def update_cart(request):
 		grand = 0
 		form = request.POST
 		cart_formset = CartItemFormSet(request.POST, instance=request.cart)
-		marked_for_delete = cart_formset.deleted_forms
-		for form in cart_formset.forms:
-			if form['id'].value() not in [deleted_record['id'].value() for deleted_record in marked_for_delete]:    
-			    if form.is_valid():
-				form.save()
-				# save the form
-			    else:
-				pass
+		cart = cart_formset[0].instance.cart
+		
 		valid = cart_formset.is_valid()
-                if valid:
-                    cart_formset.save()
-
-		    for i in range(len(cart_formset)): 
-			sub[i]=float(cart_formset[i].instance.total_price)
-		    grand = float(cart_formset[0].instance.cart.total_price())
-		    total_qty = int(cart_formset[0].instance.cart.total_quantity())
+		if valid:
+			cart_formset.save()
+			for i in range(len(cart_formset)):
+				sub[i]=float(cart_formset[i].instance.total_price)
+			grand = float(cart.total_price())
+			total_qty = int(cart.total_quantity())
+			return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty':total_qty}), content_type='application/json')
 		else:
-		    errors = cart_formset._errors
-                    cart_formset = CartItemFormSet(instance=request.cart)
-                    cart_formset._errors = errors
-	
-		return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty': total_qty}), content_type="application/json")
+			errors = cart_formset._errors
+			cart_formset = CartItemFormSet(instance=request.cart)
+			cart_formset._errors = errors
+			return HttpResponse(json.dumps({'errors' : errors}), content_type='application/json')
 	else:
-		return HttpResponse('not ok')
+		return HttpResponse('Sth went wrong.')
+
+
+def get_carrier(request):
+	if request.is_ajax() and request.method == 'POST':
+		carrier = request.POST['carrier']
+		shipping_type = request.POST['shipping_type']
+		shipping_total = float(carrier.split()[3][:-1])
+		if not request.session.get("free_shipping"):
+			set_shipping(request, shipping_type, shipping_total)
+
+		#resp = render_to_string('shop/cart.html', { 'request': request })
+	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 'shipping_total' : shipping_total}), content_type='application/json')
