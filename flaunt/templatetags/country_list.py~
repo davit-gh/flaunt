@@ -25,7 +25,7 @@ def make_form(*args):
 
 @register.filter(name='fee')
 def get_shipping_fee(req):
-	return float(req.session['shipping_total']) if req.session.get("shipping_total") else 0
+	return req.session['shipping_total'] if req.session.get("shipping_total") else 0
 
 @register.filter(name='type')
 def get_shipping_type(req):
@@ -33,7 +33,7 @@ def get_shipping_type(req):
 
 @register.filter
 def remove_shipping_info(req, shipping_info):
-	del req.session[shipping_info]
+	if req.session.get(shipping_info): del req.session[shipping_info] 
 	return ''
 
 @register.filter

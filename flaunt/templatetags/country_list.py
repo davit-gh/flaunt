@@ -33,12 +33,12 @@ def get_shipping_type(req):
 
 @register.filter
 def remove_shipping_info(req, shipping_info):
-	del req.session[shipping_info]
+	if req.session.get(shipping_info): del req.session[shipping_info] 
 	return ''
 
 @register.filter
-def contains_shipping_info(req):
-	return req.session.get("shipping_total")
+def contains_session_var(req,var):
+	return req.session.get(var)
 
 @register.filter
 def cart_total_price(req):

@@ -46,6 +46,7 @@ function getCountry(sel){
     $('#id_shipping_type').val("");
     $('#id_carrier').find('option').remove().end().append('<option value="0">Please select a country first</option').val("0");
     var shipping_type = document.getElementById('id_shipping_type');
+    shipping_type.options.length = 1;
     shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
     shipping_type.options.add(new Option('Regular Shipping', 'regular'));
     
@@ -84,11 +85,17 @@ function getCarrier(sel){
                     var shipping_total = data.shipping_total;
                     $('#subtotal').val(shipping_total);
                     $('#subtotal').attr('name',shipping_type);
-                    var subtotal = '{{ request | cart_total_price }}';
+                    var subtotal = data.total_price;
                     var total = parseFloat(shipping_total) + parseFloat(subtotal);
                     shipping_total = parseFloat(shipping_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                     subtotal = parseFloat(subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                     total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    var total_qty = $('#subtotal').attr('class');
+                    if (total_qty != '1'){
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+total);
+                        }else{
+                            $('#cart_menu').html(' 1 item in cart: $'+total);
+                        }
                     var html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                     $('#total_cell').html(html);
                 },
@@ -121,17 +128,26 @@ function getCarrier(sel){
                         console.log(data);
                         var subtotal = parseFloat(data['grand']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         var shipping_fee = $('#subtotal').val();
+                        if (shipping_fee == '0'){
+                            shipping_fee = 'Not set yet';
+                            grand = subtotal;
+                        }else{
+                            shipping_fee = $('#subtotal').val();
+                            grand = (parseFloat(subtotal) + parseFloat(shipping_fee)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            shipping_fee = '$' + $('#subtotal').val();
+                        }
                         var shipping_type = $('#subtotal').attr('name');
                         var sub = data['sub'];
                         var total_qty = data['total_qty'];
-                        grand = parseFloat(subtotal) + parseFloat(shipping_fee);
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>$"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                        $('#subtotal').attr('class',total_qty);
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
                         $('#total_cell').html(html);
                         $.each(sub,function(index,element){
                             var i = parseInt(index)+1;
                             $('table tr:eq('+i+') td:eq(4)').html('$'+parseFloat(element).toFixed(2));
                             
                         });
+                        if ($('#subtotal').attr('class') == '0'){$('#cart_menu').html(' 0 item in cart: $0.00');}
                         if (total_qty != 1){
                             $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
                         }else{
@@ -164,6 +180,7 @@ function getCarrier(sel){
                         updateElementIndex(this, 'items', i);
                     });
             }
+
             return false;
         })
 {% endblock %}
@@ -215,7 +232,7 @@ function getCarrier(sel){
     {% endfor %}
     <tr>
         <td colspan="5" id='total_cell'>{% order_totals %}</td>
-        <td>&nbsp;<input type="hidden" id="subtotal" value="0" /></td><td><div id="not_enough_qty"></div></td>
+        <td>&nbsp;<input type="hidden" id="subtotal" value="0" name="Shipping fee" class="{{ request.cart.total_quantity }}" /></td><td><div id="not_enough_qty"></div></td>
     </tr>
     
     </tbody>
@@ -227,7 +244,6 @@ function getCarrier(sel){
     <a href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
         {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
     </a>
-    <input type="submit" class="btn btn-default btn-lg pull-left" value="{% trans "Update Cart" %}">
 </div>
 </form>
 
@@ -242,6 +258,7 @@ function getCarrier(sel){
 <p>{% trans "Your Cart is empty." %}</p>
 {{ request | remove_shipping_info:'shipping_type' }}
 {{ request | remove_shipping_info:'shipping_total' }}
+{{ request | remove_shipping_info:'grand_total' }}
 {% endif %}
 {% endblock %}
 

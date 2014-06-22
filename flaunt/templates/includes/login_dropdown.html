@@ -1,4 +1,4 @@
-{% load i18n future mezzanine_tags accounts_tags shop_tags staticfiles%}
+{% load i18n future mezzanine_tags accounts_tags shop_tags staticfiles country_list %}
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container"><!-- Collapsable nav bar -->
@@ -35,10 +35,22 @@
           {% endif %}
           <li class="dropdown">
               <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                  <span><img src="{% static "img/cart.png" %}" width="20"></span><span id='cart_menu'>
+                  <span><img src="{% static "img/cart.png" %}" width="20"></span>
+                  {% spaceless %}
+                  <span id='cart_menu'>
                       {% blocktrans count request.cart.total_quantity as cart_quantity %}1 item{% plural %}{{ cart_quantity }} items{% endblocktrans %}
-                      {% trans "in cart" %}:
-                      {{ request.cart.total_price|currency }}</span><strong class="caret"></strong></a>
+                      {% trans "in cart" %}: 
+                      {% if  request.session.grand_total %}
+                        {{ request.session.grand_total | currency }}
+                      {% else %}
+                        {{ request.cart.total_price|currency }}
+                      {% endif %}
+                  </span>
+                  {% endspaceless %}
+                  <strong class="caret"></strong></a>
+                      
+                        
+                      
                 <ul class="dropdown-menu">
                   <li>
                     {% if request.cart.total_quantity != 0 %}
