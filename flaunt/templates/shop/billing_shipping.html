@@ -1,0 +1,45 @@
+{% extends "shop/checkout.html" %}
+{% load staticfiles i18n future mezzanine_tags %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script src="{% static "cartridge/js/shipping_fields.js" %}"></script>
+{% endblock %}
+
+{% block fields %}
+	{% if request.cart.has_items %}
+		{% if not request.user.is_authenticated %}
+			{% ifinstalled mezzanine.accounts %}
+			<p>
+				{% url "login" as login_url %}
+				{% url "signup" as signup_url %}
+				{% with request.path as next %}
+				{% blocktrans %}
+				If you have an existing account or would like to create one, please
+				<a href="{{ login_url }}?next={{ next }}">log in</a> or
+				<a href="{{ signup_url }}?next={{ next }}">sign up</a>.
+				{% endblocktrans %}
+				{% endwith %}
+			</p>
+			{% endifinstalled %}
+		{% endif %}
+
+		{% errors_for form %}
+
+
+		<fieldset >
+		    <legend>{% trans "Delivery Details" %}</legend>
+
+		    <div id="shipping_fields">{% fields_for form.shipping_detail_fields %}</div>
+		    
+		    {% fields_for form.remember_field %}
+		</fieldset>
+
+		{% if not settings.SHOP_CHECKOUT_STEPS_SPLIT and settings.SHOP_PAYMENT_STEP_ENABLED %}
+			{% include "shop/includes/payment_fields.html" %}
+		{% endif %}
+
+		{% fields_for form.other_fields %}
+
+{% endif %}
+{% endblock %}

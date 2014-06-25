@@ -14,6 +14,13 @@ from __future__ import absolute_import, unicode_literals
 # Setting to turn on featured images for shop categories. Defaults to False.
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 SHOP_USE_RATINGS = False
+ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
+    "first_name",
+    "last_name",
+)
+ACCOUNTS_NO_USERNAME = True
+ACCOUNTS_VERIFICATION_REQUIRED = True
+SHOP_CHECKOUT_ACCOUNT_REQUIRED = True
 # Set an alternative OrderForm class for the checkout process.
 # SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 
@@ -34,8 +41,8 @@ SHOP_USE_RATINGS = False
 # is called on submit of the billing/shipping checkout step. This
 # is where shipping calculation can be performed and set using the
 # function ``cartridge.shop.utils.set_shipping``.
-# SHOP_HANDLER_BILLING_SHIPPING = \
-#                           "cartridge.shop.checkout.default_billship_handler"
+SHOP_HANDLER_BILLING_SHIPPING = \
+                           "flaunt.shop.checkout.billship_handler"
 
 # Dotted package path and class name of the function that
 # is called once an order is successful and all of the order

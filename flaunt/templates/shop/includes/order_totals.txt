@@ -1,0 +1,3 @@
+{% load shop_tags i18n %}{% trans "total" %}: {{ order_total|currency }}
+
+

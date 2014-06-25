@@ -33,19 +33,16 @@ def update_cart(request):
 		sub = {}
 		grand = 0
 		form = request.POST
-		shipping_type = request.POST['shipping_type'] if request.POST.get('shipping_type') else ''
-		carrier = request.POST[shipping_type] if shipping_type is not '' else ''
-		shipping_total = float(carrier.split()[3][:-1]) if carrier is not '' else 0
+		
 		cart_formset = CartItemFormSet(request.POST, instance=request.cart)
 		cart = cart_formset[0].instance.cart
 
 		valid = cart_formset.is_valid()
 		if valid:
 			cart_formset.save()
-			for i in range(len(cart_formset)):
-				sub[i]=float(cart_formset[i].instance.total_price)
+			sub = [float(f.instance.total_price) for f in cart_formset]
 			grand = float(cart.total_price()) 
-			request.session['grand_total'] = grand + shipping_total
+			
 			total_qty = int(cart.total_quantity())
 			return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty':total_qty}), content_type='application/json')
 		else:
@@ -56,17 +53,17 @@ def update_cart(request):
 	else:
 		return HttpResponse('Sth went wrong.')
 
-
+from flaunt.shop.checkout import billship_handler
 def get_carrier(request):
 	if request.is_ajax() and request.method == 'POST':
 		carrier = request.POST['carrier']
 		shipping_type = request.POST['shipping_type']
 		shipping_total = float(carrier.split()[3][:-1])
 		total = float(request.cart.total_price())
-		if not request.session.get("free_shipping"):
-			set_shipping(request, shipping_type, shipping_total)
+		billship_handler(request, shipping_type, shipping_total)
+		
 		recalculate_cart(request)
-		request.session['grand_total'] = shipping_total + total
+		
 		#resp = render_to_string('shop/cart.html', { 'request': request })
 	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
 									'shipping_total' : shipping_total, 

@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load mezzanine_tags shop_tags i18n future country_list %}
+{% load staticfiles mezzanine_tags shop_tags i18n future country_list %}
 
 {% block meta_title %}{% trans "Your Cart" %}{% endblock %}
 {% block title %}{% trans "Your Cart" %}{% endblock %}
@@ -9,8 +9,12 @@
 {{ block.super }}
 <li>{% trans "Your Cart" %}</li>
 {% endblock %}
-
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui-1-10-4.css"  %}">
+{% endblock %}
 {% block slider_js %}
+<script type="text/javascript" src="{% static "js/jquery-ui-1-10-4.js" %}"></script>
+<script type="text/javascript" src="{% static "js/sorting.js" %}"></script>
 <script type='text/javascript'>
 function getCookie(name) {
     var cookieValue = null;
@@ -80,7 +84,6 @@ function getCarrier(sel){
         type: 'POST',
         data: {'carrier' : sel.value, 'shipping_type' : sel.name}, 
         success: function(data){ 
-                    console.log(data);
                     var shipping_type = data.shipping_type;
                     var shipping_total = data.shipping_total;
                     $('#subtotal').val(shipping_total);
@@ -92,9 +95,9 @@ function getCarrier(sel){
                     total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                     var total_qty = $('#subtotal').attr('class');
                     if (total_qty != '1'){
-                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+total);
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
                         }else{
-                            $('#cart_menu').html(' 1 item in cart: $'+total);
+                            $('#cart_menu').html(' 1 item in cart, total: $'+total);
                         }
                     var html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                     $('#total_cell').html(html);
@@ -121,10 +124,23 @@ function getCarrier(sel){
                 url: '/update_cart', 
                 data: $(this).serialize(),
                 success: function(data){
+                    var clicked_id = $('#subtotal').data('notenoughstockid'),
+                        quantity = $('#'+clicked_id).data('quantity'),
+                        input_field = $('#'+clicked_id).parent().find('input');
                     if (data.errors){
-                        $('#not_enough_qty').html('Sorry, there is no enough stock.');
+
+                        $( "#dialog-message" ).dialog({
+                            modal: true,
+                            buttons: {
+                                Ok: function() {
+                                    $( this ).dialog( "close" );
+                                }
+                            }
+                        });
+                        $(input_field).val(quantity);
+
                     }else{
-                        $('#not_enough_qty').html('');
+                        
                         console.log(data);
                         var subtotal = parseFloat(data['grand']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         var shipping_fee = $('#subtotal').val();
@@ -149,9 +165,9 @@ function getCarrier(sel){
                         });
                         if ($('#subtotal').attr('class') == '0'){$('#cart_menu').html(' 0 item in cart: $0.00');}
                         if (total_qty != 1){
-                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart: $'+grand);
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+grand);
                         }else{
-                            $('#cart_menu').html(' 1 item in cart: $'+grand);
+                            $('#cart_menu').html(' 1 item in cart, total: $'+grand);
                         }
                         console.log(sub);
                     }
@@ -163,6 +179,7 @@ function getCarrier(sel){
         });
         $("a[id|='update']").click(function(){
             $('#main_form').submit();
+            $('#subtotal').attr('data-notenoughstockid', $(this).attr('id'));
             return false;
         });
         
@@ -224,27 +241,33 @@ function getCarrier(sel){
             <a href="{{ item.get_absolute_url }}">{{ item.description }}</a>
         </td>
         <td>{{ item.unit_price|currency }}</td>
-        <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' >Update</a></td>
+        <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}'>Update</a></td>
         <td id="price-{{ item.id }}">{{ item.total_price|currency }}</td>
         <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''>Remove</a></td>
     </tr>
     {% endwith %}
     {% endfor %}
     <tr>
-        <td colspan="5" id='total_cell'>{% order_totals %}</td>
-        <td>&nbsp;<input type="hidden" id="subtotal" value="0" name="Shipping fee" class="{{ request.cart.total_quantity }}" /></td><td><div id="not_enough_qty"></div></td>
+        <td colspan="3" >
+            {% make_form as form %}
+            {{ form.as_p }}
+        </td>
+        <td colspan="3" id='total_cell'>{% order_totals %}</td>
+        
     </tr>
     
     </tbody>
 </table>
-{% make_form as form %}
-{{ form.as_table }}
+<div id="dialog-message" style="display: none;">
+    <p>Sorry, there is no enough stock currently. Please reduce the quantity.</p>
+</div>
+<input type="hidden" id="subtotal" value="0" name="Shipping fee" data-notenoughstockid="" class="{{ request.cart.total_quantity }}" />
 <input type="hidden" id="chosen_country" />
 <div class="form-actions">
     <a href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
         {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
     </a>
-</div>
+</div>f
 </form>
 
 {% if discount_form %}
@@ -258,7 +281,6 @@ function getCarrier(sel){
 <p>{% trans "Your Cart is empty." %}</p>
 {{ request | remove_shipping_info:'shipping_type' }}
 {{ request | remove_shipping_info:'shipping_total' }}
-{{ request | remove_shipping_info:'grand_total' }}
 {% endif %}
 {% endblock %}
 

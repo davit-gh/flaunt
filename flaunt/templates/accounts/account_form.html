@@ -1,4 +1,5 @@
 
+{% extends "shop/base.html" %}
 {% load i18n mezzanine_tags %}
 
 {% block meta_title %}{{ title }}{% endblock %}
@@ -10,16 +11,29 @@
 {% block main %}
 
 {% errors_for form %}
-
-<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+{% load widget_tweaks %}
+<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} style="float: right;">
     <fieldset>
     <legend>{{ title }}</legend>
-    {% fields_for form %}
-    <div class="form-actions">
-        {% block account_form_actions %}
-        <input class="btn btn-primary btn-lg pull-right" type="submit" value="{{ title }}">
-        {% endblock %}
-    </div>
+    {% csrf_token %}
+{{form.errors}}
+	
+        {% for hidden in form.hidden_fields %}
+	{{hidden}}
+	{% endfor %}
+	{% for vis in form.visible_fields %}
+
+                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
+ 
+                    <div class="controls">
+                        {% render_field vis %}
+                        
+                    </div>
+
+	{% endfor %}
+<input type="submit" class="btn send_btn" id="sbmt_btn" value="Submit"/>
     </fieldset>
 </form>
+{% endblock %}
+{% block right_panel %}
 {% endblock %}
