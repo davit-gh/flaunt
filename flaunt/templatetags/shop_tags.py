@@ -72,36 +72,6 @@ def _order_totals(context):
     return context
 
 
-def _total_orders_price(context):
-    """
-    Add ``item_total``, ``shipping_total``, ``discount_total``, ``tax_total``,
-    and ``order_total`` to the template context. Use the order object for
-    email receipts, or the cart object for checkout.
-    """
-    if "order" in context:
-        for f in ("item_total", "shipping_total", "discount_total",
-                  "tax_total"):
-            context[f] = getattr(context["order"], f)
-    else:
-        context["item_total"] = context["request"].cart.total_price()
-        if context["item_total"] == 0:
-            # Ignore session if cart has no items, as cart may have
-            # expired sooner than the session.
-            context["tax_total"] = context["discount_total"] = \
-                context["shipping_total"] = 0
-        else:
-            for f in ("shipping_type", "shipping_total", "discount_total",
-                      "tax_type", "tax_total"):
-                context[f] = context["request"].session.get(f, None)
-    context["order_total"] = context.get("item_total", None)
-    if context.get("shipping_total", None) is not None:
-        context["order_total"] += Decimal(str(context["shipping_total"]))
-    if context.get("discount_total", None) is not None:
-        context["order_total"] -= Decimal(str(context["discount_total"]))
-    if context.get("tax_total", None) is not None:
-        context["order_total"] += Decimal(str(context["tax_total"]))
-    return float(context["order_total"])
-
 @register.inclusion_tag("shop/includes/order_totals.html", takes_context=True)
 def order_totals(context):
     """
@@ -109,12 +79,6 @@ def order_totals(context):
     """
     return _order_totals(context)
 
-@register.inclusion_tag("shop/includes/order_totals.html", takes_context=True)
-def total_orders_price(context):
-    """
-    HTML version of order_totals.
-    """
-    return _total_orders_price(context)
 
 @register.inclusion_tag("shop/includes/order_totals.txt", takes_context=True)
 def order_totals_text(context):

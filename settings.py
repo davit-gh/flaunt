@@ -21,9 +21,30 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
 ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_VERIFICATION_REQUIRED = True
 SHOP_CHECKOUT_ACCOUNT_REQUIRED = True
+PRIMARY_PAYMENT_PROCESSOR_IN_USE = False
+SECONDARY_PAYMENT_PROCESSORS = (
+    ('paypal', {
+        'name' : 'Pay With Pay-Pal',
+        'form' : 'payments.multipayments.forms.paypal.PaypalSubmissionForm'
+    }),
+)
+PAYPAL_CURRENCY = "USD"
+PAYPAL_BUSINESS = "simulate@ppl.com"
+PAYPAL_RECEIVER_EMAIL = PAYPAL_BUSINESS
+# Use this to enable https on return URLs.  This is strongly recommended! (Except for sandbox)
+PAYPAL_RETURN_WITH_HTTPS = False
+# URL is sent to PayPal as the for returning to a 'complete' landing page.
+PAYPAL_RETURN_URL = lambda cart, uuid, order_form: ('shop_complete', None, None)
+# URL is sent to PayPal as the URL to callback to for PayPal IPN.
+# Set to None if you do not wish to use IPN.
+PAYPAL_IPN_URL = lambda cart, uuid, order_form: ('paypal.standard.ipn.views.ipn', None, {})
+# URL the secondary-payment-form is submitted to
+# For real use set to 'https://www.paypal.com/cgi-bin/webscr'
+PAYPAL_SUBMIT_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 # Set an alternative OrderForm class for the checkout process.
-# SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
-
+SHOP_CHECKOUT_FORM_CLASS = 'payments.multipayments.forms.base.CallbackUUIDOrderForm'
+# For real use set to False
+PAYPAL_TEST = True
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
 # SHOP_CHECKOUT_STEPS_SPLIT = True
@@ -135,6 +156,12 @@ EXTRA_MODEL_FIELDS = (
 	  "TextField",
 	  ("Short desc",),
 	  {"blank": True},
+      ),
+      (
+        "cartridge.shop.models.Order.callback_uuid",
+        "django.db.models.CharField",
+        (),
+        {"blank" : False, "max_length" : 36, "default": ""},
       ),
 #     (
 #         # Dotted path to field.
@@ -315,6 +342,8 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
+    "payments.multipayments",
+    "paypal.standard.ipn",
     "flaunt",
     "widget_tweaks",
     "django.contrib.admin",
@@ -343,6 +372,7 @@ INSTALLED_APPS = (
 # Each one should be a callable that takes the request object as its
 # only parameter and returns a dictionary to add to the context.
 TEMPLATE_CONTEXT_PROCESSORS = (
+    "payments.multipayments.context_processors.settings",
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.debug",

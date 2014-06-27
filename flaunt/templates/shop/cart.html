@@ -248,18 +248,18 @@ function getCarrier(sel){
     {% endwith %}
     {% endfor %}
     <tr>
-        <td colspan="3" >
+        <td colspan="3" style="text-align:center">
             {% make_form as form %}
             {{ form.as_p }}
         </td>
-        <td colspan="3" id='total_cell'>{% order_totals %}</td>
+        <td colspan="3" id="total_cell" style="text-align:center" >{% order_totals %}</td>
         
     </tr>
     
     </tbody>
 </table>
 <div id="dialog-message" style="display: none;">
-    <p>Sorry, there is no enough stock currently. Please reduce the quantity.</p>
+    <p>Sorry, the quantity you specified exceeds our stock. Please check again soon.</p>
 </div>
 <input type="hidden" id="subtotal" value="0" name="Shipping fee" data-notenoughstockid="" class="{{ request.cart.total_quantity }}" />
 <input type="hidden" id="chosen_country" />
@@ -267,7 +267,7 @@ function getCarrier(sel){
     <a href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
         {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
     </a>
-</div>f
+</div>
 </form>
 
 {% if discount_form %}

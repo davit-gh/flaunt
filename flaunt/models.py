@@ -9,6 +9,71 @@ from mezzanine.utils.models import upload_to
 from mezzanine.core.models import Displayable
 from cartridge.shop.models import Product
 
+
+from importlib import import_module
+
+from mezzanine.conf import settings
+
+from cartridge.shop.models import Cart, Order, ProductVariation, \
+DiscountCode
+from paypal.standard.ipn.signals import payment_was_successful
+
+def payment_complete(sender, **kwargs):
+    """Performs the same logic as the code in
+    cartridge.shop.models.Order.complete(), but fetches the session,
+    order, and cart objects from storage, rather than relying on the
+    request object being passed in (which it isn't, since this is
+    triggered on PayPal IPN callback)."""
+
+    ipn_obj = sender
+
+    if ipn_obj.custom and ipn_obj.invoice:
+        s_key, cart_pk = ipn_obj.custom.split(',')
+        SessionStore = import_module(settings.SESSION_ENGINE) \
+                           .SessionStore
+        session = SessionStore(s_key)
+
+        try:
+            cart = Cart.objects.get(id=cart_pk)
+            try:
+                order = Order.objects.get(
+                    transaction_id=ipn_obj.invoice)
+                for field in order.session_fields:
+                    if field in session:
+                        del session[field]
+                try:
+                    del session["order"]
+                except KeyError:
+                    pass
+
+                # Since we're manually changing session data outside of
+                # a normal request, need to force the session object to
+                # save after modifying its data.
+                session.save()
+
+                for item in cart:
+                    try:
+                        variation = ProductVariation.objects.get(
+                            sku=item.sku)
+                    except ProductVariation.DoesNotExist:
+                        pass
+                    else:
+                        variation.update_stock(item.quantity * -1)
+                        variation.product.actions.purchased()
+
+                code = session.get('discount_code')
+                if code:
+                    DiscountCode.objects.active().filter(code=code) \
+                        .update(uses_remaining=F('uses_remaining') - 1)
+                cart.delete()
+            except Order.DoesNotExist:
+                pass
+        except Cart.DoesNotExist:
+            pass
+
+payment_was_successful.connect(payment_complete)
+
+
 class HomePage(Page, RichText):
     '''
     A page representing the format of the home page

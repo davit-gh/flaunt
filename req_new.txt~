@@ -26,6 +26,3 @@ xhtml2pdf==0.0.6
 yolk==0.4.3
 ## The following requirements were added by pip --freeze:
 suds==0.4
-cartridge-payments==0.97.0
--e git+https://github.com/dcramer/django-paypal.git@4d582243#egg=django_paypal
-django-uuidfield==0.5.0

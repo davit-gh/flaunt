@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from cartridge.shop.utils import set_shipping
 from django.template.loader import render_to_string
 from cartridge.shop.utils import recalculate_cart
+from mezzanine.conf import settings
 import json
 # Create your views here.
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -60,7 +61,9 @@ def get_carrier(request):
 		shipping_type = request.POST['shipping_type']
 		shipping_total = float(carrier.split()[3][:-1])
 		total = float(request.cart.total_price())
-		billship_handler(request, shipping_type, shipping_total)
+		if not request.session.get("free_shipping"):
+			settings.use_editable()
+			set_shipping(request, shipping_type, shipping_total)
 		
 		recalculate_cart(request)
 		
