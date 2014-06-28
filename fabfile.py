@@ -316,7 +316,7 @@ def python(code, show=True):
             print_command(code)
     return result
 
-
+@task
 def static():
     """
     Returns the live STATIC_ROOT directory.
