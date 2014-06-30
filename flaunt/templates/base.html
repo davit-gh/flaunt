@@ -91,12 +91,12 @@
 									
 		});		
 	</script>
-
+{% block slider_js %}{% endblock %}
 {% endblock %}
 
-{% compress js %}
-  {% block slider_js %}{% endblock %}
-{% endcompress %}
+
+  
+
 
 <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
