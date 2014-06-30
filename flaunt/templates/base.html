@@ -45,9 +45,9 @@
 <script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.isotope.min.js" %}"></script>
 <script src="{% static "js/bootstrap.2.1.1.min.js" %}"></script>
-{% endblock %}
 
-{% compress js %}
+
+
     
     <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
     
@@ -92,7 +92,7 @@
 		});		
 	</script>
 
-{% endcompress %}
+{% endblock %}
 
 {% compress js %}
   {% block slider_js %}{% endblock %}
