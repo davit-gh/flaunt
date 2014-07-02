@@ -27,7 +27,7 @@ def payment_complete(sender, **kwargs):
 
     ipn_obj = sender
 
-    if ipn_obj.custom and ipn_obj.invoice:
+    if ipn_obj.custom and ipn_obj.payment_status == "Completed":
         s_key, cart_pk = ipn_obj.custom.split(',')
         SessionStore = import_module(settings.SESSION_ENGINE) \
                            .SessionStore
@@ -36,8 +36,7 @@ def payment_complete(sender, **kwargs):
         try:
             cart = Cart.objects.get(id=cart_pk)
             try:
-                order = Order.objects.get(
-                    transaction_id=ipn_obj.invoice)
+                order = Order.objects.get(key=s_key)
                 for field in order.session_fields:
                     if field in session:
                         del session[field]
