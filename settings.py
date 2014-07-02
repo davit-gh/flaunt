@@ -22,6 +22,7 @@ ACCOUNTS_NO_USERNAME = True
 ACCOUNTS_VERIFICATION_REQUIRED = True
 SHOP_CHECKOUT_ACCOUNT_REQUIRED = True
 PRIMARY_PAYMENT_PROCESSOR_IN_USE = False
+SHOP_CHECKOUT_STEPS_CONFIRMATION = False
 SECONDARY_PAYMENT_PROCESSORS = (
     ('paypal', {
         'name' : 'Pay With Pay-Pal',
@@ -42,7 +43,7 @@ PAYPAL_IPN_URL = lambda cart, uuid, order_form: ('paypal.standard.ipn.views.ipn'
 # For real use set to 'https://www.paypal.com/cgi-bin/webscr'
 PAYPAL_SUBMIT_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 # Set an alternative OrderForm class for the checkout process.
-SHOP_CHECKOUT_FORM_CLASS = 'payments.multipayments.forms.base.CallbackUUIDOrderForm'
+SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 # For real use set to False
 PAYPAL_TEST = True
 # If True, the checkout process is split into separate

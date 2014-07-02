@@ -333,6 +333,12 @@ def manage(command):
     return run("%s %s" % (env.manage, command))
 
 
+@task
+def sudo_manage(command):
+    """
+    Runs a Django management command as superuser.
+    """
+    return sudo("%s %s" % (env.manage, command))
 #########################
 # Install and configure #
 #########################
