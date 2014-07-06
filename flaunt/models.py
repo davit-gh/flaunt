@@ -8,8 +8,8 @@ from mezzanine.pages.models import Page
 from mezzanine.utils.models import upload_to
 from mezzanine.core.models import Displayable
 from cartridge.shop.models import Product
-
-
+from django.contrib.auth.models import User
+from django import forms
 from importlib import import_module
 
 from mezzanine.conf import settings
@@ -175,3 +175,9 @@ class CarrierlistRegular(models.Model):
     countries = models.ManyToManyField(Countrylist)
     def __unicode__(self):
         return self.carrier
+
+class Feedback(models.Model):
+    product = models.ForeignKey(Product, related_name="prod")
+    user = models.ForeignKey(User, related_name="usr")
+    item_title = models.CharField(max_length=100)
+    feedback_text = models.TextField()

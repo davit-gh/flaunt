@@ -1,6 +1,6 @@
 from .models import HomePage, Portfolio, PortfolioItem, PortfolioItemCategory, Slide
 from mezzanine.pages.page_processors import processor_for
-from cartridge.shop.models import Cart
+from cartridge.shop.models import Cart, Product
 from forms import CountryForm
 
 #for ajax form processor
@@ -49,6 +49,7 @@ def home_processor(request, page):
 def shop_processor(request, page):
 	slider_images = Slide.objects.all()
 	return {'slider_images': slider_images}
+
 
 @processor_for(Form)
 def ajax_form_processor(request, page):

@@ -20,7 +20,7 @@
 		return false;
 	});
 {% endblock %}
-{% load form_from_page %} <!-- https://gist.github.com/joshcartme/5130702 -->
+ <!-- https://gist.github.com/joshcartme/5130702 -->
 	{% block main %}
 {% load widget_tweaks %}
 <div class="contact_form">  
@@ -33,13 +33,13 @@
 	{% endfor %}
 	{% for vis in form.visible_fields %}
 		<fieldset class="control-group">
-                    <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
  
                     <div class="controls">
                         {% render_field vis class="span7" %}
                         
                     </div>
-                </fieldset>
+        </fieldset>
 	{% endfor %}
 <input type="submit" class="btn send_btn" id="sbmt_btn" value="Submitt"/>
 </form>

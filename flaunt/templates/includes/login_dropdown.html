@@ -70,6 +70,11 @@
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown">{% trans "Hello " %}<b>{{ request.user.username }}</b><strong class="caret"></strong></a>
                 <ul class="dropdown-menu">
                   <li>
+                    
+                        <a href="{% url "shop_order_history" %}" class="button bluebut">{% trans "Order History" %}</a>
+                    
+                  </li>
+                  <li>
                     {% if profile_url %}
                         <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>
                         <a href="{% url "profile_update" %}" class="btn btn-default btn-sm btn-account">{% trans "Update profile" %}</a>

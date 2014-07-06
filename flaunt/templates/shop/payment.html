@@ -1,7 +1,47 @@
 {% extends "shop/checkout.html" %}
 
-{% load i18n multipayment_forms %}
+{% load i18n multipayment_forms staticfiles %}
 
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui-1-10-4.css"  %}">
+{% endblock %}
+
+{% block slider_js %}
+<script type="text/javascript" src="{% static "js/jquery-ui-1-10-4.js" %}"></script>
+<script type="text/javascript">
+	function load_qr(){
+		var btc_amount = $('#id_amount').val();
+		var invoice_id = '{{ request.session.session_key }}';
+		var host = 'https://blockchain.info/api/receive?method=create&cors=true&format=plain&address=19sVNRFBT3xAY1kkXcDcoB5dAHW42f1iFH&shared=false&callback='
+		var encoded = encodeURIComponent("http://make-sense.info/polls/pay?invoice_id=" + invoice_id);
+		$.getJSON( host + encoded, function(data) {
+			console.log(data);
+			var addr = data['input_address']
+			var url = "https://blockchain.info/qr?data=bitcoin:" + addr + "%3Famount=" + btc_amount + "%26label=Pay-Demo&size=125";
+ 			console.log(url);
+		  	$('#qrcode').attr('src',url);
+			$('#btc_addr').html(addr);
+		});
+	}
+</script>
+{% endblock %}
+
+{% block extra_js %}
+
+	$(window).load(load_qr());
+	
+	$('#pay_btc').dialog({
+		width: 400,
+        	height: 300,
+		autoOpen: false,
+	});
+
+	$("input[type='button']").click(function(){
+			
+		
+		$('#pay_btc').dialog("open");
+	});
+{% endblock %}
 
 <div class="form-actions clearfix">
         <div class="form-actions-wrap">
@@ -33,6 +73,13 @@
 		{{ form.other_fields.as_ul }}
 		{% if not PRIMARY_PAYMENT_PROCESSOR_IN_USE %}</div>{% endif %}
 	{% endif %}
+	<input type="button" class="primary" value="Pay with Bitcoin" id="pay_btc_button">
+	<div id="pay_btc" title="Pay with Bitcoin" class="element">
+		<h4>Use your mobile phone to make a payment</h4>
+		<img id="qrcode"/>
+		<h4>Or send payment to this address</h4>
+		<p id="btc_addr"></p>
+	</div>
 {% endblock %}
 
 

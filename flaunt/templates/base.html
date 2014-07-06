@@ -123,7 +123,9 @@
                         	<div class="logo"><a href="index.html"><h2>{{ settings.SITE_TITLE }}</h2></a></div>                        
                         </div>
                         <div class="span8">
+                        
                         	<div class="follow_us">
+                            {% search_form "shop.Product" %}
                                 <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
                                     	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
 				    {% endif %}

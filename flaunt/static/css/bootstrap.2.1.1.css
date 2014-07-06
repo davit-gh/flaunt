@@ -989,7 +989,7 @@ textarea,
 
 textarea {
   height: auto;
-  min-height:150px !important;
+  min-height:80px !important;
   resize:none;
 }
 

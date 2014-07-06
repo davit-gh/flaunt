@@ -1,48 +1,100 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from flaunt.models import Countrylist
 from django.http import HttpResponse
+from cartridge.shop.utils import set_shipping
+from django.template.loader import render_to_string
+from cartridge.shop.utils import recalculate_cart
+from mezzanine.conf import settings
 import json
+
 # Create your views here.
 from django.views.decorators.csrf import ensure_csrf_cookie
+import pdb
 @ensure_csrf_cookie
 def ajax_country(request):
 	if request.is_ajax() and request.method == 'POST':
+
 		#message="is ajax"
 		countrylist_country = Countrylist.objects.get(country=request.POST['country'])
-		carriers = map(lambda x: x.carrier, countrylist_country.carrierlist_set.all())
+		carriers_priority=map(lambda x: x.carrier,countrylist_country.carrierlistpriority_set.all())
+		carriers_priority=[c_p[1:-1].split(', ') for c_p in carriers_priority]
+		carriers_priority=[cp[0] + '  '+cp[1]+' days '+cp[2]+'Y' for cp in carriers_priority]
+		
+		carriers_regular = map(lambda x: x.carrier, countrylist_country.carrierlistregular_set.all())
+		carriers_regular=[c_p[1:-1].split(', ') for c_p in carriers_regular]
+		carriers_regular=[cp[0] + '  '+cp[1]+' days '+cp[2]+'Y' for cp in carriers_regular]
 	else:
 		carriers = "not ajax"
-	return HttpResponse(json.dumps(carriers), mimetype="application/json")
+	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
+	return HttpResponse(json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), mimetype="application/json")
 
-import pdb
+
 from cartridge.shop.forms import CartItemFormSet
 def update_cart(request):
 	if request.is_ajax() and request.method == "POST":
 		sub = {}
 		grand = 0
 		form = request.POST
+		
 		cart_formset = CartItemFormSet(request.POST, instance=request.cart)
-		marked_for_delete = cart_formset.deleted_forms
-		for form in formset.forms:
-			if form['id'].value() not in [deleted_record['id'].value() for deleted_record in marked_for_delete]:    
-			    if form.is_valid():
-				form.save()
-				# save the form
-			    else:
-				pass
-		valid = cart_formset.is_valid()
-                if valid:
-                    cart_formset.save()
+		cart = cart_formset[0].instance.cart
 
-		    for i in range(len(cart_formset)): 
-			sub[i]=float(cart_formset[i].instance.total_price)
-		    grand = float(cart_formset[0].instance.cart.total_price())
-		    total_qty = int(cart_formset[0].instance.cart.total_quantity())
+		valid = cart_formset.is_valid()
+		if valid:
+			cart_formset.save()
+			sub = [float(f.instance.total_price) for f in cart_formset]
+			grand = float(cart.total_price()) 
+			
+			total_qty = int(cart.total_quantity())
+			return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty':total_qty}), content_type='application/json')
 		else:
-		    errors = cart_formset._errors
-                    cart_formset = CartItemFormSet(instance=request.cart)
-                    cart_formset._errors = errors
-	
-		return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty': total_qty}), content_type="application/json")
+			errors = cart_formset._errors
+			cart_formset = CartItemFormSet(instance=request.cart)
+			cart_formset._errors = errors
+			return HttpResponse(json.dumps({'errors' : errors}), content_type='application/json')
 	else:
-		return HttpResponse('not ok')
+		return HttpResponse('Sth went wrong.')
+
+from flaunt.shop.checkout import billship_handler
+def get_carrier(request):
+	if request.is_ajax() and request.method == 'POST':
+		carrier = request.POST['carrier']
+		shipping_type = request.POST['shipping_type']
+		shipping_total = float(carrier.split()[3][:-1])
+		total = float(request.cart.total_price())
+		if not request.session.get("free_shipping"):
+			settings.use_editable()
+			set_shipping(request, shipping_type, shipping_total)
+		
+		recalculate_cart(request)
+		
+		#resp = render_to_string('shop/cart.html', { 'request': request })
+	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
+									'shipping_total' : shipping_total, 
+									'total_price' : total}), content_type='application/json')
+import pdb
+from flaunt.forms import FeedbackForm
+from flaunt.models import Feedback
+from flaunt.models import Product
+from django.core.urlresolvers import reverse
+def save_feedback(request, product_id):
+	if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+		product = Product.objects.get(id=product_id)
+		fb = Feedback(product=product, user=request.user)
+        	form = FeedbackForm(request.POST,instance=fb)
+        # check whether it's valid:
+        	if form.is_valid():
+            	# process the data in form.cleaned_data as required
+            		form.save()
+            	# redirect to a new URL:
+            		return redirect('order_history')
+		else:
+			return HttpResponse('error')
+			
+    	# if a GET (or any other method) we'll create a blank form
+    	else:
+        	form = FeedbackForm()
+	
+	return render(request,'shop/includes/feedback.html',{'form':form, 'product_id':product_id})

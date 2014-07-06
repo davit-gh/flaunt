@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from flaunt.models import Countrylist
 from django.http import HttpResponse
 from cartridge.shop.utils import set_shipping
@@ -6,6 +7,7 @@ from django.template.loader import render_to_string
 from cartridge.shop.utils import recalculate_cart
 from mezzanine.conf import settings
 import json
+
 # Create your views here.
 from django.views.decorators.csrf import ensure_csrf_cookie
 import pdb
@@ -71,3 +73,28 @@ def get_carrier(request):
 	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
 									'shipping_total' : shipping_total, 
 									'total_price' : total}), content_type='application/json')
+import pdb
+from flaunt.forms import FeedbackForm
+from flaunt.models import Feedback
+from flaunt.models import Product
+from django.core.urlresolvers import reverse
+def save_feedback(request, product_id):
+	if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+		product = Product.objects.get(id=product_id)
+		fb = Feedback(product=product, user=request.user)
+        	form = FeedbackForm(request.POST,instance=fb)
+        # check whether it's valid:
+        	if form.is_valid():
+            	# process the data in form.cleaned_data as required
+            		form.save()
+            	# redirect to a new URL:
+            		return redirect('shop_order_history')
+		else:
+			return HttpResponse('error')
+			
+    	# if a GET (or any other method) we'll create a blank form
+    	else:
+        	form = FeedbackForm()
+	
+	return render(request,'shop/includes/feedback.html',{'form':form, 'product_id':product_id})
