@@ -1,0 +1,10 @@
+#id_value{
+    list-style: none;
+}
+#id_feedback_text{
+    padding-left: 3em;
+}
+textarea{
+    height: 4em;
+}
+

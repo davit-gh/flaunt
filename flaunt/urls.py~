@@ -1,0 +1,7 @@
+from django.conf.urls import patterns, url
+from flaunt import viewss
+
+urlpatterns = patterns('',
+    url(r"^pay_with_btc", "views.make_btc_purchase")
+
+)

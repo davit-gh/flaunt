@@ -1,0 +1,7 @@
+from flaunt.forms import FeedbackForm
+from mezzanine import template
+register = template.Library()
+
+@register.as_tag
+def feedback_form(*args):
+	return FeedbackForm()

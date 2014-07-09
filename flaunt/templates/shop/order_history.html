@@ -1,0 +1,145 @@
+{% extends "shop/base.html" %}
+{% load mezzanine_tags shop_tags i18n future rating_tags import_products staticfiles %}
+
+{% block meta_title %}{% trans "Order History" %}{% endblock %}
+{% block title %}{% trans "Order History" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{% trans "Order History" %}</li>
+{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static "css/feedbackform.css" %}" rel="stylesheet">
+    <link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
+    <link href="{% static "css/order_history_table.css" %}" rel="stylesheet">
+    <!-- http://rog.ie/blog/css-star-rater -->
+    <!-- check this for attractive rating form implementation -->
+{% endblock %}
+
+{% block extra_js %}
+    $('#id_value').css("list-style","none")
+    $('#id_value > li > label').contents().filter(function(){
+        return this.nodeType === 3;
+    }).remove();
+    $('#id_value > li:nth-child(4)').append('<img src="{{ MEDIA_URL }}rating/2-stars.jpg" width="40" height="15">');
+    $('#id_value > li:nth-child(3)').append('<img src="{{ MEDIA_URL }}rating/3-stars.jpg" width="60" height="35">');
+    $('#id_value > li:nth-child(2)').append('<img src="{{ MEDIA_URL }}rating/4-stars.jpg" width="80" height="50">');
+    $('#id_value > li:nth-child(1)').append('<img src="{{ MEDIA_URL }}rating/5-stars.jpg" width="100" height="60">');
+    $('.fback').click(function(e){
+        e.preventDefault();
+        var url = $(this).data('form');
+        var title_text = $(this).data('desc');
+        console.log(title_text);
+        $('#feedbackModal').load(url, function(){
+            $(this).modal('show');
+            $('input[id="id_item_title"]').val(title_text);
+        });
+        return false;
+    });
+    $('.feedback-form').on('submit',function(){
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
+            data: $(this).serialize(),
+            context: this,
+            success: function(data,status){
+                $('#feedbackModal').html(data);
+            },
+            error: function(data){
+                console.log('error'+JSON.stringify(data));
+            }
+        });
+        return false;
+    });
+
+{% endblock %}
+
+{% block main_span_size %}12{% endblock %}
+{% block panel_span_size %}{% endblock %}
+
+{% block main %}
+
+{% if orders %}
+
+<table class="outer">
+    <thead>
+        <th class="left">ID</th>
+        <th class="left">{% trans "Date/time" %}</th>
+        <th>{% trans "Quantity" %}</th>
+        <th>{% trans "Paid" %}</th>
+        <th class="left">{% trans "Status" %}</th>
+        <th>{% trans "Action Buttons" %}</th>
+    </thead>
+    <tbody>
+    {% for order in orders.object_list %}
+    <tr>       
+        <td>{{ order.id }}</td>
+        <td>{{ order.time }}</td>
+        <td>{{ order.quantity_total }}</td>
+        <td>{{ order.total|currency }}</td>
+        <td>{{ order.get_status_display }}</td>   
+        <td class="order-actions">
+            <a class="btn btn-sm btn-custom" href="{% url "shop_invoice" order.id %}?format=pdf">{% trans "Download PDF" %}</a>
+            <a class="btn btn-sm btn-custom" target="_blank" href="{% url "shop_invoice" order.id %}">{% trans "View invoice" %}</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan='6' class="tdwithtable">
+            
+                <table class="table-responsive inner">
+                <thead>
+                    
+                    <th>Image</th>
+                    <th>{% trans "Description" %}</th>
+                    <th>{% trans "Rating" %}</th>
+                    <th>{% trans "Feedback, please" %}</th>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>     
+                            {% get_all_products as products %}
+                            {% for product in products %}
+                                {% if item.sku == product.sku %}
+                                    <td>
+                                        {% if product.image %}
+                                            <a href="{{ product.get_absolute_url }}">
+                                                <img alt="{{ product.title }}" src="{{ MEDIA_URL }}{% thumbnail product.image 30 30 %}">
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <p title="{{ product.title }}">{{ product.title }}</p>
+                                    </td>
+                                    <td class="rating">
+                                        
+                                       {% rating_for product %}
+                              
+                                    </td>
+                                    <td>
+                                        <a class="fback btn btn-sm btn-custom" href="#" data-form="{% url "feedback" product.id %}" data-desc="{{ product.title }}">{% trans "Leave feedback" %}</a>
+                                        <div class="modal hide" id="feedbackModal"></div>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            
+        </td>
+    </tr>
+    <tr class="spacer"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr class="pseudo_header"><td>ID</td><td>{% trans "Date/time" %}</td><td>{% trans "Quantity" %}</td><td>{% trans "Paid" %}</td><td>{% trans "Status" %}</td><td>{% trans "Action Buttons" %}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% pagination_for orders %}
+
+{% else %}
+<p>{% trans "You have not ordered anything from us yet." %}</p>
+{% endif %}
+
+{% endblock %}
