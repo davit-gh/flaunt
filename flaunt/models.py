@@ -181,3 +181,17 @@ class Feedback(models.Model):
     user = models.ForeignKey(User, related_name="usr")
     item_title = models.CharField(max_length=100)
     feedback_text = models.TextField()
+    
+class Btcinvoices(models.Model):
+    invoice_key = models.CharField(max_length=100)
+    transaction_hash = models.CharField(max_length=100)
+    value_in_btc = models.CharField(max_length=50)
+    def __unicode__(self):
+        return self.invoice_key
+
+class Pendingbtcinvoices(models.Model):
+    invoice_key = models.CharField(max_length=100)
+    transaction_hash = models.CharField(max_length=100)
+    value_in_btc = models.CharField(max_length=50)
+    def __unicode__(self):
+        return self.invoice_key

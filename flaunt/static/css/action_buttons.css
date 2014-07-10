@@ -1,2 +1,17 @@
-.btn-custom { background-color: hsl(208, 100%, 75%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d1e9ff", endColorstr="#7fc3ff"); background-image: -khtml-gradient(linear, left top, left bottom, from(#d1e9ff), to(#7fc3ff)); background-image: -moz-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -ms-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d1e9ff), color-stop(100%, #7fc3ff)); background-image: -webkit-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -o-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: linear-gradient(#d1e9ff, #7fc3ff); border-color: #7fc3ff #7fc3ff hsl(208, 100%, 71%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26); -webkit-font-smoothing: antialiased; }
+.btn-custom { background-color: hsl(208, 100%, 75%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d1e9ff", endColorstr="#7fc3ff"); background-image: -khtml-gradient(linear, left top, left bottom, from(#d1e9ff), to(#7fc3ff)); background-image: -moz-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -ms-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d1e9ff), color-stop(100%, #7fc3ff)); background-image: -webkit-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -o-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: linear-gradient(#d1e9ff, #7fc3ff); border-color: #7fc3ff #7fc3ff hsl(208, 100%, 71%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26); -webkit-font-smoothing: antialiased; -moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;}
+#pay_btc_button{
+	padding: 15px;
+	margin-left: 15px;
+	text-decoration: none;
+}
+span#or{
+	margin-left: 10px;
+}
+#pay_btc_button > span{
+	font: 20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+#pay_btc_button > img{
+	padding-top: 10px;
+}
 
