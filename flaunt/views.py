@@ -98,3 +98,28 @@ def save_feedback(request, product_id):
         	form = FeedbackForm()
 	
 	return render(request,'shop/includes/feedback.html',{'form':form, 'product_id':product_id})
+
+from flaunt,models import Btcinvoices, Pendingbtcinvoices
+def blockchain_callback(request):
+	if request.method == 'GET':
+		query = request.GET
+		address = query['address']
+		secret = query['secret']
+		confirmations = int(query['confirmations'])
+		invoice_key = query['invoice_key']
+		transaction_hash = query['transaction_hash']
+		value_in_btc = query['value']
+		if address != settings.MY_BTC_ADDRESS:
+			return HttpResponse('Incorrect Receiving Address')
+		if secret != settings.BTC_SECTRET:
+			return HttpResponse('Invalid Secret')
+		if confirmations >= 4:
+			invoice created = Btcinvoices.objects.get_or_create(invoice_key, transaction_hash, value_in_btc)
+			if created:
+				Pendingbtcinvoices.objects.get(invoice_key=invoice_key).delete()
+			return HttpResponse("*ok*")
+			
+		else:
+			pending created = Pendingbtcinvoices.objects.get_or_create(invoice_key, transaction_hash, value_in_btc)
+			
+			return HttpResponse("Waiting for more confirmations.")

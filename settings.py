@@ -533,4 +533,8 @@ LOGGING = {
     },
 }
 
-
+################
+# BTC settings #
+################
+MY_BTC_ADDRESS = '19sVNRFBT3xAY1kkXcDcoB5dAHW42f1iFH'
+BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
