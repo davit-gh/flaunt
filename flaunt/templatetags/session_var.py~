@@ -1,0 +1,7 @@
+from mezzanine import template
+register = template.Library()
+
+@register.filter(name='type')
+def get_session_var(req, x):
+	session_var = req.session.get(x)
+	return session_var if session_var else None

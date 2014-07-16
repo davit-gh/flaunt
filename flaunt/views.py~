@@ -89,7 +89,7 @@ def save_feedback(request, product_id):
             	# process the data in form.cleaned_data as required
             		form.save()
             	# redirect to a new URL:
-            		return redirect('order_history')
+            		return redirect('shop_order_history')
 		else:
 			return HttpResponse('error')
 			
@@ -98,3 +98,83 @@ def save_feedback(request, product_id):
         	form = FeedbackForm()
 	
 	return render(request,'shop/includes/feedback.html',{'form':form, 'product_id':product_id})
+
+from cartridge.shop.models import Cart, Order, ProductVariation, DiscountCode
+def remove_cart(cart_pk,session, s_key):
+	try:
+	    cart = Cart.objects.get(id=cart_pk)
+	    try:
+	        order = Order.objects.get(key=s_key)
+	        for field in order.session_fields:
+	            if field in session:
+	                del session[field]
+	        try:
+	            del session["order"]
+	        except KeyError:
+	            pass
+
+            # Since we're manually changing session data outside of
+            # a normal request, need to force the session object to
+            # save after modifying its data.
+	        session.save()
+
+        	for item in cart:
+        	    try:
+        	        variation = ProductVariation.objects.get(
+        	            sku=item.sku)
+        	    except ProductVariation.DoesNotExist:
+        	        pass
+        	    else:
+        	        variation.update_stock(item.quantity * -1)
+        	        variation.product.actions.purchased()
+
+        	code = session.get('discount_code')
+        	if code:
+        	    DiscountCode.objects.active().filter(code=code).update(uses_remaining=F('uses_remaining') - 1)
+        	cart.delete()
+        except Order.DoesNotExist:
+    	    pass
+	except Cart.DoesNotExist:
+	    pass
+
+	return session
+            
+
+from importlib import import_module
+from flaunt.models import Btcinvoices, Pendingbtcinvoices
+def blockchain_callback(request):
+	SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+	if request.method == 'GET':
+		query = request.GET
+		address = query['address']
+		secret = query['secret']
+		confirmations = int(query['confirmations'])
+		invoice_key = query['invoice_key']
+		transaction_hash = query['transaction_hash']
+		value_in_btc = str(float(query['value']) / 100000000)
+		if query['test']:
+                        return HttpResponse('no tests now!')
+		if address != settings.MY_BTC_ADDRESS:
+			return HttpResponse('Incorrect Receiving Address')
+		if secret != settings.BTC_SECRET:
+			return HttpResponse('Invalid Secret')
+		if confirmations >= 4:
+			invoice, created = Btcinvoices.objects.get_or_create(invoice_key=invoice_key, transaction_hash=transaction_hash, value_in_btc=value_in_btc)
+			if created:
+				Pendingbtcinvoices.objects.get(invoice_key=invoice_key).delete()
+			return HttpResponse("*ok*")
+			
+		else:
+			pending, created = Pendingbtcinvoices.objects.get_or_create(invoice_key=invoice_key, transaction_hash=transaction_hash, value_in_btc=value_in_btc)
+			sess = SessionStore(invoice_key)
+			cpk = query['cart_pk']
+			request.session = remove_cart(cpk, sess, invoice_key)
+			return HttpResponse()
+
+def check_request(request):
+	if request.method == 'POST' and request.is_ajax():
+		if request.session.get('order',False):
+			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. Please try again in a moment"}), content_type='application/json')
+		else:
+			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations."
+			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')

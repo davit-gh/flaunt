@@ -50,7 +50,6 @@ def shop_processor(request, page):
 	slider_images = Slide.objects.all()
 	return {'slider_images': slider_images}
 
-
 @processor_for(Form)
 def ajax_form_processor(request, page):
     """
