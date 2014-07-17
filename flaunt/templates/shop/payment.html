@@ -5,6 +5,7 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css"  %}">
 <link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static "css/modal-message.css"%}">
 {% endblock %}
 
 {% block slider_js %}
@@ -58,8 +59,8 @@
                                 	$('a#redir')[0].click();
                                 }
                                 else{
-                                	$('.alert p').html(data['responsito']);
-                    				$('#info-box').show();
+                                	$('.alert p').html(data['responsito']).parent().addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                    				
                                 	
                                 }
                         },
@@ -97,8 +98,7 @@
 				</div>
 
 			</div>
-			<div class="alert fade in" id="info-box" style="display:none;">
-    			<button type="button" class="close">×</button>
+			<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
     			<p></p>
 			</div>
 		{% endif %}

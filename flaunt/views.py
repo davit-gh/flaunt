@@ -174,7 +174,7 @@ def blockchain_callback(request):
 def check_request(request):
 	if request.method == 'POST' and request.is_ajax():
 		if request.session.get('order',False):
-			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. It may take about 2 mins for the paypent to propagate in the blockchain. Please try again then."}), content_type='application/json')
+			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. It may take about 2 mins for the payment to propagate in the blockchain. Please try again then."}), content_type='application/json')
 		else:
-			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from blockchain."
+			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
 			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')

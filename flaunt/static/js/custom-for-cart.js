@@ -28,6 +28,9 @@ $.ajaxSetup({
     }
 });
 function getCountry(sel){
+    if($("#required").length){
+        $("#required").remove();
+    }
 	$('#chosen_country').val(sel.value);
     $('#id_shipping_type').val("");
     $('#id_carrier').find('option').remove().end().append('<option value="0">Please select a country first</option').val("0");
@@ -38,6 +41,9 @@ function getCountry(sel){
     
 }
 function setCarriers(s){
+    if($("#required").length){
+        $("#required").remove();
+    }
     var country_name = $('#chosen_country').val();
     $.post('/ajax_country',{'country' : country_name}, function(data){ 
         console.log(data);
@@ -61,6 +67,9 @@ function setCarriers(s){
     
 }
 function getCarrier(sel){
+    if($("#required").length){
+        $("#required").remove();
+    }
     $.ajax({
         url: '/get_carrier',
         type: 'POST',

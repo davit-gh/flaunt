@@ -3,20 +3,16 @@ from django import forms
 from models import Countrylist
 from django.forms import ModelForm, Textarea
 from flaunt.models import Feedback
-
+import pdb
 class CountryForm(forms.Form):
 	COUNTRY_CHOICES = [('','Please select a country'), ] + [(ctry.country, ctry.country) for ctry in Countrylist.objects.all()]
 	CARRIER_CHOICES = [('','Please select a country first')]
 	CARRIER_TYPES   = [('','Please select a country first')]
-	country = forms.ChoiceField(choices=COUNTRY_CHOICES, widget=forms.Select(attrs={'onchange':'getCountry(this);'}))
+	country = forms.ChoiceField(choices=COUNTRY_CHOICES, widget=forms.Select(attrs={'onchange':'getCountry(this);', 'class':'required'}))
 	shipping_type = forms.ChoiceField(choices=CARRIER_TYPES, widget=forms.Select(attrs={'onchange':'setCarriers(this);'}))
 	carrier = forms.ChoiceField(choices=CARRIER_CHOICES, widget=forms.Select(attrs={'onchange':'getCarrier(this);'}))
-
+	
 class FeedbackForm(ModelForm):
-	def __init__(self, *args, **kwargs):
-        	highlight_field = kwargs.pop('highlight')    #pass the fieldname-to-highlight as kwarg
-        	super(MyForm, self).__init__(*args, **kwargs)
-        	self.fields[highlight_field].css = "highlight"
 	class Meta:
 		model = Feedback
 		fields = ['item_title', 'feedback_text']

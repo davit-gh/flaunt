@@ -61,7 +61,7 @@
     <script type="text/javascript" src="{% static "js/jquery.preloader.js" %}"></script>
 
     
-  
+  {% block slider_js %}{% endblock %}
     <script type="text/javascript">
 		$(document).ready(function(){	
 			{% block extra_js %}{% endblock %}
@@ -91,7 +91,7 @@
 									
 		});		
 	</script>
-{% block slider_js %}{% endblock %}
+
 {% endblock %}
 
 
