@@ -60,7 +60,8 @@ urlpatterns += patterns('',
     url(r"^get_carrier", "flaunt.views.get_carrier"),
     url(r"^feedback/(?P<product_id>\d+)$", "flaunt.views.save_feedback", name="feedback"),
     url(r"^callback", "flaunt.views.blockchain_callback"),
-    url(r"^check_request", "flaunt.views.check_request"),
+    url(r"^check_request", "flaunt.views.check_request", name="check"),
+    url(r"^handle_wishlist/(?P<slug>.*)", "flaunt.views.handle_wishlist", name="wish"),
     (r'^paypal-ipn-4d4k9t485j5d4g1re56t25rr2de/', include('paypal.standard.ipn.urls')),
     
     # HOMEPAGE FOR A BLOG-ONLY SITE

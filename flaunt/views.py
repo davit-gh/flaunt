@@ -178,3 +178,33 @@ def check_request(request):
 		else:
 			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
 			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')
+
+from cartridge.shop.forms import AddProductForm
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.utils.translation import ugettext as _
+from mezzanine.utils.views import set_cookie
+def handle_wishlist(request, slug, form_class=AddProductForm):
+	if request.method == 'POST' and request.is_ajax():
+		published_products = Product.objects.published(for_user=request.user)
+		product = get_object_or_404(published_products, slug=slug)
+		initial_data = {}
+		variations = product.variations.all()
+		fields = [f.name for f in ProductVariation.option_fields()]
+		if variations:
+			initial_data = dict([(f, getattr(variations[0], f)) for f in fields])
+		initial_data["quantity"] = 1
+		add_product_form = form_class(request.POST or None, product=product, initial=initial_data, to_cart=False)
+		if add_product_form.is_valid():
+			skus = request.wishlist
+			
+			sku = add_product_form.variation.sku
+			if sku not in skus:
+				skus.append(sku)
+			messages.info(request, _("Item added to wishlist"))
+			response = redirect("shop_wishlist")
+			set_cookie(response, "wishlist", ",".join(skus))
+			return response
+
+		return HttpResponse(request.POST)
+	return HttpResponse('not post')

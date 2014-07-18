@@ -72,7 +72,7 @@
 #wishlist{
 		background: #ECECEC;
 		border-radius: 15px;
-		padding: 6px 10px;
+		padding: 6px 10px 6px 20px;
 		display: block;
 		font-family: 'Montserrat Alternates', sans-serif;
 		font-size: 10px;
@@ -80,7 +80,8 @@
 		text-decoration: none;
 		text-shadow:0px 1px 0px #fff;
 		border:1px solid #a7a7a7;
-		margin:10px auto;
+		margin-left:170px;
+		width: 100px;
 		box-shadow: 7px 7px 13px #888888;
 		-webkit-box-shadow: 7px 7px 13px #888888;
 		-moz-box-shadow: 7px 7px 13px #888888;

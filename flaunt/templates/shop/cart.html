@@ -52,13 +52,9 @@
                         quantity = $('#'+clicked_id).data('quantity'),
                         input_field = $('#'+clicked_id).parent().find('input');
                     if (data.errors){
-                        console.log(data.errors);
                         $('.alert').addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
                         $(input_field).val(quantity);
-
                     }else{
-                        
-                        console.log(data);
                         var subtotal = parseFloat(data['grand']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                         var shipping_fee = $('#subtotal').val();
                         if (shipping_fee == '0'){

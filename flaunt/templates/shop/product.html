@@ -38,6 +38,33 @@
 
 {% block extra_js %}
 
+$("#add-cart").submit(function(){
+    var plain = {};
+    var qty = $('input[type="number"]').val();
+    $.each($('select'), function(index, value){
+        plain[$(value).attr('name')] = $(value).val();
+    });
+    plain['quantity'] = qty;
+    plain['csrfmiddlewaretoken'] = '{{ csrf_token  }}';
+    $.ajax({
+        url: "{% url 'wish' product.slug %}",
+        data: $(this).serialize(),
+        type: 'POST',
+        success: function(data){
+            console.log(data);
+        },
+        error: function(data){ 
+            console.log('error '+JSON.stringify(data));
+            
+        }
+
+    });
+    return false;
+});
+$('#wishlist').click(function(e){
+    $('#add-cart').submit();
+    e.preventDefault();
+});
 $('select').on('mouseenter',function(){
     open($(this));
 });
@@ -124,7 +151,7 @@ $("#zoom_03").bind("click", function(e) {
                     <div id="buttons">
                         <input type="submit" class="action-button shadow animate blue" name="add_cart" value="{% trans "ADD TO CART" %}">
                         {% if settings.SHOP_USE_WISHLIST %}
-                        <input type="submit" id="wishlist" class="shadow animate" name="add_wishlist" value="{% trans "ADD TO WISHLIST" %}">
+                        <a id="wishlist" href="" class="shadow animate" name="add_wishlist" >ADD TO WISHLIST</a>
                         {% endif %}
                     </div>
                 </form>

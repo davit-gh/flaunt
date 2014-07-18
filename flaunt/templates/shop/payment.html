@@ -50,7 +50,7 @@
 	$('#confirm_payment').click(function(){
 				
                 $.ajax({
-                        url: '/check_request',
+                        url: "{% url 'check' %}",
                         data: {csrfmiddlewaretoken: '{{ csrf_token  }}'},
                         type: 'POST',
                         dataType: 'json',
