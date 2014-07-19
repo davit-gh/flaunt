@@ -67,7 +67,9 @@
 			{% block extra_js %}{% endblock %}
 			
 			
-			
+			{% if messages %}
+                $('#message-box').delay(4000).fadeTo('slow',0);
+            {% endif %}
 			//Image hover
 			$(".hover_img").live('mouseover',function(){
 					var info=$(this).find("img");
@@ -124,33 +126,34 @@
                         </div>
                         <div class="span8">
                         
-                        	<div class="follow_us">
-                            {% search_form "shop.Product" %}
-                                <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
-                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
-				    {% endif %}
-                                    {% if settings.VIDEO_SHARING_LINK_VIMEO %}
-                                    	<li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
-                                    {% endif %}
-                                    {% if settings.BLOGGING_LINK_TUMBRL %}
-                                    	<li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_TWITTER %}
-                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_DELICIOUS %}
-                                     	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
-				    {% endif %}
-                                    
-                                </ul>
-                            </div>
+                        	
                             <div class="clear"></div>
                             
                             <nav id="main_menu">
                                 <div class="menu_wrap">
                                     {% page_menu "pages/menus/dropdown.html" %}
                                 </div>
-                             </nav>                            
+                            </nav> 
+                            <div class="follow_us">
+                            
+                                <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
+                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
+                    {% endif %}
+                                    {% if settings.VIDEO_SHARING_LINK_VIMEO %}
+                                        <li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
+                                    {% endif %}
+                                    {% if settings.BLOGGING_LINK_TUMBRL %}
+                                        <li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
+                                    {% endif %}
+                                    {% if settings.SOCIAL_LINK_TWITTER %}
+                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
+                                    {% endif %}
+                                    {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
+                    {% endif %}
+                                    
+                                </ul>
+                            </div>                           
                         </div>
                     </div>                
                 </div>
@@ -164,6 +167,9 @@
     <div class="page_container">
 	
 	<div class="wrap">
+
+        {% include 'messages.html' %}
+
 		<div class="container">
 			<div class="row">
 				{% block main_wrapper %}

@@ -82,7 +82,7 @@
                         }else{
                             $('#cart_menu').html(' 1 item in cart, total: $'+grand);
                         }
-                        console.log(sub);
+                        
                     }
                             
                 },
@@ -157,7 +157,7 @@
         <td>{{ item.unit_price|currency }}</td>
         <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}'>Update</a></td>
         <td id="price-{{ item.id }}">{{ item.total_price|currency }}</td>
-        <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''>Remove</a></td>
+        <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''><img alt="Remove" src="{% static "img/delete.png" %}" width="20"></a></td>
     </tr>
     {% endwith %}
     {% endfor %}

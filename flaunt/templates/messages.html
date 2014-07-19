@@ -1,0 +1,16 @@
+    {% load mezzanine_tags %}
+
+    {% nevercache %}
+    {% spaceless %}
+        {% if messages %}
+            <div id="{{ request.wishlist|length }}" class="messages">
+            {% for message in messages %}
+                <div id = "message-box" style="width:16em; margin-top: 1em; text-align: center;" class="alert alert-{{ message.tags }} modal" data-alert="alert">
+                    <p style="font: 18px/20px Helvetica, Arial, sans-serif;">{{ message }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+    {% endnevercache %}
+    

@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load mezzanine_tags shop_tags i18n future %}
+{% load mezzanine_tags shop_tags i18n future staticfiles %}
 
 {% block meta_title %}{% trans "Your Wishlist" %}{% endblock %}
 {% block title %}{% trans "Your Wishlist" %}{% endblock %}
@@ -9,14 +9,49 @@
 <li>{% trans "Your Wishlist" %}</li>
 {% endblock %}
 
+{% block extra_css %}
+    <link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block slider_js %}
+    <script type="text/javascript">
+        function trim1 (str) {
+            return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        }
+    </script>
+{% endblock %}
+
+{% block extra_js %}
+    $("a[id|='remove']").click(function(){
+        var sku = $(this).data('sku');
+        $.post('{% url 'remove_WL_item' %}', {'sku':sku, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, function(data){
+            $('table tr#'+sku).remove();
+            var message = trim1(data);
+            var new_count = message.charAt(9);
+            $('#messages').html(message).delay(4000).fadeTo('slow',0);
+            if(new_count == '1'){
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' item ');
+            }else if(new_count == '0'){
+                $('div.span8:last').html('<p>{% trans "Your wishlist is empty." %}</p><br><p><a class="btn btn-large btn-primary" href="{% url "page" "shop" %}">{% trans "Continue Shopping" %}</a></p>');
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' items ');
+            }else{
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' items ');
+            }
+            
+        })
+        return false;
+    })
+{% endblock %}
+
 {% block main %}
+
 {% if error %}{{ error }}{% endif %}
 {% if request.wishlist %}
 <form method="post">
 {% csrf_token %}
 <table class="table table-striped wishlist">
     {% for item in wishlist_items %}
-    <tr>
+    <tr id="{{ item.sku }}">
     <td width="30">
         {% if item.image %}
         <a href="{{ item.get_absolute_url }}"><img alt="{{ item }}" src="{{ MEDIA_URL }}{% thumbnail item.image.file 30 30 %}"></a>
@@ -33,18 +68,22 @@
             
             <input type="hidden" name="sku" value="{{ item.sku }}">
             <input type="hidden" name="quantity" value="1">
-            
-            <input type="submit" class="btn btn-sm btn-default" name="remove_wishlist" value="{% trans "Remove" %}">
+    </td>
+    <td>        
+            <a class="" id="remove-{{ item.sku }}" data-sku="{{ item.sku }}" name="remove_wishlist" href=""><img alt="Remove" src="{% static "img/delete.png" %}" width="20"></a>
         
     </td>
     </tr>
     {% endfor %}
 </table>
-<input type="submit" class="btn btn-sm btn-primary" name="add_cart" value="{% trans "Buy" %}">
+<input type="submit" class="btn btn-sm btn-custom" name="add_cart" style="font-size:15px" value="{% trans "BUY ALL" %}">
 </form>
 {% else %}
 <p>{% trans "Your wishlist is empty." %}</p>
 <br>
 <p><a class="btn btn-large btn-primary" href="{% url "page" "shop" %}">{% trans "Continue Shopping" %}</a></p>
 {% endif %}
+{% endblock %}
+{% block right_panel %}
+<div id="messages"></div>
 {% endblock %}

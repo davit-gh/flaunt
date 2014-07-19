@@ -179,11 +179,19 @@ def check_request(request):
 			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
 			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')
 
+# `data` is a python dictionary
+def render_to_json(data):
+    return HttpResponse(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json")
+
 from cartridge.shop.forms import AddProductForm
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from mezzanine.utils.views import set_cookie
+from django.template.loader import render_to_string
+from django.template import RequestContext
 def handle_wishlist(request, slug, form_class=AddProductForm):
 	if request.method == 'POST' and request.is_ajax():
 		published_products = Product.objects.published(for_user=request.user)
@@ -202,9 +210,22 @@ def handle_wishlist(request, slug, form_class=AddProductForm):
 			if sku not in skus:
 				skus.append(sku)
 			messages.info(request, _("Item added to wishlist"))
-			response = redirect("shop_wishlist")
+			response = render(request,'messages.html')
 			set_cookie(response, "wishlist", ",".join(skus))
 			return response
 
 		return HttpResponse(request.POST)
 	return HttpResponse('not post')
+
+from django.contrib import messages
+def remove_wishlist_item(request):
+	if request.method == 'POST':
+		skus = request.wishlist
+		sku = request.POST.get("sku")
+        if sku in skus:
+        	skus.remove(sku)
+        	message = _("Item removed from wishlist")
+        	messages.info(request, message)
+        response = render(request,'messages.html')
+        set_cookie(response, "wishlist", ",".join(skus))
+        return response

@@ -22,7 +22,11 @@
     <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
 
     <script type="text/javascript" src="{% static "js/jquery.elevateZoom-3.0.8.min.js" %}"></script>
-    
+    <script type="text/javascript">
+        function trim1 (str) {
+            return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        }
+    </script>
 {% endblock %}
 
 {% block extra_css %}
@@ -38,7 +42,7 @@
 
 {% block extra_js %}
 
-$("#add-cart").submit(function(){
+$('#wishlist').click(function(){
     var plain = {};
     var qty = $('input[type="number"]').val();
     $.each($('select'), function(index, value){
@@ -48,11 +52,19 @@ $("#add-cart").submit(function(){
     plain['csrfmiddlewaretoken'] = '{{ csrf_token  }}';
     $.ajax({
         url: "{% url 'wish' product.slug %}",
-        data: $(this).serialize(),
+        data: plain,
         type: 'POST',
-        success: function(data){
-            console.log(data);
-        },
+        success: function(data){           
+            
+            var message = trim1(data);
+            var new_count = message.charAt(9);
+            if(new_count == '1'){
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' item ');
+            }else{
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' items ');
+            }
+            $('#messages').html(message).delay(4000).fadeTo('slow',0);
+        }, 
         error: function(data){ 
             console.log('error '+JSON.stringify(data));
             
@@ -61,10 +73,7 @@ $("#add-cart").submit(function(){
     });
     return false;
 });
-$('#wishlist').click(function(e){
-    $('#add-cart').submit();
-    e.preventDefault();
-});
+
 $('select').on('mouseenter',function(){
     open($(this));
 });
@@ -102,7 +111,7 @@ $("#zoom_03").bind("click", function(e) {
 <div class="span10">
     <p class="product_title">{{ product.title }}</p>
 </div>
-
+<div id="messages"></div>
 <div class="row" style="padding-top: 40px">
     <div class="span4">
         <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 330 300 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 800 0 %}"/>

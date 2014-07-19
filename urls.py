@@ -62,6 +62,7 @@ urlpatterns += patterns('',
     url(r"^callback", "flaunt.views.blockchain_callback"),
     url(r"^check_request", "flaunt.views.check_request", name="check"),
     url(r"^handle_wishlist/(?P<slug>.*)", "flaunt.views.handle_wishlist", name="wish"),
+    url(r"^remove_wish_item", "flaunt.views.remove_wishlist_item", name="remove_WL_item"),
     (r'^paypal-ipn-4d4k9t485j5d4g1re56t25rr2de/', include('paypal.standard.ipn.urls')),
     
     # HOMEPAGE FOR A BLOG-ONLY SITE

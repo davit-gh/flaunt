@@ -13,16 +13,20 @@
  
       <!-- Start of the nav bar content -->
       <div class="nav-collapse"><!-- Other nav bar content -->
-        ...
-        ...
+        
  
         <!-- The drop down menu -->
         <ul class="nav pull-right">
+          <li>
+            {% search_form "shop.Product" %}
+          </li>
           {% if settings.SHOP_USE_WISHLIST %}
           <li class="dropdown">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                   <span><img src="{% static "img/wishlist.svg" %}" width="20"></span>
-                      {% blocktrans count request.wishlist|length as wishlist_count %}Wishlist contains 1 item{% plural %} Wishlist contains {{ wishlist_count }} items{% endblocktrans %}<strong class="caret"></strong>
+                    <span id='wishlist_menu'>
+                      {% blocktrans count request.wishlist|length as wishlist_count %}Wishlist contains 1 item{% plural %} Wishlist contains {{ wishlist_count }} items{% endblocktrans %}
+                    </span><strong class="caret"></strong>
                 </a>
                 <ul class="dropdown-menu">
                   <li>
