@@ -1,0 +1,38 @@
+
+table.outer {	
+	border-collapse: collapse;
+	padding: 0;
+	margin: 0;
+}
+table.outer th:first-child{
+	-moz-border-radius-topleft:15px;
+	-webkit-border-top-left-radius:15px;
+	border-top-left-radius:15px;
+}
+table.outer th:last-child{
+	-moz-border-radius-topright:15px;
+	-webkit-border-top-right-radius:15px;
+	border-top-right-radius:15px;
+}
+table.outer td{
+	text-align: center;
+	border: 1px solid #C1DAD7;
+}
+
+
+table.outer th{
+	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #4f6b72;
+	
+	border: none;
+
+	letter-spacing: 2px;
+	
+	text-align: center;
+	padding: 6px 6px 6px 12px;
+	background: #CAE8EA url(images/bg_header.jpg) no-repeat;
+}
+
+.form-actions{
+	margin-top: 15px;
+}

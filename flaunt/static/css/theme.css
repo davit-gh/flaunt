@@ -993,7 +993,7 @@ ul.recent_post div a:hover {color:#d00b01;
 }
 .contact_form { padding-top:6px;
 }
-.contact_form textarea { min-height:260px !important;
+.contact_form textarea { min-height:260px;
 }
 .notification_error {
 	color: #b94a48;

@@ -1,50 +1,61 @@
 {% extends "pages/page.html" %}
 
 {% load mezzanine_tags staticfiles %}
+
+{% block extra_css %}
+    <link href="{% static "css/checkout_form.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block extra_js %}
-
-
-	var frm = $('form');
-	frm.submit(function(){
-		$.ajax({
-			type: frm.attr('method'),
-			url: "/contact/",
-			data: frm.serialize(),
-			success: function(data){
-				console.log(data);
-			},
-			error: function(data){
-				console.log(data);
-			}
-		});
-		return false;
-	});
+	{% if user.is_authenticated %}
+		$("input[id='id_field_1']").val("{{ user.username }}");
+		$("input[id='id_field_2']").val("{{ user.email }}");
+	{% endif %}
+	
 {% endblock %}
  <!-- https://gist.github.com/joshcartme/5130702 -->
 	{% block main %}
-{% load widget_tweaks %}
-<div class="contact_form">  
-<form class="row-fluid" method="post" action="/content/">
-{% csrf_token %}
-{{form.errors}}
-	<h2 class="title"><span>Get In Touch</span></h2>
-        {% for hidden in form.hidden_fields %}
-	{{hidden}}
-	{% endfor %}
-	{% for vis in form.visible_fields %}
-		<fieldset class="control-group">
-                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
- 
-                    <div class="controls">
-                        {% render_field vis class="span7" %}
-                        
-                    </div>
-        </fieldset>
-	{% endfor %}
-<input type="submit" class="btn send_btn" id="sbmt_btn" value="Submitt"/>
-</form>
-</div>
-	{% endblock %}
+
+	{{ block.super }}
+{% if request.GET.sent %}
+    {% editable page.form.response %}
+    	 <p style="font-family: 'Montserrat Alternates', sans-serif; font-size: 18px; color:#7f7f7f;">
+    	 	<img width="120" height="120" style="float: left;  margin-top: -25px;" src="/static/media/uploads/shop/thanks.png"></img>
+     		for getting in touch with us. We'll get back to you as soon as possible!
+		</p>
+    {% endeditable %}
+{% else %}
+    {% with page.form as page_form %}
+    {% editable page_form.content %}
+    {{ page_form.content|richtext_filters|safe }}
+    {% endeditable %}
+    {% endwith %}
+
+	{% errors_for form %}
+
+	{% load widget_tweaks %}
+	<div class="contact_form" style="margin-left:200px">  
+		<form class="row-fluid" method="post">
+			{% csrf_token %}
+
+			<h2 class="title"><span>Get In Touch</span></h2>
+		        {% for hidden in form.hidden_fields %}
+			{{hidden}}
+			{% endfor %}
+			{% for vis in form.visible_fields %}
+				<fieldset class="control-group">
+		                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
+		 
+		                    <div style="width:60%" class="form-group">
+		                        {% render_field vis style="height: 25px" %}
+		                    </div>
+		        </fieldset>
+			{% endfor %}
+			<input type="submit" style="margin-left:110px" class="btn btn-large btn-primary" id="sbmt_btn" value="{{ page.form.button_text }}"/>
+		</form>
+	</div>
+{% endif %}
+{% endblock %}
 
 {% block right_panel %}
 	<h2 class="title"><span>Contact Info</span></h2>

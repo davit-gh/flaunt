@@ -15,10 +15,10 @@ RATINGS_RANGE = range(5,1,-1)
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 SHOP_USE_RATINGS = False
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
-    "first_name",
+
     "last_name",
 )
-ACCOUNTS_NO_USERNAME = True
+ACCOUNTS_NO_USERNAME = False
 ACCOUNTS_VERIFICATION_REQUIRED = True
 SHOP_CHECKOUT_ACCOUNT_REQUIRED = True
 PRIMARY_PAYMENT_PROCESSOR_IN_USE = False
@@ -200,13 +200,13 @@ USE_SOUTH = True
 # In the format (('Full Name', 'email@example.com'),
 #                ('Full Name', 'anotheremail@example.com'))
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+    ('Davit', 'davsmile@yahoo.com'),
 )
 MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['128.199.160.27']
+ALLOWED_HOSTS = ['128.199.160.27','127.0.0.1','localhost']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -215,7 +215,7 @@ ALLOWED_HOSTS = ['128.199.160.27']
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = "America/Vancouver"
+TIME_ZONE = "Asia/Chongqing"
 
 # If you set this to True, Django will use timezone-aware datetimes.
 USE_TZ = True
@@ -489,3 +489,7 @@ else:
 # SOCIAL ICON SETTINGS #
 ########################
 SOCIAL_LINK_FACEBOOK = True
+
+
+MY_BTC_ADDRESS = '19sVNRFBT3xAY1kkXcDcoB5dAHW42f1iFH'
+BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'

@@ -12,6 +12,9 @@
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static "css/country_and_carriers_form.css"%}">
 <link rel="stylesheet" type="text/css" href="{% static "css/modal-message.css"%}">
+<link rel="stylesheet" type="text/css" href="{% static "css/cart_form_fields.css" %}">
+<link href="{% static "css/cart_table.css" %}" rel="stylesheet">
+<link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
 {% endblock %}
 {% block slider_js %}
 
@@ -20,13 +23,20 @@
 {% endblock %}
 
 {% block extra_js %}
+
+    $(document).bind("ajaxSend", function(){
+        $("#loading").show();
+    }).bind("ajaxComplete", function(){
+        $("#loading").hide();
+    });
+
     $('#id_shipping_type').val("");
     $('#id_country').val("");
     $("select[name='country'] option:eq(0)").attr('disabled','disabled');
     $("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
     $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
 
-    $("#id_country option")[0]['selected'] = true;
+  
     $('#checkout').click(function(){
         var country = $("#id_country");
         var ship_type = $("#id_shipping_type");
@@ -129,14 +139,14 @@
 {% endfor %}
 {% endif %}
 {{ cart_formset.management_form }}
-<table class="table table-bordered span8">
+<table class="table outer span8">
     <thead>
     <tr>
-        <th colspan="2" class="left">{% trans "Item" %}</th>
+        <th colspan="2">{% trans "Item" %}</th>
         <th>{% trans "Unit Price" %}</th>
-        <th class="center">{% trans "Quantity" %}</th>
+        <th>{% trans "Quantity" %}</th>
         <th>{% trans "Price" %}</th>
-        <th class="center">{% trans "Remove?" %}</th>
+        <th>{% trans "Remove?" %}</th>
     </tr>
     </thead>
     <tbody>
@@ -154,17 +164,27 @@
         <td class="left">
             <a href="{{ item.get_absolute_url }}">{{ item.description }}</a>
         </td>
-        <td>{{ item.unit_price|currency }}</td>
-        <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}'>Update</a></td>
+        <td style="text-align: center;">{{ item.unit_price|currency }}</td>
+        <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}' class="btn-sm btn-custom" style="margin-left:10px">Update</a></td>
         <td id="price-{{ item.id }}">{{ item.total_price|currency }}</td>
         <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''><img alt="Remove" src="{% static "img/delete.png" %}" width="20"></a></td>
     </tr>
     {% endwith %}
     {% endfor %}
     <tr>
-        <td colspan="3" style="text-align:left; padding-left:60px;">
+        <td colspan="3" style="text-align:left; padding-left:40px;">
             {% make_form as form %}
-            {{ form.as_p }}
+            {% for field in form.hidden_fields %} {{ field }} {% endfor %}
+            {% for field in form.visible_fields %}
+                {% if forloop.last %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                    <img id="loading" style="display:none" src="{% static "img/preload_img.gif" %}">
+                {% else %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                {% endif %}
+            {% endfor %}
         </td>
         <td colspan="3" id="total_cell" style="text-align:center" >{% order_totals %}</td>
         
@@ -178,9 +198,14 @@
 <input type="hidden" id="subtotal" value="0" name="Shipping fee" data-notenoughstockid="" class="{{ request.cart.total_quantity }}" />
 <input type="hidden" id="chosen_country" />
 <div class="form-actions">
-    <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-primary btn-lg pull-right">
-        {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
-    </a>
+    <div id="form-buttons">
+        <a id="return" href="/shop" class="btn-custom">
+            <img alt="Remove" src="{% static "img/back.png" %}" width="20">&nbsp;{% trans "Keep Shopping" %}
+        </a>
+        <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-lg btn-custom pull-right">
+            {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
+        </a>
+    </div>
 </div>
 </form>
 

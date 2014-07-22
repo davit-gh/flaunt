@@ -5,7 +5,8 @@
         {% if messages %}
             <div id="{{ request.wishlist|length }}" class="messages">
             {% for message in messages %}
-                <div id = "message-box" style="width:16em; margin-top: 1em; text-align: center;" class="alert alert-{{ message.tags }} modal" data-alert="alert">
+                <div id = "message-box" style="width:16em; margin-top: 1em; text-align: center; left:65%; background: rgba(239, 239, 239, 0.93)" class="alert alert-{{ message.tags }} modal" data-alert="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <p style="font: 18px/20px Helvetica, Arial, sans-serif;">{{ message }}</p>
                 </div>
             {% endfor %}

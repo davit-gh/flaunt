@@ -1,0 +1,40 @@
+.form-control{
+	border-radius: 10px;
+	border: 1px solid #3399CC;
+	font-size: 15px;
+	max-width: 70%;
+	display: inline-block;
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
+
+input[type=number]{
+	border-radius: 10px;
+	border: 1px solid #3399CC;
+	font-size: 15px;
+	max-width: 20%;
+	
+	box-shadow: 7px 7px 9px #888888;
+	-webkit-box-shadow: 7px 7px 9px #888888;
+	-moz-box-shadow: 7px 7px 9px #888888;
+}
+
+.btn-custom{
+	padding: 5px;
+	text-decoration: none !important;
+}
+
+.btn-custom:hover{
+	background-position: 0px -45px;
+	transition: background-position 0.1s linear 0s;
+    	transition-property: background-position;
+    	transition-duration: 0.1s;
+    	transition-timing-function: linear;
+    	transition-delay: 0s;
+}
+
+a{
+	color: rgba(39, 136, 182, 0.87);
+}
+}

@@ -1,7 +1,46 @@
-{% extends "accounts/account_form.html" %}
-{% load i18n future %}
+{% extends "base.html" %}
+{% load i18n mezzanine_tags staticfiles %}
 
-{% block account_form_actions %}
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
 {{ block.super }}
-<a class="btn btn-default btn-lg pull-left" href="{% url "shop_order_history" %}">{% trans "View past orders" %}</a>
+<li>{{ title }}</li>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/checkout_form.css" %}">
+{% endblock %}
+
+{% block main %}
+
+
+{% errors_for form %}
+<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}" >
+
+        
+        {% csrf_token %}
+        
+        {% for hidden in form.hidden_fields %}
+	       {{hidden}}
+	    {% endfor %}
+	    <div style="margin-left:300px; width:42%">
+	    	<legend style="margin-left:60px">{{ title }}</legend>
+		    {% for vis in form.visible_fields %}
+	                <div class="form-group">
+	                    <label class="control-label" for="id_{{ vis.name }}"><h5>{{ vis.label }}</h5></label>
+	                    {{ vis }}
+	                </div>
+		   {% endfor %}
+		</div>
+		<div class="past_orders">
+			<a class="btn btn-primary btn-large pull-left" href="{% url "shop_order_history" %}">{% trans "View past orders" %}</a>
+        	<input type="submit" class="btn btn-large btn-primary" style="margin-left:180px" id="sbmt_btn" value="Update"/>
+        </div>
+</form>
+
+{% endblock %}
+{% block right_panel %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load shop_tags mezzanine_tags i18n future country_list %}
+{% load shop_tags mezzanine_tags i18n future country_list staticfiles %}
 
 {% block meta_title %}{% trans "Checkout" %} - {{ step_title }}{% endblock %}
 {% block title %}{% trans "Checkout" %} - {% trans "Step" %} {{ step }} {% trans "of" %} {{ steps|length }}{% endblock %}
@@ -25,6 +25,10 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
 <li>{% trans "Complete" %}</li>
 {% endblock %}
 
+{% block extra_css %}
+    <link href="{% static "css/checkout_form.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block main %}
 
 {% block before-form %}{% endblock %}
@@ -37,9 +41,9 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
     {% block nav-buttons %}
         {% if request.cart.has_items %}
             <div class="form-actions">
-                <input type="submit" class="btn btn-lg btn-primary pull-right" value="{% trans "Next" %}">
+                <input type="submit" class="btn btn-large btn-primary pull-right" value="{% trans "Next" %}">
                 {% if not CHECKOUT_STEP_FIRST %}
-                <input type="submit" class="btn btn-lg btn-default pull-left" name="back" value="{% trans "Back" %}">
+                <input type="submit" class="btn btn-lg pull-left" name="back" value="{% trans "Back" %}">
                 {% endif %}
             </div>
         {% else %}
@@ -67,7 +71,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
         <img class="pull-left" alt="{{ item.description }}" src="{{ MEDIA_URL }}{% thumbnail item.image 30 30 %}">
         {% endif %}
         <div class="media-body">
-            {{ item.quantity }} x {{ item.description }}
+            {{ item.quantity }} x {{ item.description|truncatechars:26 }}
             <span class="price">{{ item.total_price|currency }}</span>
         </div>
     </li>
@@ -75,7 +79,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
     </ul>
     {% order_totals %}
     <br style="clear:both;">
-    <a class="btn btn-default" href="{% url "shop_cart" %}">{% trans "Edit Cart" %}</a>
+    <a class="btn btn-custom" href="{% url "shop_cart" %}">{% trans "Edit Cart" %}</a>
     </div>
     </div>
 </div>
