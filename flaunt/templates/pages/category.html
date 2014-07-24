@@ -90,25 +90,10 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 						            			<span class="old-price">{{ product.unit_price|currency }}</span>
 						            			{% trans "On sale:" %}
 						            		{% endif %} <span>{{ product.price|currency }}</span>' /></a>
-									<div id="cap"></div>
-									
 						        {% else %}
 						        	<div class="placeholder"></div>
 						        {% endif %}
-						        <div class="caption">
-						        	<h6>{{ product }}</h6>
-						        	<div class="price-info">
-						        		{% if product.has_price %}
-						            		{% if product.on_sale %}
-						            			<span class="old-price">{{ product.unit_price|currency }}</span>
-						            			{% trans "On sale:" %}
-						            		{% endif %}
-						            		<span class="price">{{ product.price|currency }}</span>
-						        		{% else %}
-						            		<span class="coming-soon">{% trans "Coming soon" %}</span>
-						        		{% endif %}
-						        	</div>
-						        </div>  
+						        
 						      </div>
 						    </div>
 						{% endfor %}
