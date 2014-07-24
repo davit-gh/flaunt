@@ -366,7 +366,6 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "payments.multipayments",
     "paypal.standard.ipn",
-    "easy_thumbnails",
     #"mezzanine.mobile",
 )
 
