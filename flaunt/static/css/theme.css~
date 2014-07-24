@@ -993,7 +993,7 @@ ul.recent_post div a:hover {color:#d00b01;
 }
 .contact_form { padding-top:6px;
 }
-.contact_form textarea { min-height:260px !important;
+.contact_form textarea { min-height:260px;
 }
 .notification_error {
 	color: #b94a48;
@@ -1048,7 +1048,7 @@ a.button.bluebut {
 	border: 1px solid rgb(18,217,255);
 }
 
-a.button.bluebut:hover, , a.button.tealbutton:hover{
+a.button.bluebut:hover, a.button.tealbutton:hover{
 	background: rgb(112, 200, 241);
 }
 a.button.redbutton {
@@ -1111,7 +1111,7 @@ a.button{
 	-moz-box-shadow: 7px 7px 9px #888888;
 }
 
-
-
-
+#header-row{
+	background-image: url('../static/img/skulls.png');
+}
 

@@ -15,7 +15,7 @@ RATINGS_RANGE = range(5,1,-1)
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 SHOP_USE_RATINGS = False
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
-
+    "first_name",
     "last_name",
 )
 ACCOUNTS_NO_USERNAME = False
@@ -200,7 +200,7 @@ USE_SOUTH = True
 # In the format (('Full Name', 'email@example.com'),
 #                ('Full Name', 'anotheremail@example.com'))
 ADMINS = (
-    ('Davit', 'davsmile@yahoo.com'),
+    ('Davit', '2244022248@qq.com'),
 )
 MANAGERS = ADMINS
 
@@ -366,6 +366,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "payments.multipayments",
     "paypal.standard.ipn",
+    "sorl.thumbnail",
     #"mezzanine.mobile",
 )
 
@@ -493,3 +494,21 @@ SOCIAL_LINK_FACEBOOK = True
 
 MY_BTC_ADDRESS = '19sVNRFBT3xAY1kkXcDcoB5dAHW42f1iFH'
 BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
+
+
+##########
+# EMAIL # 
+##########
+
+EMAIL_BACKEND = 'django_ses.SESBackend' 
+AWS_ACCESS_KEY_ID = 'AKIAIEGR7TZSQF2MVOOQ' 
+AWS_SECRET_ACCESS_KEY = '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' 
+EMAIL_HOST_USER = 'davit' 
+EMAIL_USE_TLS = True 
+AWS_SES_REGION_NAME = 'us-west-2'
+AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
+# The next two lines may not be required; try without them first. 
+ 
+# The next line is not required, but may be useful. 
+SEND_BROKEN_LINK_EMAILS = True
+DEFAULT_FROM_EMAIL = 'davsmile@yahoo.com'

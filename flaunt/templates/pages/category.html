@@ -8,11 +8,15 @@
 <!-- make the corners of select tag for sorting round and move it 
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 <link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery.capty.css" %}">
 {% endblock %}
 {% block slider_js %}
 <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.capty.min.js" %}"></script>
+
 {% endblock %}
 {% block extra_js %}
+	$('.hover_caption').capty({height: 56});
     $('.form-control').mouseenter(function() {
         open($(this));
     });
@@ -63,7 +67,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 				<form class="product-sorting" role="form" style="display: inline-block">
     				<div class="form-group">
     					<label class="control-label" for="sorting-select">{% trans "Sort by" %}</label>
-        				<select onchange="location.href = this[this.selectedIndex].value;" onmouseover="autofocus" class="form-control" id="sorting-select">
+        				<select style="max-width:60%"onchange="location.href = this[this.selectedIndex].value;" onmouseover="autofocus" class="form-control" id="sorting-select">
         					{% for name, option in settings.SHOP_PRODUCT_SORT_OPTIONS %}
         						{% if "rating" not in option or settings.SHOP_USE_RATINGS %}
         							<option{% if option == products.sort_by %} selected{% endif %}
@@ -82,9 +86,12 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 						    <div class="span3 element {% for cat in product.categories.all %} {{ cat.title }} {% endfor %}" data-category="{% for cat in product.categories.all %} {{ cat.title }} {% endfor %}">
 						      <div class="hover_img">
 						        {% if product.image %}
-						        	<img src="{{ MEDIA_URL }}{% thumbnail product.image 148 148 %}" alt="" />
-									<span class="portfolio_zoom"><a href="{{ MEDIA_URL }}{% thumbnail item.featured_image 1200 0 %}" ></a></span>
-									<span class="portfolio_link"><a href="{{ product.get_absolute_url }}">View item</a></span>
+						        	<a href="{{ product.get_absolute_url }}"><img class="hover_caption" src="{{ MEDIA_URL }}{% thumbnail product.image 148 148 %}" alt='{{ product }} {% if product.on_sale %}
+						            			<span class="old-price">{{ product.unit_price|currency }}</span>
+						            			{% trans "On sale:" %}
+						            		{% endif %} <span>{{ product.price|currency }}</span>' /></a>
+									<div id="cap"></div>
+									
 						        {% else %}
 						        	<div class="placeholder"></div>
 						        {% endif %}

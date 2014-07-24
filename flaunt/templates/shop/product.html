@@ -113,27 +113,31 @@ $("#zoom_03").bind("click", function(e) {
 </div>
 <div id="messages"></div>
 <div class="row" style="padding-top: 40px">
-    <div class="span4">
-        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 330 300 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 800 0 %}"/>
+    <div class="span6">
+        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 0 500 %}" data-zoom-image="{{ MEDIA_URL }}{{ images.0.file }}"/>
         <div id="gal1">    
             {% for image in images %}
-            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 330 300 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 800 0 %}">
-                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}">
+            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 0 500 %}" data-zoom-image="{{ MEDIA_URL }}{{ image.file }}">
+                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 0 75 %}">
             </a>
             {% endfor %}
         </div>
     </div>
     
     
-    <div class="span6" style="margin-top: -20px">
-        <div class="row">
+    <div class="span4" style="margin-top: -20px">
+        
             {% if product.available and has_available_variations %}
-            <div class="span4">
+            
                 {% errors_for add_product_form %}
                 {% load widget_tweaks %}
-                <form method="post" id="add-cart" class="shop-form" style="padding-left: 5px">
+                <form method="post" id="add-cart" class="shop-form" style="padding-left: 10px">
                     {% csrf_token %}
-                
+                    
+                        <table class="t1">
+                            <tr>
+                            <td class="td1">
+                         
                             {% for field in add_product_form %}
                                 {% if field.is_hidden %}
                                     {{ field }}
@@ -151,44 +155,55 @@ $("#zoom_03").bind("click", function(e) {
                                 {% endif %}
                             {% endfor %}
                     
-                    {% with add_product_form.visible_fields|first as quantity %}
-                        <div class="quantity-with-label">
-                            <label for="{{ quantity.auto_id }}">{{ quantity.label }}</label>
-                            {% render_field quantity %}
-                        </div>
-                    {% endwith %}
+                            {% with add_product_form.visible_fields|first as quantity %}
+                            <div class="quantity-field">
+                                <label for="{{ quantity.auto_id }}">{{ quantity.label }}</label>
+                                {% render_field quantity %}
+                            </div>
+                            {% endwith %}
+                            
+                            </td>
+                            <td>
+                            <div class="pull-left" id="pricediv">
+                                <h3  style="margin-left:18px">Price</h3>
+                                <ul id="variations" class="list-unstyled">
+                                {% for variation in variations %}
+                                <li id="variation-{{ variation.sku }}"
+                                    {% if not variation.default %}style="display:none;"{% endif %}>
+                                    {% if variation.has_price %}
+                                        {% if variation.on_sale %}
+                                            <span class="old-price">{{ variation.unit_price|currency }}</span>
+                                            {% trans "On sale:" %}
+                                        {% endif %}
+                                        <span class="new-price">{{ variation.price|currency }}</span>
+                                    {% else %}
+                                        {% if has_available_variations %}
+                                        <span class="error-msg">
+                                        {% trans "The selected options are currently unavailable." %}
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                                </ul>
+                           </div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td colspan="2">
                     <div id="buttons">
                         <input type="submit" class="action-button shadow animate blue" name="add_cart" value="{% trans "ADD TO CART" %}">
                         {% if settings.SHOP_USE_WISHLIST %}
                         <a id="wishlist" href="" class="shadow animate" name="add_wishlist" >ADD TO WISHLIST</a>
                         {% endif %}
                     </div>
+                    </td>
+                    </tr>
+                    </table>
                 </form>
-            </div>              
+                       
         
-            <div class="span2">
-                <h3  style="margin-left:30px">Price</h3>
-                <ul id="variations" class="list-unstyled">
-                            {% for variation in variations %}
-                            <li id="variation-{{ variation.sku }}"
-                                {% if not variation.default %}style="display:none;"{% endif %}>
-                                {% if variation.has_price %}
-                                    {% if variation.on_sale %}
-                                        <span class="old-price">{{ variation.unit_price|currency }}</span>
-                                        {% trans "On sale:" %}
-                                    {% endif %}
-                                    <span class="new-price">{{ variation.price|currency }}</span>
-                                {% else %}
-                                    {% if has_available_variations %}
-                                    <span class="error-msg">
-                                    {% trans "The selected options are currently unavailable." %}
-                                    </span>
-                                    {% endif %}
-                                {% endif %}
-                            </li>
-                            {% endfor %}
-                </ul>
-            </div>
+            
             {% else %}
                 <div class="span6">
                     <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
@@ -197,7 +212,7 @@ $("#zoom_03").bind("click", function(e) {
                 </div>
             {% endif %}
 
-        </div>          
+                
     </div>
 </div>
 {% editable product.content %}

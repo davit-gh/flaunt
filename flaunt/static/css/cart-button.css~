@@ -72,7 +72,7 @@
 #wishlist{
 		background: #ECECEC;
 		border-radius: 15px;
-		padding: 6px 10px 6px 10px;
+		padding: 6px 10px 6px 20px;
 		display: block;
 		font-family: 'Montserrat Alternates', sans-serif;
 		font-size: 10px;
@@ -97,8 +97,17 @@
 	}
 
 .fields{
-	margin: 15px;
+	margin: 15px 0px 15px 5px;
+}
+.quantity-field{
+	margin-left: 10px;
+	width: 100px;
 }
 #buttons{
 	margin-top: 25px;
 }
+
+#pricediv{
+	margin-bottom: 70px;
+}
+

@@ -97,8 +97,17 @@
 	}
 
 .fields{
-	margin: 15px;
+	margin: 15px 0px 15px 5px;
+}
+.quantity-field{
+	margin-left: 10px;
+	width: 100px;
 }
 #buttons{
 	margin-top: 25px;
 }
+
+#pricediv{
+	margin-bottom: 100px;
+}
+

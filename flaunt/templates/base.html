@@ -115,45 +115,54 @@
     	<div class="wrap">
         	<div class="navbar navbar_ clearfix">
             	<div class="container">
-                    <div class="row">
+                    <div class="row" id="header-row">
                         <div >    
         {% nevercache %}
         {% include "includes/login_dropdown.html" %}
         {% endnevercache %}
-</div>
-                        <div class="span4">
-                        	<div class="logo"><a href="index.html"><h2>{{ settings.SITE_TITLE }}</h2></a></div>                        
+            </div>
+                        <div class="span2">
+                        	<div class="logo"><a href="/"><img src="{% static "img/title.png" %}" alt="You Name It" width="150" /></a></div>                        
                         </div>
-                        <div class="span8">
-                        
-                        	
-                            <div class="clear"></div>
+                        <div style="margin-top:20px" class="span10">
+                            <div class="row">
+                        	<div class="span5" style="font-family: Tahoma, Geneva, sans-serif; color: #333333; margin-right: 0px"><h3>Welcome to <span style="font-family: 'Comic Sans'; color:red">You</span> <span style="font-family: 'Comic Sans'; color:blue">Name</span> <span style="font-family: 'Comic Sans'; color:orange">It</span>! Order from our growing number of products and have it delivered fast!</h3></div>
                             
-                            <nav id="main_menu">
-                                <div class="menu_wrap">
-                                    {% page_menu "pages/menus/dropdown.html" %}
-                                </div>
-                            </nav> 
-                            <div class="follow_us">
-                            
-                                <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
-                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
-                    {% endif %}
-                                    {% if settings.VIDEO_SHARING_LINK_VIMEO %}
-                                        <li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
-                                    {% endif %}
-                                    {% if settings.BLOGGING_LINK_TUMBRL %}
-                                        <li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_TWITTER %}
-                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_DELICIOUS %}
-                                        <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
-                    {% endif %}
+                            <div class="span5">
+                                <div class="clear"></div>
+                                <nav  id="main_menu">
+                                    <div class="menu_wrap">
+                                        {% page_menu "pages/menus/dropdown.html" %}
+                                    </div>
                                     
-                                </ul>
-                            </div>                           
+                                </nav> 
+                                
+                                <div class="follow_us">
+                                
+                                    <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
+                                        {% endif %}
+                                        {% if settings.VIDEO_SHARING_LINK_VIMEO %}
+                                            <li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
+                                        {% endif %}
+                                        {% if settings.BLOGGING_LINK_TUMBRL %}
+                                            <li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_TWITTER %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
+                                        {% endif %}
+                                        
+                                    </ul>
+                                </div>   
+                                <div style="margin-top: 20px; margin-left:120px">
+                                        <img src="{% static "img/paypal_icon.gif" %}" width="150" alt="Paypal">
+                                        <img src="{% static "img/btc_accepted_here.png" %}" style="margin-top:5px" width="100" alt="Bitcoin">
+                                    </div>       
+                            </div>  
+                            </div>               
                         </div>
                     </div>                
                 </div>
@@ -247,7 +256,7 @@
             	<div class="container">
                 	<div class="row">
                 		<div class="span5">
-                        	<div class="foot_logo"><a href="index.html"><img src="{% static "img/foot_logo.png" %}" alt="" /></a></div>    
+                        	<div class="foot_logo"><a href="index.html"><img src="{% static "img/title.png" %}" alt="You Name It" width="50" /></a></div>    
                         	<div class="copyright">&copy; 2014 DK. Worldwide marketplace. All Rights Reserved.</div>                        
                         </div>
                         <div class="span7">
@@ -280,14 +289,11 @@
                             
                             	<div class="clear"></div>
                             	<div class="foot_menu">
-                            		<ul>
-                                        <li><a href="index.html" class="current">Home</a></li>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="scaffolding.html">features</a></li>
-                                        <li><a href="portfolio_2columns.html">Portfolio</a></li>
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="contacts.html">Contacts</a></li>
-                                    </ul>
+                            		<nav id="main_menu">
+                                        <div class="menu_wrap">
+                                            {% page_menu "pages/menus/dropdown.html" %}
+                                        </div>
+                                    </nav> 
                             	</div>
                             </div>                            
                         </div>
