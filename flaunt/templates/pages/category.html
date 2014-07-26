@@ -1,6 +1,6 @@
 {% extends "pages/page.html" %}
 
-{% load staticfiles mezzanine_tags shop_tags i18n %}
+{% load staticfiles mezzanine_tags shop_tags i18n debug_tags %}
 {% block body_id %}category{% endblock %}
 
 {% block extra_css %}
@@ -9,13 +9,33 @@
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 <link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery.capty.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery.isotope.css" %}">
 {% endblock %}
 {% block slider_js %}
-<script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.capty.min.js" %}"></script>
-
+<script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
 {% endblock %}
 {% block extra_js %}
+	var $cont = $('#cont'),
+		$sizer = $cont.find('img');
+	$cont.shuffle({
+		itemSelector: '.pic-item',
+		sizer: $sizer,
+		delimeter: ', '
+	});
+
+	$('#option a').click(function(e){
+		e.preventDefault();
+		var group = $(this).data('group');
+		$cont.shuffle('shuffle',group);
+	});
+	$('#option').each( function( i, buttonGroup ) {
+	    var $buttonGroup = $( buttonGroup );
+	    $buttonGroup.on( 'click', 'a', function() {
+	      $buttonGroup.find('.selected').removeClass('selected');
+	      $( this ).addClass('selected');
+	    });
+	});
 	$('.hover_caption').capty({height: 56});
     $('.form-control').mouseenter(function() {
         open($(this));
@@ -43,15 +63,14 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 	{% endeditable %}
 
 			{% if child_categories %}
-				<div id="options" style="display: inline-block">
+				<div id="option" class="button-group" style="display: inline-block">
 					{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
-			     		<ul id="filters" class="option-set" data-option-key="filter">
-							<li><a href="#filter" data-option-value="*" class="btn dark_btn selected">All</a></li>
+			     		
+							<a href="" data-group="all" class="btn dark_btn selected">All</a>
 			    			{% for category in child_categories %}
-			   		   			<li><a href="#filter" data-option-value=".{{category.title}}" class="btn dark_btn">{{ category.title }}</a></li>
+			   		   			<a href="" data-group="{{category.title}}" class="btn dark_btn">{{ category.title }}</a>
 							{% endfor %}							
-			    		</ul>   
-			    		<div class="clear"></div>
+			    		
 					{% else %}
 			    		{% for category in child_categories %}
 			    			<div class="col-xs-6 col-sm-4 col-lg-3">
@@ -81,10 +100,9 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 				</form>
 				
 				<div class="row">
-					<div class="projects">
-						{% for product in products.object_list %}
-						    <div class="span3 element {% for cat in product.categories.all %} {{ cat.title }} {% endfor %}" data-category="{% for cat in product.categories.all %} {{ cat.title }} {% endfor %}">
-						      <div class="hover_img">
+							<div id="cont">
+								{% for product, categories in prodcats.items %}							    
+						   		<div class="span3 pic-item" data-groups='{{ categories|join:", " }}'>
 						        {% if product.image %}
 						        	<a href="{{ product.get_absolute_url }}"><img class="hover_caption" src="{{ MEDIA_URL }}{% thumbnail product.image 148 148 %}" alt='{{ product }} {% if product.on_sale %}
 						            			<span class="old-price">{{ product.unit_price|currency }}</span>
@@ -93,11 +111,13 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 						        {% else %}
 						        	<div class="placeholder"></div>
 						        {% endif %}
-						        
-						      </div>
-						    </div>
-						{% endfor %}
-					</div>
+						        </div>
+						        {% endfor %}
+						    </div>   
+						
+						    
+						
+					
 				</div>
 
 	

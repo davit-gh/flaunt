@@ -41,9 +41,10 @@
 
 
 {% block no_compress %}
-<script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+<script src="{% static "js/"|add:settings.JQUERY_FILENAME %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-migrate-1.2.1.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.isotope.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.shuffle.modernizr.js" %}"></script>
 <script src="{% static "js/bootstrap.2.1.1.min.js" %}"></script>
 
 
@@ -53,12 +54,8 @@
     
     <script type="text/javascript" src="{% static "js/camera.js" %}"></script>
     
-    <script src="{% static "js/superfish.js" %}"></script>
- 
-    <script type="text/javascript" src="{% static "js/jquery.jcarousel.js" %}"></script>
     
-    <script type="text/javascript" src="{% static "js/sorting.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.preloader.js" %}"></script>
+    
 
     
   {% block slider_js %}{% endblock %}
@@ -71,20 +68,7 @@
                 $('#message-box').delay(5000).fadeTo('slow',0);
             {% endif %}
 			//Image hover
-			$(".hover_img").live('mouseover',function(){
-					var info=$(this).find("img");
-					info.stop().animate({opacity:0.6},500);
-					$(".preloader").css({'background':'none'});
-				}
-			);
-			$(".hover_img").live('mouseout',function(){
-					var info=$(this).find("img");
-					info.stop().animate({opacity:1},500);
-					$(".preloader").css({'background':'none'});
-				}
-			);	
-			// Preloader
-			$(".projects .element").preloader();
+			
 			//Slider
 			$('#camera_wrap_1').camera();
 			

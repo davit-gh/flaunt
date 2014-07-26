@@ -366,6 +366,7 @@ INSTALLED_APPS = (
     "mezzanine.accounts",
     "payments.multipayments",
     "paypal.standard.ipn",
+    "template_debug",
     #"mezzanine.mobile",
 )
 
@@ -511,3 +512,7 @@ AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
 # The next line is not required, but may be useful. 
 SEND_BROKEN_LINK_EMAILS = True
 DEFAULT_FROM_EMAIL = 'davsmile@yahoo.com'
+
+
+JQUERY_FILENAME = 'jquery-1.11.1.min.js'
+
