@@ -512,7 +512,6 @@ AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
 SEND_BROKEN_LINK_EMAILS = True
 DEFAULT_FROM_EMAIL = 'davsmile@yahoo.com'
 
-
 ########################
 # LOGGING ##############
 ########################

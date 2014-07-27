@@ -8,20 +8,24 @@
 <!-- make the corners of select tag for sorting round and move it 
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 <link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
-<link rel="stylesheet" type="text/css" href="{% static "css/jquery.capty.css" %}">
-<link rel="stylesheet" type="text/css" href="{% static "css/jquery.isotope.css" %}">
+
+<link rel="stylesheet" type="text/css" href="{% static "css/shuffle-styles.css" %}">
+
+
 {% endblock %}
 {% block slider_js %}
-<script type="text/javascript" src="{% static "js/jquery.capty.min.js" %}"></script>
+
 <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
+
 {% endblock %}
 {% block extra_js %}
-	var $cont = $('#cont'),
-		$sizer = $cont.find('img');
+	var $cont = $('#grid');
+		
 	$cont.shuffle({
-		itemSelector: '.pic-item',
-		sizer: $sizer,
+		itemSelector: '.picture-item',
+		
 		delimeter: ', '
+
 	});
 
 	$('#option a').click(function(e){
@@ -36,7 +40,29 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 	      $( this ).addClass('selected');
 	    });
 	});
-	$('.hover_caption').capty({height: 56});
+	$('.sort-options').on('change', function() {
+	  var sort = this.value,
+	      opts = {};
+
+	  // We're given the element wrapped in jQuery
+	  if ( sort === 'item-price-rev' ) {
+	    opts = {
+	      reverse: true,
+	      by: function($el) {
+	        return $el.data('item-price');
+	      }
+	    };
+	  } else if ( sort === 'item-price' ) {
+	    opts = {
+	      by: function($el) {
+	        return $el.data('item-price');
+	      }
+	    };
+	  }
+
+	  // Filter elements
+	  $cont.shuffle('sort', opts);
+	});
     $('.form-control').mouseenter(function() {
         open($(this));
     });
@@ -66,9 +92,9 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 				<div id="option" class="button-group" style="display: inline-block">
 					{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
 			     		
-							<a href="" data-group="all" class="btn dark_btn selected">All</a>
+							<a href="" data-group="all" class="btn btn-custom selected">All</a>
 			    			{% for category in child_categories %}
-			   		   			<a href="" data-group="{{category.title}}" class="btn dark_btn">{{ category.title }}</a>
+			   		   			<a href="" data-group="{{category.title}}" class="btn btn-custom">{{ category.title }}</a>
 							{% endfor %}							
 			    		
 					{% else %}
@@ -83,42 +109,44 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 				</div>
 			{% endif %}
 				
-				<form class="product-sorting" role="form" style="display: inline-block">
-    				<div class="form-group">
-    					<label class="control-label" for="sorting-select">{% trans "Sort by" %}</label>
-        				<select style="max-width:60%"onchange="location.href = this[this.selectedIndex].value;" onmouseover="autofocus" class="form-control" id="sorting-select">
-        					{% for name, option in settings.SHOP_PRODUCT_SORT_OPTIONS %}
-        						{% if "rating" not in option or settings.SHOP_USE_RATINGS %}
-        							<option{% if option == products.sort_by %} selected{% endif %}
-            							value="{{ category.get_absolute_url }}?sort={{ option }}{{ querystring }}">
-            							{{ name }}
-        							</option>
-        						{% endif %}
-        					{% endfor %}
-        				</select>
-    				</div>
-				</form>
-				
-				<div class="row">
-							<div id="cont">
-								{% for product, categories in prodcats.items %}							    
-						   		<div class="span3 pic-item" data-groups='{{ categories|join:", " }}'>
-						        {% if product.image %}
-						        	<a href="{{ product.get_absolute_url }}"><img class="hover_caption" src="{{ MEDIA_URL }}{% thumbnail product.image 148 148 %}" alt='{{ product }} {% if product.on_sale %}
-						            			<span class="old-price">{{ product.unit_price|currency }}</span>
-						            			{% trans "On sale:" %}
-						            		{% endif %} <span>{{ product.price|currency }}</span>' /></a>
-						        {% else %}
-						        	<div class="placeholder"></div>
-						        {% endif %}
-						        </div>
-						        {% endfor %}
-						    </div>   
-						
-						    
-						
-					
+			<div style="display: inline-block; margin: 0px 0px 20px 20px">
+				<label for="sorting-select">{% trans "Sort by" %}</label>
+				<select class="sort-options form-control" id="sorting-select" style="width:200px">
+				  <option value="">Recently Added</option>
+				  <option value="item-price">Least Expensive</option>
+				  <option value="item-price-rev">Most Expensive</option>
+				</select>
+			</div>
+
+	<div id="grid" class="row shuffle--container shuffle--fluid">	
+		{% for product, categories in prodcats.items %}
+		  <figure class="span3 picture-item" data-groups='{{ categories|join:", " }}' data-item-price='{% if product.on_sale %}{{ product.unit_price }}{% else %}{{ product.price }}{% endif %}' style="padding: 0px 20px 20px 0px">
+		  	{% if product.image %}
+			  	<div class="picture-item__inner">
+			  		<a href="{{ product.get_absolute_url }}">
+				    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 200 258 %}"/>
+				    </a>
+				    	<div class="picture-item__details">
+				      		<figcaption id="figcap" class="picture-item__title">
+				      			{% if product.on_sale %}
+								    <span class="old-price">Old price: {{ product.unit_price|currency }}</span>
+								    {% trans "On sale: " %}{{ product.price|currency }}
+								{% else %}
+									<span>Price: {{ product.price|currency }}</span>
+								{% endif %} 
+								<p>{{ product }}</p>
+							</figcaption>
+				    	</div>
+				    
 				</div>
+			{% else %}
+				<div class="placeholder">No Image Yet</div>
+			{% endif %}
+		  </figure>
+		{% endfor %}
+		
+	</div>
+
 
 	
 {% endblock %}

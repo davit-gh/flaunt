@@ -1,6 +1,6 @@
-.form-control{
+select{
 	border-radius: 10px;
-	border: 1px solid #3399CC;
+	border: 1px solid #66AFE9;
 	font-size: 15px;
 	max-width: 70%;
 	display: inline-block;
@@ -11,7 +11,7 @@
 
 input[type=number]{
 	border-radius: 10px;
-	border: 1px solid #3399CC;
+	border: 1px solid #66AFE9;
 	font-size: 15px;
 	max-width: 20%;
 	
@@ -37,4 +37,4 @@ input[type=number]{
 a{
 	color: rgba(39, 136, 182, 0.87);
 }
-}
+

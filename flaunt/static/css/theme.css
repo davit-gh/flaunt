@@ -1111,7 +1111,8 @@ a.button{
 	-moz-box-shadow: 7px 7px 9px #888888;
 }
 
-#header-row{
-	background-image: url('../img/skulls.png');
+.page_container,
+.header{
+	background-image: url('../img/elegant_background_7.jpg');
 }
 
