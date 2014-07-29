@@ -49,7 +49,7 @@
 		    {% endfor %}
 		    {% for vis in form.visible_fields %}
 	                <div class="form-group">
-	                	{% if forloop.first %}
+	                	{% if forloop.counter == 2 %}
 	                    	<label class="control-label" for="id_{{ vis.name }}"><h5>{{ vis.label }}</h5></label>
 	                    	<p id="helptext"> This name appears when we welcome you to our site.</p>
 	                    	{{ vis }}
@@ -60,7 +60,7 @@
 	                    {% endif %}
 	                </div>
 		   {% endfor %}
-		    <div class="form-actions">
+		    <div class="form-submit-button">
 		        {% block account_form_actions %}
 		        <input class="btn btn-primary btn-large" type="submit" style="margin-left:80px" value="{{ title }}">
 		        {% endblock %}

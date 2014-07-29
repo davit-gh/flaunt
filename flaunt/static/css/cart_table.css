@@ -36,3 +36,7 @@ table.outer th{
 #form-buttons{
 	margin-top: 15px;
 }
+
+.form-actions{
+	background-color: rgba(199, 215, 234, 0.5);
+}

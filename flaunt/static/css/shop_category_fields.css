@@ -66,3 +66,10 @@ select{
 	max-width: 70%;
 }
 
+#messages{
+	width:16em; 
+	margin-top: 1em; 
+	text-align: center; 
+	left:65%; background: rgba(239, 239, 239, 0.93)
+}
+

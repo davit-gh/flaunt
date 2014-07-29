@@ -40,3 +40,7 @@ div#text{
 a{
     color: rgba(39, 136, 182, 0.87);
 }
+
+.form-submit-button{
+    margin: 30px 0px 10px 25px;
+}

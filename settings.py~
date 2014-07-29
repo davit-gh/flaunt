@@ -514,6 +514,5 @@ DEFAULT_FROM_EMAIL = 'davsmile@yahoo.com'
 
 
 
-
 JQUERY_FILENAME = 'jquery-1.11.1.min.js'
 

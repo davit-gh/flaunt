@@ -89,6 +89,7 @@ def save_feedback(request, product_id):
             	# process the data in form.cleaned_data as required
             		form.save()
             	# redirect to a new URL:
+			messages.info(request, _("Your feedback is saved. Thank you!"))
             		return redirect('shop_order_history')
 		else:
 			return HttpResponse('error')
@@ -203,6 +204,7 @@ def handle_wishlist(request, slug, form_class=AddProductForm):
 			initial_data = dict([(f, getattr(variations[0], f)) for f in fields])
 		initial_data["quantity"] = 1
 		add_product_form = form_class(request.POST or None, product=product, initial=initial_data, to_cart=False)
+		
 		if add_product_form.is_valid():
 			skus = request.wishlist
 			
@@ -213,8 +215,7 @@ def handle_wishlist(request, slug, form_class=AddProductForm):
 			response = render(request,'messages.html')
 			set_cookie(response, "wishlist", ",".join(skus))
 			return response
-
-		return HttpResponse(request.POST)
+		return HttpResponse(json.dumps(add_product_form.errors), mimetype="application/json")
 	return HttpResponse('not post')
 
 from django.contrib import messages

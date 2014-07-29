@@ -89,6 +89,7 @@ def save_feedback(request, product_id):
             	# process the data in form.cleaned_data as required
             		form.save()
             	# redirect to a new URL:
+			messages.info(request, _("Your feedback is saved. Thank you!"))
             		return redirect('shop_order_history')
 		else:
 			return HttpResponse('error')
@@ -102,41 +103,41 @@ def save_feedback(request, product_id):
 from cartridge.shop.models import Cart, Order, ProductVariation, DiscountCode
 def remove_cart(cart_pk,session, s_key):
 	try:
-	    cart = Cart.objects.get(id=cart_pk)
-	    try:
-	        order = Order.objects.get(key=s_key)
-	        for field in order.session_fields:
-	            if field in session:
-	                del session[field]
-	        try:
-	            del session["order"]
-	        except KeyError:
-	            pass
+            cart = Cart.objects.get(id=cart_pk)
+            try:
+                order = Order.objects.get(key=s_key)
+                for field in order.session_fields:
+                    if field in session:
+                        del session[field]
+                try:
+                    del session["order"]
+                except KeyError:
+                    pass
 
-            # Since we're manually changing session data outside of
-            # a normal request, need to force the session object to
-            # save after modifying its data.
-	        session.save()
+                # Since we're manually changing session data outside of
+                # a normal request, need to force the session object to
+                # save after modifying its data.
+                session.save()
 
-        	for item in cart:
-        	    try:
-        	        variation = ProductVariation.objects.get(
-        	            sku=item.sku)
-        	    except ProductVariation.DoesNotExist:
-        	        pass
-        	    else:
-        	        variation.update_stock(item.quantity * -1)
-        	        variation.product.actions.purchased()
+                for item in cart:
+                    try:
+                        variation = ProductVariation.objects.get(
+                            sku=item.sku)
+                    except ProductVariation.DoesNotExist:
+                        pass
+                    else:
+                        variation.update_stock(item.quantity * -1)
+                        variation.product.actions.purchased()
 
-        	code = session.get('discount_code')
-        	if code:
-        	    DiscountCode.objects.active().filter(code=code).update(uses_remaining=F('uses_remaining') - 1)
-        	cart.delete()
-        except Order.DoesNotExist:
-    	    pass
-	except Cart.DoesNotExist:
-	    pass
-
+                code = session.get('discount_code')
+                if code:
+                    DiscountCode.objects.active().filter(code=code) \
+                        .update(uses_remaining=F('uses_remaining') - 1)
+                cart.delete()
+            except Order.DoesNotExist:
+                pass
+        except Cart.DoesNotExist:
+            pass
 	return session
             
 
@@ -152,7 +153,7 @@ def blockchain_callback(request):
 		invoice_key = query['invoice_key']
 		transaction_hash = query['transaction_hash']
 		value_in_btc = str(float(query['value']) / 100000000)
-		if query['test']:
+		if request.GET.get('test'):
                         return HttpResponse('no tests now!')
 		if address != settings.MY_BTC_ADDRESS:
 			return HttpResponse('Incorrect Receiving Address')
@@ -174,7 +175,58 @@ def blockchain_callback(request):
 def check_request(request):
 	if request.method == 'POST' and request.is_ajax():
 		if request.session.get('order',False):
-			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. Please try again in a moment"}), content_type='application/json')
+			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. It may take about 2 mins for the payment to propagate in the blockchain. Please try again then."}), content_type='application/json')
 		else:
-			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations."
+			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
 			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')
+
+# `data` is a python dictionary
+def render_to_json(data):
+    return HttpResponse(
+        json.dumps(data, ensure_ascii=False),
+        mimetype="application/json")
+
+from cartridge.shop.forms import AddProductForm
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.utils.translation import ugettext as _
+from mezzanine.utils.views import set_cookie
+from django.template.loader import render_to_string
+from django.template import RequestContext
+def handle_wishlist(request, slug, form_class=AddProductForm):
+	if request.method == 'POST' and request.is_ajax():
+		published_products = Product.objects.published(for_user=request.user)
+		product = get_object_or_404(published_products, slug=slug)
+		initial_data = {}
+		variations = product.variations.all()
+		fields = [f.name for f in ProductVariation.option_fields()]
+		if variations:
+			initial_data = dict([(f, getattr(variations[0], f)) for f in fields])
+		initial_data["quantity"] = 1
+		add_product_form = form_class(request.POST or None, product=product, initial=initial_data, to_cart=False)
+		pdb.set_trace()
+		if add_product_form.is_valid():
+			skus = request.wishlist
+			
+			sku = add_product_form.variation.sku
+			if sku not in skus:
+				skus.append(sku)
+			messages.info(request, _("Item added to wishlist"))
+			response = render(request,'messages.html')
+			set_cookie(response, "wishlist", ",".join(skus))
+			return response
+		return HttpResponse(json.dumps(add_product_form.errors), mimetype="application/json")
+	return HttpResponse('not post')
+
+from django.contrib import messages
+def remove_wishlist_item(request):
+	if request.method == 'POST':
+		skus = request.wishlist
+		sku = request.POST.get("sku")
+        if sku in skus:
+        	skus.remove(sku)
+        	message = _("Item removed from wishlist")
+        	messages.info(request, message)
+        response = render(request,'messages.html')
+        set_cookie(response, "wishlist", ",".join(skus))
+        return response

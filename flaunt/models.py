@@ -181,6 +181,7 @@ class Feedback(models.Model):
     user = models.ForeignKey(User, related_name="usr")
     item_title = models.CharField(max_length=100)
     feedback_text = models.TextField()
+    feedback_date = models.DateTimeField(auto_now_add=True, blank=True)
     
 class Btcinvoices(models.Model):
     invoice_key = models.CharField(max_length=100)
