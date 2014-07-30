@@ -67,7 +67,7 @@ $('#wishlist').click(function(){
             }else{
                 $('#wishlist_menu').html('Wishlist contains ' + new_count + ' items ');
             }
-            $('#messages').html(message).delay(4000).fadeTo('slow',0);
+            $('#messages').html(message).fadeTo('slow',1).delay(4000).fadeTo('slow',0);
         }, 
         error: function(data){ 
             console.log('error '+JSON.stringify(data));

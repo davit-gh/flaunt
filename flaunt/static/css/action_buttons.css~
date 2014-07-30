@@ -16,6 +16,6 @@ span#or{
 }
 
 #wishtable{
-	background-color: #333 !important;
+	background-color: rgba(208, 230, 245, 0.53) !important;
 }
 

@@ -139,7 +139,9 @@
 {% pagination_for orders %}
 
 {% else %}
-<p>{% trans "You have not ordered anything from us yet." %}</p>
+<p><h3>{% trans "You have not ordered anything from us yet." %}</h3></p>
 {% endif %}
 
+{% endblock %}
+{% block right_panel_wrapper %}
 {% endblock %}

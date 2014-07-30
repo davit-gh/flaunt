@@ -2,22 +2,22 @@ from __future__ import unicode_literals
 
 SECRET_KEY = "%(secret_key)s"
 NEVERCACHE_KEY = "%(nevercache_key)s"
-ALLOWED_HOSTS = [%(domains_python)s]
+ALLOWED_HOSTS = ['128.199.160.27']
 
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": get_env_setting('DATABSASE_ENGINE'),
         # DB name or path to database file if using sqlite3.
-        "NAME": "%(proj_name)s",
+        "NAME": get_env_setting('DATABSASE_NAME'),
         # Not used with sqlite3.
-        "USER": "%(proj_name)s",
+        "USER": get_env_setting('DATABSASE_USER'),
         # Not used with sqlite3.
-        "PASSWORD": "%(db_pass)s",
+        "PASSWORD": get_env_setting('DATABSASE_PASSWORD'),
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "127.0.0.1",
+        "HOST": "localhost",
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "",
+        "PORT": get_env_setting('DATABSASE_PORT'),
     }
 }
 

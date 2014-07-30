@@ -153,7 +153,7 @@ SHOP_OPTION_TYPE_CHOICES = (
 #
 EXTRA_MODEL_FIELDS = (
       (
-	  "cartridge.shop.models.Product.short_descript",
+	  "cartridge.shop.models.Product.short_desc",
 	  "TextField",
 	  ("Short desc",),
 	  {"blank": True},
@@ -513,6 +513,4 @@ SEND_BROKEN_LINK_EMAILS = True
 DEFAULT_FROM_EMAIL = 'davsmile@yahoo.com'
 
 
-
-JQUERY_FILENAME = 'jquery-1.11.1.min.js'
 
