@@ -27,6 +27,7 @@ input[type=number]{
 }
 
 .product_title{
+	color: #fff;
 	position: relative; 
 	top: -15px; 
 	font-size: 35px;
@@ -44,6 +45,7 @@ input[type=number]{
 }
 
 .new-price{
+	color: #fff;
 	font-size: 24px;
 }
 .product-sorting {
@@ -73,3 +75,6 @@ select{
 	left:65%; background: rgba(239, 239, 239, 0.93)
 }
 
+label{
+	color: #fff;
+}

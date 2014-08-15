@@ -100,10 +100,10 @@ img {
 }
 .menu_wrap .nav li a {
   line-height:18px;
-  color: #313131;
+  color: #FFF;
   font-family: 'Open Sans', sans-serif;
   font-weight:800;
-  font-size:14px;
+  font-size:15px;
   text-transform: uppercase;
   text-shadow: none;
   text-decoration: none;
@@ -1096,8 +1096,7 @@ a:hover.buttonnavy {
 }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
-color: #ffffff;
-background-image: linear-gradient(to bottom, #CD5555, #CD5555);
+color: red;
 }
 
 a.button{
@@ -1113,6 +1112,6 @@ a.button{
 
 .page_container,
 .header{
-	background-image: url('../img/elegant_background_7.jpg');
+	background-image: url('../img/elegant_background_9.jpg');
 }
 

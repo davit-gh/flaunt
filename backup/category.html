@@ -122,9 +122,9 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 		{% for product, categories in prodcats.items %}
 		  <figure class="span3 picture-item" data-groups='{{ categories|join:", " }}' data-item-price='{% if product.on_sale %}{{ product.unit_price }}{% else %}{{ product.price }}{% endif %}' style="padding: 0px 20px 20px 0px">
 		  	{% if product.image %}
-			  	<div class="picture-item__inner"  style="height:400px">
+			  	<div class="picture-item__inner"  style="height:340px">
 			  		<a href="{{ product.get_absolute_url }}">
-				    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 460 500 %}"/>
+				    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 260 258 %}"/>
 				    </a>
 				    	<div class="picture-item__details">
 				      		<figcaption id="figcap" class="picture-item__title">

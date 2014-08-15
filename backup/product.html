@@ -82,7 +82,7 @@ $('select').on('mouseenter',function(){
     open($(this));
 });
     //initiate the plugin and pass the id of the div containing gallery images
-$("#zoom_03").elevateZoom({constrainType:"height", constrainSize:550, zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
+$("#zoom_03").elevateZoom({constrainType:"width", constrainSize:500, zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
 
 //pass the images to Fancybox
 $("#zoom_03").bind("click", function(e) {  
@@ -103,8 +103,8 @@ $("#zoom_03").bind("click", function(e) {
 
 {% endblock %}
 
-{% block main_span_size %}9{% endblock %}
-{% block panel_span_size %}3{% endblock %}
+{% block main_span_size %}10{% endblock %}
+{% block panel_span_size %}2{% endblock %}
 
 {% block title %}
 {% editable product.title %}{{ product.title }}{% endeditable %}
@@ -112,17 +112,17 @@ $("#zoom_03").bind("click", function(e) {
 
 {% block main %}
 
-<div class="span9">
+<div class="span10">
     <p class="product_title">{{ product.title }}</p>
 </div>
 <div id="messages" class="alert alert-info modal" style="display:none"></div>
 <div class="row" style="padding-top: 40px">
-    <div class="span5">
-        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}"/>
+    <div class="span6">
+        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 500 500 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 800 800 %}"/>
         <div id="gal1">    
             {% for image in images %}
-            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}">
-                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 55 75 %}">
+            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 500 500 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 800 800 %}">
+                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}">
             </a>
             {% endfor %}
         </div>
@@ -169,7 +169,7 @@ $("#zoom_03").bind("click", function(e) {
                             </td>
                             <td>
                             <div class="pull-left" id="pricediv">
-                                <h3  style="margin-left:18px; color: #fff">Price</h3>
+                                <h3  style="margin-left:18px">Price</h3>
                                 <ul id="variations" class="list-unstyled">
                                 {% for variation in variations %}
                                 <li id="variation-{{ variation.sku }}"
