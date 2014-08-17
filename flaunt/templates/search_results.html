@@ -36,7 +36,7 @@ No results were found in {{ search_type }} matching your query: {{ query }}
 
         <a style="color: #fff" href="{{ result.get_absolute_url }}">
 			<img src="{{ MEDIA_URL }}{% thumbnail result.image 160 200 %}"/>
-        	<p>{{ result }}</p>
+        	{{ result }}
         </a>
     </h5>
     
