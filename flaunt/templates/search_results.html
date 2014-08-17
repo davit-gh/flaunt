@@ -24,17 +24,22 @@ No results were found in {{ search_type }} matching your query: {{ query }}
 {% endblocktrans %}
 {% else %}
 {% blocktrans with start=results.start_index end=results.end_index total=results.paginator.count %}
-Showing {{ start }} to {{ end }} of {{ total }} results in {{ search_type }} matching your query: {{ query }}
+<h4 style="color: rgba(147, 158, 215, 1)">Showing {{ start }} to {{ end }} of {{ total }} results in {{ search_type }} matching your query: {{ query }}</h4>
 {% endblocktrans %}
 {% endif %}
 </p>
 
 <div id="search-results">
     {% for result in results.object_list %}
-    <h5>{{ forloop.counter0|add:results.start_index }})
-        <a href="{{ result.get_absolute_url }}">{{ result }}</a></h5>
-    <p>{{ result.description|truncatewords_html:20|safe }}</p>
-    <a href="{{ result.get_absolute_url }}">{% trans "read more" %}</a>
+    
+    <h5 style="color: #fff">{{ forloop.counter0|add:results.start_index }})
+
+        <a style="color: #fff" href="{{ result.get_absolute_url }}">
+			<img src="{{ MEDIA_URL }}{% thumbnail result.image 160 200 %}"/>
+        	<p>{{ result }}</p>
+        </a>
+    </h5>
+    
     {% endfor %}
 </div>
 
