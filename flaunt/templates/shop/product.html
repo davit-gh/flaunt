@@ -169,7 +169,7 @@ $("#zoom_03").bind("click", function(e) {
                             </td>
                             <td>
                             <div class="pull-left" id="pricediv">
-                                <h3  style="margin-left:18px; color: #fff">Price</h3>
+                                <h2  style="margin-left:18px; color: #fff">Price</h2>
                                 <ul id="variations" class="list-unstyled">
                                 {% for variation in variations %}
                                 <li id="variation-{{ variation.sku }}"
@@ -177,7 +177,7 @@ $("#zoom_03").bind("click", function(e) {
                                     {% if variation.has_price %}
                                         {% if variation.on_sale %}
                                             <span class="old-price">{{ variation.unit_price|currency }}</span>
-                                            {% trans "On sale:" %}
+                                            <span style='color: #fff; font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
                                         {% endif %}
                                         <span class="new-price">{{ variation.price|currency }}</span>
                                     {% else %}
