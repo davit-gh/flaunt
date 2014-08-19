@@ -17,6 +17,7 @@
 
 
 {% compress css %}
+{% endcompress %}
 <link rel="stylesheet" id="camera-css"  href="{% static "css/camera.css" %}" type="text/css" media="all">
 <link href="{% static "css/bootstrap.2.1.1.css" %}" rel="stylesheet">
 <link href="{% static "css/theme.css" %}" rel="stylesheet">
@@ -33,7 +34,7 @@
 {% endif %}
 {% endifinstalled %}
 
-{% endcompress %}
+
 
 {% block extra_css %}{% endblock %}
 
@@ -92,7 +93,7 @@
         {% endnevercache %}
             </div>
                         <div class="span7">
-                        	<p><img style="margin: 0px 20px" src="{% static "img/title.png" %}" alt="You Name It" width="150" align="left" /><h3  style="color: #FFF" >Welcome to <span style="background-color: rgba(150, 124, 124, 0.49)"><span style="font-family: 'Comic Sans'; color:red">You</span> <span style="font-family: 'Comic Sans'; color:blue">Name</span> <span style="font-family: 'Comic Sans'; color:orange">It</span>!</span> Order from our growing number of products and have it delivered fast!</h4></p>                       
+                        	<p><a href="/"><img style="margin: 0px 20px" src="{% static "img/title.png" %}" alt="You Name It" width="150" align="left" /></a><h3  style="color: #FFF" >Welcome to <span style="background-color: rgba(150, 124, 124, 0.49)"><span style="font-family: 'Comic Sans'; color:red">You</span> <span style="font-family: 'Comic Sans'; color:blue">Name</span> <span style="font-family: 'Comic Sans'; color:orange">It</span>!</span> Order from our growing number of products and have it delivered fast!</h4></p>                       
                         </div>
                         <div style="margin-top:20px" class="span5">
                             <div class="row">
