@@ -196,3 +196,10 @@ class Pendingbtcinvoices(models.Model):
     value_in_btc = models.CharField(max_length=50)
     def __unicode__(self):
         return self.invoice_key
+
+class Inboundmail(models.Model):
+    html_body = models.CharField(max_length=800)
+    send_date = models.DateTimeField()
+    subject = models.CharField(max_length=100)
+    reply_to = models.CharField(max_length=100)
+    sender = models.CharField(max_length=100)

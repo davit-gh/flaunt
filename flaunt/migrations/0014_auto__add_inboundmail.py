@@ -8,22 +8,60 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Removing M2M table for field products on 'PortfolioItemCategory'
-        db.delete_table(db.shorten_name(u'flaunt_portfolioitemcategory_products'))
+        # Adding model 'Inboundmail'
+        db.create_table(u'flaunt_inboundmail', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('html_body', self.gf('django.db.models.fields.CharField')(max_length=800)),
+            ('send_date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('subject', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('reply_to', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('sender', self.gf('django.db.models.fields.CharField')(max_length=100)),
+        ))
+        db.send_create_signal(u'flaunt', ['Inboundmail'])
 
 
     def backwards(self, orm):
-        # Adding M2M table for field products on 'PortfolioItemCategory'
-        m2m_table_name = db.shorten_name(u'flaunt_portfolioitemcategory_products')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('portfolioitemcategory', models.ForeignKey(orm[u'flaunt.portfolioitemcategory'], null=False)),
-            ('product', models.ForeignKey(orm[u'shop.product'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['portfolioitemcategory_id', 'product_id'])
+        # Deleting model 'Inboundmail'
+        db.delete_table(u'flaunt_inboundmail')
 
 
     models = {
+        u'auth.group': {
+            'Meta': {'object_name': 'Group'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        u'auth.permission': {
+            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
+            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'auth.user': {
+            'Meta': {'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
+        },
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
         u'flaunt.addfieldstoproducts': {
             'Meta': {'ordering': "(u'_order',)", 'object_name': 'AddFieldsToProducts'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
@@ -31,12 +69,61 @@ class Migration(SchemaMigration):
             'product': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'supplementary'", 'to': u"orm['shop.Product']"}),
             'short_desco': ('mezzanine.core.fields.RichTextField', [], {'blank': 'True'})
         },
+        u'flaunt.btcinvoices': {
+            'Meta': {'object_name': 'Btcinvoices'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'invoice_key': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'transaction_hash': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'value_in_btc': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'flaunt.carrierlistpriority': {
+            'Meta': {'object_name': 'CarrierlistPriority'},
+            'carrier': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'countries': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['flaunt.Countrylist']", 'symmetrical': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'flaunt.carrierlistregular': {
+            'Meta': {'object_name': 'CarrierlistRegular'},
+            'carrier': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'countries': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['flaunt.Countrylist']", 'symmetrical': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'flaunt.countrylist': {
+            'Meta': {'object_name': 'Countrylist'},
+            'country': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'flaunt.feedback': {
+            'Meta': {'object_name': 'Feedback'},
+            'feedback_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'feedback_text': ('django.db.models.fields.TextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'item_title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'product': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'prod'", 'to': u"orm['shop.Product']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'usr'", 'to': u"orm['auth.User']"})
+        },
         u'flaunt.homepage': {
             'Meta': {'ordering': "(u'_order',)", 'object_name': 'HomePage', '_ormbases': [u'pages.Page']},
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
             'content_heading': ('django.db.models.fields.CharField', [], {'default': "'About us!'", 'max_length': '200'}),
             'featured_portfolio': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['flaunt.Portfolio']", 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'})
+        },
+        u'flaunt.inboundmail': {
+            'Meta': {'object_name': 'Inboundmail'},
+            'html_body': ('django.db.models.fields.CharField', [], {'max_length': '800'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'reply_to': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'send_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'sender': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'subject': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'flaunt.pendingbtcinvoices': {
+            'Meta': {'object_name': 'Pendingbtcinvoices'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'invoice_key': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'transaction_hash': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'value_in_btc': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'flaunt.portfolio': {
             'Meta': {'ordering': "(u'_order',)", 'object_name': 'Portfolio', '_ormbases': [u'pages.Page']},
@@ -135,7 +222,7 @@ class Migration(SchemaMigration):
             'sale_id': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'sale_price': ('cartridge.shop.fields.MoneyField', [], {'null': 'True', 'max_digits': '10', 'decimal_places': '2', 'blank': 'True'}),
             'sale_to': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            u'short_descript': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            u'short_desc': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
             'sku': ('cartridge.shop.fields.SKUField', [], {'max_length': '20', 'unique': 'True', 'null': 'True', 'blank': 'True'}),

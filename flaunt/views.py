@@ -230,3 +230,12 @@ def remove_wishlist_item(request):
         response = render(request,'messages.html')
         set_cookie(response, "wishlist", ",".join(skus))
         return response
+
+from postmark_inbound import PostmarkInbound
+from flaunt.models import Inboundmail
+def mail_from_postmark(request):
+	if request.method == 'POST':
+		json_data = request
+		inbound = PostmarkInbound(json=json_data)
+		mail = Inboundmail(inbound.html_body(), inbound.send_date(), inbound.subject(), inbound.reply_to(), inbound.sender())
+		mail.save()

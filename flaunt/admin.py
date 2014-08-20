@@ -44,4 +44,7 @@ admin.site.register(PortfolioItem,PortfolioItemAdmin)
 admin.site.register(PortfolioItemCategory)
 #admin.site.register(Slide)
 
-
+from flaunt.models import Inboundmail
+from flaunt.models import Feedback
+admin.site.register(Inboundmail)
+admin.site.register(Feedback)
