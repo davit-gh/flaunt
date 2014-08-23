@@ -44,7 +44,19 @@ admin.site.register(PortfolioItem,PortfolioItemAdmin)
 admin.site.register(PortfolioItemCategory)
 #admin.site.register(Slide)
 
-from flaunt.models import Inboundmail
 from flaunt.models import Feedback
-admin.site.register(Inboundmail)
 admin.site.register(Feedback)
+
+from flaunt.models import Inboundmail
+from django.utils.html import format_html
+class InboundmailAdmin(admin.ModelAdmin):
+#        fields=('send_date', 'subject', 'html_body', 'reply_to', 'sender')
+        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender')
+
+#        def format_as_html(self,obj):
+#                return format_html(obj.html_body)
+#        format_as_html.allow_tags = True
+#        format_as_html.short_description = 'Body'
+admin.site.register(Inboundmail, InboundmailAdmin)
+
+
