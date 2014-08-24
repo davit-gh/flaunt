@@ -344,7 +344,6 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
     "flaunt",
-    "django_pdb",
     "widget_tweaks",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -409,7 +408,7 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
-    "django_pdb.middleware.PdbMiddleware",
+    
 )
 
 # Store these package names here as they may change in the future since
