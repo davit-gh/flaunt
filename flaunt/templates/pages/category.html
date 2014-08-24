@@ -96,26 +96,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 	{{ page.category.content|safe }}
 	{% endeditable %}
 
-			{% if child_categories %}
-				<div  class="button-group" style="display: inline-block">
-					{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
-			     		
-							<a href="" data-group="all" class="btn btn-custom selected">All</a>
-			    			{% for category in child_categories %}
-			   		   			<a href="" data-group="{{category.title}}" class="btn btn-custom">{{ category.title }}</a>
-							{% endfor %}							
-			    		
-					{% else %}
-			    		{% for category in child_categories %}
-			    			<div class="col-xs-6 col-sm-4 col-lg-3">
-			    				<a href="{{ category.get_absolute_url }}" class="thumbnail">
-			        				<div class="caption"><h4>{{ category.title }}</h4></div>
-			    				</a>
-			    			</div>
-			    		{% endfor %}
-					{% endif %}
-				</div>
-			{% endif %}
+			
 				
 			<div style="display: inline-block; margin: 0px 0px 20px 20px">
 				<label for="sorting-select">{% trans "Sort by" %}</label>
