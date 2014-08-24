@@ -344,6 +344,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
     "flaunt",
+    "django_pdb",
     "widget_tweaks",
     "django.contrib.admin",
     "django.contrib.auth",

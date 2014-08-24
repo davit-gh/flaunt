@@ -1,6 +1,6 @@
 {% extends "pages/page.html" %}
 
-{% load staticfiles mezzanine_tags shop_tags i18n %}
+{% load staticfiles mezzanine_tags shop_tags i18n pdb %}
 {% block body_id %}category{% endblock %}
 
 {% block extra_css %}
@@ -11,7 +11,6 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 <link rel="stylesheet" type="text/css" href="{% static "css/shuffle-styles.css" %}">
 
-
 {% endblock %}
 {% block slider_js %}
 
@@ -19,6 +18,15 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 {% endblock %}
 {% block extra_js %}
+	$('.collapse').on('show.bs.collapse', function () {
+       $(this).parent().find('.toggle').addClass("expanded");
+    });
+
+    $('.collapse').on('hide.bs.collapse', function () {
+       $(this).parent().find('.toggle').removeClass("expanded");
+    });
+	
+
 	var $cont = $('#grid');
 		
 	$cont.shuffle({
@@ -28,7 +36,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 	});
 
-	$('#option a').click(function(e){
+	$('#option > ul > li > a').click(function(e){
 		e.preventDefault();
 		var group = $(this).data('group');
 		$cont.shuffle('shuffle',group);
@@ -89,7 +97,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 	{% endeditable %}
 
 			{% if child_categories %}
-				<div id="option" class="button-group" style="display: inline-block">
+				<div  class="button-group" style="display: inline-block">
 					{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
 			     		
 							<a href="" data-group="all" class="btn btn-custom selected">All</a>
@@ -117,36 +125,74 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 				  <option value="item-price-rev">Most Expensive</option>
 				</select>
 			</div>
+  <div class="row">
+    <div class="span3">
+		<div class="left-sidebar">
 
-	<div id="grid" class="row shuffle--container shuffle--fluid">	
-		{% for product, categories in prodcats.items %}
-		  <figure class="span3 picture-item" data-groups='{{ categories|join:", " }}' data-item-price='{% if product.on_sale %}{{ product.unit_price }}{% else %}{{ product.price }}{% endif %}' style="padding: 0px 20px 20px 0px">
-		  	{% if product.image %}
-			  	<div class="picture-item__inner"  style="height:400px">
-			  		<a href="{{ product.get_absolute_url }}">
-				    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 460 500 %}"/>
-				    </a>
-				    	<div class="picture-item__details">
-				      		<figcaption id="figcap" class="picture-item__title">
-				      			{% if product.on_sale %}
-								    <span class="old-price">Old price: {{ product.unit_price|currency }}</span>
-								    {% trans "On sale: " %}{{ product.price|currency }}
-								{% else %}
-									<span>Price: {{ product.price|currency }}</span>
-								{% endif %} 
-								<p>{{ product }}</p>
-							</figcaption>
-				    	</div>
-				    
-				</div>
-			{% else %}
-				<div class="placeholder">No Image Yet</div>
-			{% endif %}
-		  </figure>
-		{% endfor %}
-		
+					<h2>Category</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						  {% for category, subcat in catsubcat.items %}
+			    			<div class="panel panel-default">
+			    				<div class="panel-heading">
+									<h4 class="panel-title">
+										<a id="main_cat" data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
+											<div class="toggle pull-right"></div>
+											{{ category.title }}
+										</a>
+									</h4>
+								</div>
+								{% if subcat %}
+								<div id="{{ category.title|slugify }}" class="panel-collapse collapse">
+									<div id="option" class="panel-body">
+										
+										<ul>
+											{% for cat in subcat %}
+											<li>
+												<a href="" data-group="{{cat.title}}">
+													{{ cat.title }}
+												</a>
+											</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+			    	  	  {% endfor %}
+							
+						</div><!--/category-products-->	
+    	</div>
+    </div>
+    <div class="span9">
+		<div id="grid" class="row shuffle--container shuffle--fluid">	
+			{% for product, categories in prodcats.items %}
+			  <figure class="span3 picture-item" data-groups='{{ categories|join:", " }}' data-item-price='{% if product.on_sale %}{{ product.unit_price }}{% else %}{{ product.price }}{% endif %}' style="padding: 0px 20px 20px 0px">
+			  	{% if product.image %}
+				  	<div class="picture-item__inner"  style="height:400px">
+				  		<a href="{{ product.get_absolute_url }}">
+					    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 460 500 %}"/>
+					    </a>
+					    	<div class="picture-item__details">
+					      		<figcaption id="figcap" class="picture-item__title">
+					      			{% if product.on_sale %}
+									    <span class="old-price">Old price: {{ product.unit_price|currency }}</span>
+									    {% trans "On sale: " %}{{ product.price|currency }}
+									{% else %}
+										<span>Price: {{ product.price|currency }}</span>
+									{% endif %} 
+									<p>{{ product }}</p>
+								</figcaption>
+					    	</div>
+					    
+					</div>
+				{% else %}
+					<div class="placeholder">No Image Yet</div>
+				{% endif %}
+			  </figure>
+			{% endfor %}
+			
+		</div>
 	</div>
-
 	<div class="span6">
 		{% pagination_for products %}
 	</div>
