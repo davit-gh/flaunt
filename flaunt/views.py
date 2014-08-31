@@ -247,4 +247,12 @@ def mail_from_postmark(request):
         else:
                 return HttpResponse('not OK')
 
-				
+from cartridge.shop.models import Category
+def get_category_products(request):
+	if request.method == 'POST' and request.is_ajax():
+
+		category = Category.objects.get(title=request.POST.get('cat'))
+		products = category.products.all()
+		prods = [(x.id, x.title.strip(), x.image, float(x.unit_price), float(x.price()), x.get_absolute_url()) if x.on_sale() else (x.id, x.title.strip(), x.image, float(x.price()), x.get_absolute_url()) for x in products]
+		return HttpResponse(json.dumps({'prods':zip(*prods)}), mimetype="application/json")
+	return HttpResponse('Not OK!')

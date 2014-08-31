@@ -18,6 +18,8 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 {% endblock %}
 {% block extra_js %}
+
+
 	$('.collapse').on('show.bs.collapse', function () {
        $(this).parent().find('.toggle').addClass("expanded");
     });
@@ -34,6 +36,56 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 		
 		delimeter: ', '
 
+	});
+	
+	$cont.on('shrink.shuffle', function( evt, $collection, shuffle ) {
+  		var group = $collection['group'];
+  		var ids = $('.filtered figcaption > p').map(function(){return parseInt($(this).attr('id'),10);}).get(),
+  			frag = document.createDocumentFragment(),
+  			self = this,
+  			items = [],
+  			$items,
+  			vis_items,
+  			figure;
+  		if (ids.indexOf(77) >= 0){
+  			return;
+  		}
+  		console.log(ids);
+  		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
+  			var post_ids = data.prods[0];
+  			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
+  			console.log(post_ids);
+  			console.log(comp);
+  			for(i in comp){
+  				var ind = post_ids.indexOf(comp[i]);
+  				if(data.prods.length == 5){
+  					var url = data.prods[4][ind],
+  						price =  data.prods[3][ind],
+  						unit_price = '';
+  				} else {
+  					var url = data.prods[5][ind]; 
+  						unit_price =  data.prods[3][ind],
+  						price = data.prods[4][ind];
+  				}
+  				var image = data.prods[2][ind], 
+  				html = '<div class="picture-item__inner"  style="height:400px"><a href='+url+'><img src="{{ MEDIA_URL }}' + image + '"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">{% if product.on_sale %}<span class="old-price">Old price: $'+ unit_price +'</span>On sale: $' + unit_price + '{% else %}<span>Price: $' + price + '</span>{% endif %}<p id="77">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
+  				figure = document.createElement('figure');
+  				figure.className = figure.className + 'span3 picture-item';
+  				figure.setAttribute('data-item-price', data.prods[3][ind]);
+  				figure.setAttribute('data-groups', group);
+  				$(figure).html(html);
+  				if(!(figure in items)){
+  					items.push(figure);
+  					console.log(items);
+  				}
+  				frag.appendChild(figure);
+  				
+  			}
+  			document.getElementById("grid").appendChild(frag);
+  			$items = $(items);
+  			$collection.$el.data('shuffle').appended( $items );
+  		}, error: function(data){console.log(JSON.stringify(data));}});
+  		
 	});
 
 	$('#option > ul > li > a').click(function(e){
@@ -112,12 +164,25 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 					<h2>Category</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						    <div class="panel panel-default">
+			    				<div class="panel-heading">
+									<h4 class="panel-title">
+										<div id="option" class="panel-body">
+										<ul><li>
+						  				<a href="" data-group="all">All</a>
+						  				</li></ul>
+						  				</div>
+						  			</h4>
+						  		</div>
+						  	</div>
 						  {% for category, subcat in catsubcat.items %}
 			    			<div class="panel panel-default">
 			    				<div class="panel-heading">
 									<h4 class="panel-title">
-										<a id="main_cat" data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
+										<a data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
+											{% if subcat %}
 											<div class="toggle pull-right"></div>
+											{% endif %}
 											{{ category.title }}
 										</a>
 									</h4>
@@ -161,7 +226,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 									{% else %}
 										<span>Price: {{ product.price|currency }}</span>
 									{% endif %} 
-									<p>{{ product }}</p>
+									<p id="{{ product.id }}">{{ product }}</p>
 								</figcaption>
 					    	</div>
 					    
