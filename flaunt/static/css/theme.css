@@ -100,7 +100,6 @@ img {
 }
 .menu_wrap .nav li a {
   line-height:18px;
-  color: #FFF;
   font-family: 'Open Sans', sans-serif;
   font-weight:800;
   font-size:15px;
@@ -1112,7 +1111,7 @@ a.button{
 
 .page_container,
 .header{
-	background-image: url('../img/elegant_background_9.jpg');
+	background-color: #f6f6f6;
 }
 
 .pagination {

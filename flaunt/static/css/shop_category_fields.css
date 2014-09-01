@@ -27,7 +27,6 @@ input[type=number]{
 }
 
 .product_title{
-	color: #fff;
 	position: relative; 
 	top: -15px; 
 	font-size: 35px;
@@ -46,7 +45,7 @@ input[type=number]{
 }
 
 .new-price{
-	color: #fff;
+	
 	font-size: 24px;
 }
 .product-sorting {
@@ -77,12 +76,12 @@ select{
 }
 
 label{
-	color: #fff;
+	
 	font-size: 16px;
 }
 
 .category-products .panel {
-	background-color: #FFFFFF;
+	background-color: #fafafa;
 	border: 0px;
 	border-radius: 0px;
 	box-shadow:none;
@@ -90,9 +89,9 @@ label{
 }
 
 .category-products .panel-default .panel-heading {
-  background-color: #FFFFFF;
+  background-color: #fafafa;
   border: 0 none;
-  color: #FFFFFF;
+  color: #fafafa;
   padding: 5px 20px;
 }
 
@@ -109,7 +108,7 @@ label{
 }
 
 .category-products .badge {
-  background:none;
+  
   border-radius: 10px;
   color: #696763;
   display: inline-block;
@@ -128,7 +127,7 @@ label{
 .left-sidebar h2:before{
 	content: " ";
 	position: absolute;
-	background: #fff;
+	background: #fafafa;
 	bottom: -6px;
 	width: 130px;
 	height: 30px;
@@ -161,6 +160,7 @@ label{
 
 
 .toggle{
+	margin-top: 5px;
 	display:inline-block;
 	height:16px;
 	width:16px;
@@ -168,6 +168,7 @@ label{
 }
 
 .toggle.expanded{
+	margin-top: 5px;
 	background:url("../img/minus.png");
 }
 
@@ -176,7 +177,7 @@ div#option.panel-body > ul{
 }
 
 div#option.panel-body > ul > li > a {
-	color: orange;
+	
 	font-size: 14px;
 	padding-left: 10px;
 	text-decoration: none;
