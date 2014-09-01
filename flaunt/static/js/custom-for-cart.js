@@ -46,7 +46,7 @@ function setCarriers(s){
     }
     var country_name = $('#chosen_country').val();
     $.post('/ajax_country',{'country' : country_name}, function(data){ 
-        console.log(data);
+        
         var carrier = document.getElementById('id_carrier');
         var priority = data['carriers_priority'];
         var regular = data['carriers_regular'];
@@ -58,10 +58,27 @@ function setCarriers(s){
                 carrier.options.add(new Option(priority[pri], priority[pri]));
             }   
         }else{
-            carrier.options.length = 1;
-            for(reg in regular){
-                carrier.options.add(new Option(regular[reg], regular[reg]));
-            }   
+            $(carrier).prop('disabled','disabled');
+            $.ajax({
+                url: '/get_carrier',
+                type: 'POST',
+                data: {'free_shipping' : 'True'}, 
+                success: function(data){
+                    var total_qty = $('#subtotal').attr('class'),
+                        total = parseFloat(data.total_price);
+                    $('#subtotal').attr('name','Regular');
+                    if (total_qty != '1'){
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
+                        }else{
+                            $('#cart_menu').html(' 1 item in cart, total: $'+total);
+                        }
+                    var html = "<div class='order_totals'><div><label>Sub total:</label>$"+total+"</div><d0iv><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    $('#total_cell').html(html);
+                },
+                error: function(data){
+                    console.log('error'+data);
+                } 
+            });
         }
     });
     

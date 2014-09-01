@@ -29,7 +29,7 @@
     }).bind("ajaxComplete", function(){
         $("#loading").hide();
     });
-
+    $('#id_carrier').prop('disabled',false);
     $('#id_shipping_type').val("");
     $('#id_country').val("");
     $("select[name='country'] option:eq(0)").attr('disabled','disabled');
@@ -41,13 +41,21 @@
         var country = $("#id_country");
         var ship_type = $("#id_shipping_type");
         var carrier = $('#id_carrier');
-        if(!country.prop('selectedIndex') || !ship_type.prop('selectedIndex') || !carrier.prop('selectedIndex')){
+        if(!country.prop('selectedIndex')) {
             if(!$("#required").length){
                 country.after("<span id='required'>* required</span>");
-                ship_type.after("<span id='required'>* required</span>");
-                carrier.after("<span id='required'>* required</span>");
             } 
             return false;
+        } else if(!ship_type.prop('selectedIndex')){
+             if(!$("#required").length){
+                ship_type.after("<span id='required'>* required</span>");
+             }
+             return false;
+        } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
+             if(!$("#required").length){
+                carrier.after("<span id='required'>* required</span>");
+             }
+             return false;
         }
         return true;
     });

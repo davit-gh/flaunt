@@ -21,13 +21,13 @@ def ajax_country(request):
 		carriers_priority=[c_p[1:-1].split(', ') for c_p in carriers_priority]
 		carriers_priority=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_priority]
 		
-		carriers_regular = map(lambda x: x.carrier, countrylist_country.carrierlistregular_set.all())
-		carriers_regular=[c_p[1:-1].split(', ') for c_p in carriers_regular]
-		carriers_regular=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_regular]
+		#carriers_regular = map(lambda x: x.carrier, countrylist_country.carrierlistregular_set.all())
+		#carriers_regular=[c_p[1:-1].split(', ') for c_p in carriers_regular]
+		#carriers_regular=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_regular]
 	else:
 		carriers = "not ajax"
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
-	return HttpResponse(json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), mimetype="application/json")
+	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), mimetype="application/json")
 
 
 from cartridge.shop.forms import CartItemFormSet
@@ -59,21 +59,23 @@ def update_cart(request):
 from flaunt.shop.checkout import billship_handler
 def get_carrier(request):
 	if request.is_ajax() and request.method == 'POST':
-		carrier = request.POST['carrier']
-		shipping_type = request.POST['shipping_type']
-		shipping_total = float(carrier.split()[3][:-1])
-		total = float(request.cart.total_price())
-		if not request.session.get("free_shipping"):
+		if not request.POST.get("free_shipping"):
+			carrier = request.POST['carrier']
+			shipping_type = request.POST['shipping_type']
+			shipping_total = float(carrier.split()[3][1:])
 			settings.use_editable()
 			set_shipping(request, shipping_type, shipping_total)
-		
-		recalculate_cart(request)
-		
+			recalculate_cart(request)
+		else:
+			shipping_type = 'Regular'
+			shipping_total = 0.0
+			set_shipping(request, shipping_type, shipping_total)
+		total = float(request.cart.total_price())
 		#resp = render_to_string('shop/cart.html', { 'request': request })
 	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
 									'shipping_total' : shipping_total, 
 									'total_price' : total}), content_type='application/json')
-import pdb
+
 from flaunt.forms import FeedbackForm
 from flaunt.models import Feedback
 from flaunt.models import Product

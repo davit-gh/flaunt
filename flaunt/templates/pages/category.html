@@ -87,6 +87,11 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 		var group = $(this).data('group');
 		$cont.shuffle('shuffle',group);
 	});
+	$('#option > a').click(function(e){
+		e.preventDefault();
+		var group = $(this).data('group');
+		$cont.shuffle('shuffle',group);
+	});
 	$('#option').each( function( i, buttonGroup ) {
 	    var $buttonGroup = $( buttonGroup );
 	    $buttonGroup.on( 'click', 'a', function() {
@@ -173,12 +178,20 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 			    			<div class="panel panel-default">
 			    				<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
+										
 											{% if subcat %}
-											<div class="toggle pull-right"></div>
+												<a data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
+													<div class="toggle pull-right"></div>
+												{{ category.title }}
+												</a>
+											{% else %}
+												<div id="option" class="panel-body">
+													<a href="" data-group="{{category.title}}">
+													{{ category.title }}
+													</a>
+												</div>
 											{% endif %}
-											{{ category.title }}
-										</a>
+											
 									</h4>
 								</div>
 								{% if subcat %}

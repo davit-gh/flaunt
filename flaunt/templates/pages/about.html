@@ -1,0 +1,28 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags staticfiles %}
+
+{% block extra_css %} 
+<style type="text/css">
+	.para{
+		text-align: justify;
+		font: 1.5em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	}
+</style>
+{% endblock %}
+
+{% block main %}
+
+{{ block.super }}
+<p class="para">
+You are paying only the price of a product you like, no matter where you are. Pay for shipping only if you need it FAST (3 ~ 7 days). <b>''You Name It''</b> is a bridge, a bridge we were all dreaming about. <b>"You Name It"</b> is your shop in China where you can find everything you ever wished to have from China priced as you would buy it in Beijing, Shanghai and in the rest of this empire. Moreover, if you do not need fast shipping then you will have your product with $0.00 shipping cost, and the shipping may last up to 25 days depending on your location. All our products are shipped and provided with tracking numbers.
+</p>
+<p class="para">
+<b>''You Name It''</b> gives you an exceptional chance to suggest any item you can not find in our database and you will have it with the cheapest price directly from the original retailers. <a href="/contact" style="color: blue">Contact us</a> for that! Costumer satisfaction is our priority, feel free to contact us with any question you will come up with. Our specialist will be glad to help you to make the transaction process smoother. Pay with PayPal, feel protected, open cases in buyers' protection and return the product you are not satisfied with and get full refund including back shipping cost. You have the option of paying with Bitcoin too!
+<br/><br/><i>Happy Shopping!</i>
+</p>
+{% endblock %}
+
+{% block right_panel %}
+  
+{% endblock %}

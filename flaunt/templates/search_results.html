@@ -32,9 +32,9 @@ No results were found in {{ search_type }} matching your query: {{ query }}
 <div id="search-results">
     {% for result in results.object_list %}
     
-    <h5 style="color: #fff">{{ forloop.counter0|add:results.start_index }})
+    <h5>{{ forloop.counter0|add:results.start_index }})
 
-        <a style="color: #fff" href="{{ result.get_absolute_url }}">
+        <a style="color: rgba(33, 122, 222, 1)" href="{{ result.get_absolute_url }}">
 			<img src="{{ MEDIA_URL }}{% thumbnail result.image 160 200 %}"/>
         	{{ result }}
         </a>
