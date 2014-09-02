@@ -197,7 +197,20 @@
         <td colspan="3" id="total_cell" style="text-align:center" >{% order_totals %}</td>
         
     </tr>
-    
+    <tr>
+        <td colspan="6">
+            <div class="">
+                <div id="form-buttons">
+                    <a id="return" href="/" class="btn-custom pull-left ">
+                        <img alt="Back" src="{% static "img/back.png" %}" width="20">&nbsp;{% trans "Keep Shopping" %}
+                    </a>
+                    <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-lg btn-custom pull-right">
+                        {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
+                    </a>
+                </div>
+            </div>
+        </td>
+    </tr>
     </tbody>
 </table>
 <div class="alert alert-info modal fade" id="dialog-message" data-alert="alert">
@@ -205,16 +218,7 @@
 </div>
 <input type="hidden" id="subtotal" value="0" name="Shipping fee" data-notenoughstockid="" class="{{ request.cart.total_quantity }}" />
 <input type="hidden" id="chosen_country" />
-<div class="form-actions">
-    <div id="form-buttons">
-        <a id="return" href="/" class="btn-custom">
-            <img alt="Remove" src="{% static "img/back.png" %}" width="20">&nbsp;{% trans "Keep Shopping" %}
-        </a>
-        <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-lg btn-custom pull-right">
-            {% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %}
-        </a>
-    </div>
-</div>
+
 </form>
 
 {% if discount_form %}

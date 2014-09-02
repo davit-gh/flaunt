@@ -1095,7 +1095,7 @@ a:hover.buttonnavy {
 }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
-color: red;
+color: rgba(36, 112, 168, 1);
 }
 
 a.button{
