@@ -67,7 +67,7 @@ urlpatterns += patterns('',
     url(r"^getprod", "flaunt.views.get_category_products", name="getproduct"),
     (r'^paypal-ipn-4d4k9t485j5d4g1re56t25rr2de/', include('paypal.standard.ipn.urls')),
     
-    url(r"^postmark/", include("postmark.urls")),
+    url(r"^postmark/bounce/$", "postmark.views.bounce", name="postmark_bounce_hook"),
 
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
