@@ -500,46 +500,8 @@ POSTMARK_API_KEY = "ccd0c96c-f622-4534-9556-432826da53f8"
 POSTMARK_API_USER = "bigelow"
 POSTMARK_API_PASSWORD = "verysecure"
 DEFAULT_FROM_EMAIL = 'admin@you-name-it.net'
+SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 
-########################
-# LOGGING ##############
-########################
-LOGGING = {
- 'version': 1,
- 'disable_existing_loggers': False,
- 'handlers': {
- # Include the default Django email handler for errors
- # This is what you'd get without configuring logging at all.
- 'mail_admins': {
- 'class': 'django.utils.log.AdminEmailHandler',
- 'level': 'ERROR',
- # But the emails are plain text by default - HTML is nicer
- 'include_html': True,
- },
- # Log to a text file that can be rotated by logrotate
- 'logfile': {
- 'class': 'logging.handlers.WatchedFileHandler',
- 'filename': '/home/flaunt/flaunt.log'
- },
- },
- 'loggers': {
- # Again, default Django configuration to email unhandled exceptions
- 'django.request': {
- 'handlers': ['mail_admins'],
- 'level': 'ERROR',
- 'propagate': True,
- },
- # Might as well log any errors anywhere else in Django
- 'django': {
- 'handlers': ['logfile'],
- 'level': 'ERROR',
- 'propagate': False,
- },
- # Your own app - this assumes all your logger names start with "myapp."
- 'flaunt': {
- 'handlers': ['logfile'],
- 'level': 'WARNING', # Or maybe INFO or DEBUG
- 'propagate': False
- },
- },
-}
+SOCIAL_LINK_FACEBOOK = 'https://www.facebook.com/YouNameItmarket'
+SOCIAL_LINK_PINTEREST = 'http://www.pinterest.com/younameitshop/'
+SOCIAL_LINK_TWITTER = 'https://twitter.com/_younameit'

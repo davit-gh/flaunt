@@ -23,6 +23,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static "css/skins/tango/skin.css" %}" />
 <link href="{% static "css/bootstrap-responsive.2.1.1.css" %}" rel="stylesheet">
+<link href="{% static "css/lightSlider.css" %}" rel="stylesheet">
 
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{% static "css/rtl.css" %}">
@@ -48,10 +49,11 @@
 <script src="{% static "js/bootstrap.2.1.1.min.js" %}"></script>
 
     
-    <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
     
-    <script type="text/javascript" src="{% static "js/camera.js" %}"></script>
-     
+<script type="text/javascript" src="{% static "js/camera.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.lightSlider.min.js" %}"></script>
+
   {% block slider_js %}{% endblock %}
     <script type="text/javascript">
 		$(document).ready(function(){	
@@ -65,7 +67,18 @@
 			
 			//Slider
 			$('#camera_wrap_1').camera();
-				
+			$("#lightSlider").lightSlider({
+				slideWidth: 300,
+
+				pager:false,
+				auto: true,
+				loop:true,
+				easing: '',
+				speed: 3500,
+				pause: 7000,
+				mode:"slide",
+				swipeThreshold:20,
+			});
 									
 		});		
 	</script>
@@ -109,26 +122,6 @@
                                     
                                 </nav> 
                                 
-                                <div class="follow_us">
-                                
-                                    <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
-                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
-                                        {% endif %}
-                                        {% if settings.VIDEO_SHARING_LINK_VIMEO %}
-                                            <li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
-                                        {% endif %}
-                                        {% if settings.BLOGGING_LINK_TUMBRL %}
-                                            <li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
-                                        {% endif %}
-                                        {% if settings.SOCIAL_LINK_TWITTER %}
-                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
-                                        {% endif %}
-                                        {% if settings.SOCIAL_LINK_DELICIOUS %}
-                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
-                                        {% endif %}
-                                        
-                                    </ul>
-                                </div>   
                                      
                             </div>  
                             </div>               
@@ -182,29 +175,56 @@
                                               
                     </div>
                     <div class="span4">
-                    	<h2 class="title">Get in touch!</h2>
-                        <form action="#" method="post">
-                        	<input class="span3" type="text" name="name" id="name" value="Name" onFocus="if (this.value == 'Name') this.value = '';" onBlur="if (this.value == '') this.value = 'Name';" />
-                            <input class="span3" type="text" name="email" id="email" value="Email" onFocus="if (this.value == 'Email') this.value = '';" onBlur="if (this.value == '') this.value = 'Email';" />
-                            <textarea name="message" id="message" class="span3" onFocus="if (this.value == 'Message') this.value = '';" onBlur="if (this.value == '') this.value = 'Message';" >Message</textarea>
-                            <div class="clear"></div>
-                            <input type="reset" class="btn dark_btn" value="Clear form" />
-                            <input type="submit" class="btn send_btn" value="Send!" />
-                            <div class="clear"></div>
-                        </form>
+                    	<h2 class="social_h2">CONNECT with US:</h2>
+                        
+                                    <ul class="social">
+                                        {% if settings.SOCIAL_LINK_FACEBOOK %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><img src="{% static 'img/fb.jpeg' %}" width="35"/></a></li>
+                                        {% endif %}
+
+                                        {% if settings.BLOGGING_LINK_TUMBRL %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_TWITTER %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter" class="twitter"><img src="{% static 'img/twitter.jpg' %}" width="35"/></a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_PINTEREST %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_PINTEREST }}" title="Pinterest"><img src="{% static 'img/pinterest.jpeg' %}" width="35"/></a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" title="Delicious" class="delicious">Delicious</a></li>
+                                        {% endif %}
+                                    </ul>
+                        
                     </div> 
                     <div class="span4">
                     	<h2 class="title">Testimonials</h2>
-                        <ul>
+                        <ul id="lightSlider">
                         	<li>
-                            	<span class="testimonials_arrow"></span>I bought a lovely shirt from "You name it" and I'm greatly excited with the quality of shirt and fast shipping. I am so glad you are in business, guys!
-                            	<div class="clear"></div>
-                                <div class="author">Anna Smith, USA</div>
+                            	<span class="testimonials_arrow"></span>I bought a pair of sneakers from "You name it" and I'm very satisfied with the quality and fast shipping. I am so glad you are in business, guys!
+                            	
+                                <div class="author">Danielle Garcia, USA</div>
                             </li>
                             <li>
-                            	<span class="testimonials_arrow"></span>Well, at first I was skeptical about this company as I've never heard about it. But I decided to give it a try and, guess what, they exceeded my expectations by their fast response and great service, thanks for that!
-                            	<div class="clear"></div>
-                                <div class="author">John Doe, Canada</div>
+                            	
+                            	<span class="testimonials_arrow"></span>Well, at first I was skeptical about this website as I've never heard about it. But I decided to give it a try and, guess what, they exceeded my expectations by their fast response and great service, thanks for that!
+                            	
+                                <div class="author">George Cross, USA</div>
+                            </li>
+                            <li>
+                            	<span class="testimonials_arrow"></span>I ordered a backpack here but I was worried about the quality as the price was cheap! I received my order recently and I'm very glad with it. Will come back again.
+                            	
+                                <div class="author">Johanna Koenig, Germany</div>
+                            </li>
+                            <li>
+                            	<span class="testimonials_arrow"></span>I was looking for an affordable 'HEAD' tennis racket for long time. I found it here with free shipping. Very good, thank you...
+                            	
+                                <div class="author">Victorine Leroy, France</div>
+                            </li>
+                            <li>
+                            	<span class="testimonials_arrow"></span>I bought a bag from You Name It, it was so nice. I'm grateful to You Name It and hopefully it will become more popular in Tbilisi.
+                            	
+                                <div class="author">Nino Pruidze, Georgia</div>
                             </li>
                         </ul>                     
                     </div>
@@ -238,25 +258,7 @@
                                         <input class="inp_search" name="q" type="text" value="Search the Site" onfocus="if (this.value == 'Search the Site') this.value = '';" onblur="if (this.value == '') this.value = 'Search the Site';" />                                        
                                     </form>
                                 </div>
-                                <div class="follow_us">
-                                	<ul>
-						{% if settings.SOCIAL_LINK_FACEBOOK %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook" class="facebook">Facebook</a></li>
-					    	{% endif %}
-		                           	{% if settings.VIDEO_SHARING_LINK_VIMEO %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" title="Vimeo" class="vimeo">Vimeo</a></li>
-		                            	{% endif %}
-		                            	{% if settings.BLOGGING_LINK_TUMBRL %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a></li>
-		                            	{% endif %}
-		                            	{% if settings.SOCIAL_LINK_TWITTER %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter" class="twitter">Twitter</a></li>
-		                            	{% endif %}
-		                            	{% if settings.SOCIAL_LINK_DELICIOUS %}
-		                             		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" title="Delicious" class="delicious">Delicious</a></li>
-					    	{% endif %}
-		                       </ul>
-                                </div>
+                                
                                 <div class="clear"></div>
                             
                             	<div class="clear"></div>

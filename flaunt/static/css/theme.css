@@ -1188,3 +1188,11 @@ a.button{
     font-size: 17px;
     color: rgba(209, 147, 147, 1) !important;
 }
+
+.social > li{
+	display: inline-block;
+}
+
+.social_h2{
+	margin: 0px 0px 19px;
+}

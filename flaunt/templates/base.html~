@@ -15,13 +15,12 @@
 <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
 {% endifinstalled %}
 
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
 {% compress css %}
-<link href="{% static "css/prettyPhoto.css" %}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" id="camera-css"  href="{% static "css/camera.css" %}" type="text/css" media="all">
 <link href="{% static "css/bootstrap.2.1.1.css" %}" rel="stylesheet">
 <link href="{% static "css/theme.css" %}" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="{% static "css/skins/tango/skin.css" %}" />
 <link href="{% static "css/bootstrap-responsive.2.1.1.css" %}" rel="stylesheet">
 
@@ -34,68 +33,45 @@
 <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
 {% endif %}
 {% endifinstalled %}
-{% block extra_css %}{% endblock %}
+
 {% endcompress %}
 
-{% compress js %}
-    <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+
+{% block extra_css %}{% endblock %}
+
+
+{% block no_compress %}
+<script src="{% static "js/jquery-1.11.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-migrate-1.2.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.shuffle.modernizr.js" %}"></script>
+<script src="{% static "js/bootstrap.2.1.1.min.js" %}"></script>
+
+    
     <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
+    
     <script type="text/javascript" src="{% static "js/camera.js" %}"></script>
-    <script src="{% static "js/bootstrap.2.1.1.js" %}"></script>
-    <script src="{% static "js/superfish.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.prettyPhoto.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.jcarousel.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.isotope.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/sorting.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.preloader.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/flickr.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/myscript.js" %}"></script>
-    {% block slider_js %}{% endblock %}
+     
+  {% block slider_js %}{% endblock %}
     <script type="text/javascript">
 		$(document).ready(function(){	
 			{% block extra_js %}{% endblock %}
 			
-			//prettyPhoto
-			$("a[rel^='prettyPhoto']").prettyPhoto();
 			
+			{% if messages %}
+                $('#message-box').delay(5000).fadeTo('slow',0);
+            {% endif %}
 			//Image hover
-			$(".hover_img").live('mouseover',function(){
-					var info=$(this).find("img");
-					info.stop().animate({opacity:0.6},500);
-					$(".preloader").css({'background':'none'});
-				}
-			);
-			$(".hover_img").live('mouseout',function(){
-					var info=$(this).find("img");
-					info.stop().animate({opacity:1},500);
-					$(".preloader").css({'background':'none'});
-				}
-			);	
-			// Preloader
-			$(".projects .element").preloader();
+			
 			//Slider
 			$('#camera_wrap_1').camera();
-			
-			//Featured works & latest posts
-			$('#mycarousel, #mycarousel2, #newscarousel').jcarousel();			
-			
-			//Flickr Integration 36334875@N04
-			$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id={{settings.PHOTO_SHARING_FLICKR_ID}}&lang=en-us&format=json&jsoncallback=?", function(data){
-				$.each(data.items, function(i,item){
-					if(i<=11){ // <— change this number to display more or less images
-						$("<img/>").attr("src", item.media.m.replace('_m', '_s')).appendTo(".FlickrImages ul")
-						.wrap("<li><a href='" + item.link + "' target='_blank' title='Flickr'></a></li>");
-					}
-				});			
-    			});								
+				
+									
 		});		
 	</script>
 
+{% endblock %}
 
-
-
-{% endcompress %}
 <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
 <script src="{% static "js/respond.min.js" %}"></script>
@@ -111,42 +87,51 @@
     	<div class="wrap">
         	<div class="navbar navbar_ clearfix">
             	<div class="container">
-                    <div class="row">
+                    <div class="row" id="header-row">
                         <div >    
         {% nevercache %}
         {% include "includes/login_dropdown.html" %}
         {% endnevercache %}
-</div>
-                        <div class="span4">
-                        	<div class="logo"><a href="index.html"><h2>{{ settings.SITE_TITLE }}</h2></a></div>                        
+            </div>
+                        <div class="span7">
+                        	<p><a href="/"><img style="margin: 0px 20px" src="{% static "img/logo.jpg" %}" alt="You Name It" width="150" align="left" /></a><h3 style="color: rgba(41, 17, 164, 1)">Welcome to <span style="color: rgba(255, 67, 17, 1); font-family: 'Comic Sans'; font-style: italic; font-size: 18px">You Name It</span>! Order from our growing number of products and have it delivered fast or have it delivered free!</h3></p>                       
                         </div>
-                        <div class="span8">
-                        	<div class="follow_us">
-                                <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
-                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
-				    {% endif %}
-                                    {% if settings.VIDEO_SHARING_LINK_VIMEO %}
-                                    	<li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
-                                    {% endif %}
-                                    {% if settings.BLOGGING_LINK_TUMBRL %}
-                                    	<li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_TWITTER %}
-                                    	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
-                                    {% endif %}
-                                    {% if settings.SOCIAL_LINK_DELICIOUS %}
-                                     	<li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
-				    {% endif %}
-                                    
-                                </ul>
-                            </div>
-                            <div class="clear"></div>
+                        <div style="margin-top:20px" class="span5">
+                            <div class="row">
+                        	<div class="span5" style="font-family: Tahoma, Geneva, sans-serif; color: #333333; margin-right: 0px"></div>
                             
-                            <nav id="main_menu">
-                                <div class="menu_wrap">
-                                    {% page_menu "pages/menus/dropdown.html" %}
-                                </div>
-                             </nav>                            
+                            <div class="span5">
+                                <div class="clear"></div>
+                                <nav  id="main_menu">
+                                    <div class="menu_wrap">
+                                        {% page_menu "pages/menus/dropdown.html" %}
+                                    </div>
+                                    
+                                </nav> 
+                                
+                                <div class="follow_us">
+                                
+                                    <ul>{% if settings.SOCIAL_LINK_FACEBOOK %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" class="facebook">Facebook</a></li>
+                                        {% endif %}
+                                        {% if settings.VIDEO_SHARING_LINK_VIMEO %}
+                                            <li><a target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" class="vimeo">Vimeo</a></li>
+                                        {% endif %}
+                                        {% if settings.BLOGGING_LINK_TUMBRL %}
+                                            <li><a target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" class="tumbrl">Tumbrl</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_TWITTER %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" class="twitter">Twitter</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                            <li><a target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" class="delicious">Delicious</a></li>
+                                        {% endif %}
+                                        
+                                    </ul>
+                                </div>   
+                                     
+                            </div>  
+                            </div>               
                         </div>
                     </div>                
                 </div>
@@ -160,6 +145,9 @@
     <div class="page_container">
 	
 	<div class="wrap">
+
+        {% include 'messages.html' %}
+
 		<div class="container">
 			<div class="row">
 				{% block main_wrapper %}
@@ -170,7 +158,6 @@
 				{% block right_panel_wrapper %}
 					<div class="span{% block panel_span_size %}4{% endblock %} {% block panel_class %}right{% endblock %}">
 						{% block right_panel %}
-							{% include "blog/includes/filter_panel.html" %}
 						{% endblock %}
 					</div>
 				{% endblock right_panel_wrapper %}
@@ -186,34 +173,48 @@
     	<div class="wrap">
     		<div class="container">
             	<div class="row">
-                	<div class="span3">
-                    	<h2 class="title">Latest tweets</h2>
-                        <div class="tweet_block"></div>                       
+                	<div class="span4">
+                    	<h2 class="title">Payment</h2>
+                        
+                        <img src="{% static "img/paypal_icon.gif" %}" width="150" alt="Paypal">
+                        <img src="{% static "img/btc_accepted_here.png" %}" style="margin-top:5px" width="150" alt="Bitcoin">
+                         
+                                              
                     </div>
-                    <div class="span3">
-                    	<h2 class="title">Get in touch!</h2>
-                        <form action="#" method="post">
-                        	<input class="span3" type="text" name="name" id="name" value="Name" onFocus="if (this.value == 'Name') this.value = '';" onBlur="if (this.value == '') this.value = 'Name';" />
-                            <input class="span3" type="text" name="email" id="email" value="Email" onFocus="if (this.value == 'Email') this.value = '';" onBlur="if (this.value == '') this.value = 'Email';" />
-                            <textarea name="message" id="message" class="span3" onFocus="if (this.value == 'Message') this.value = '';" onBlur="if (this.value == '') this.value = 'Message';" >Message</textarea>
-                            <div class="clear"></div>
-                            <input type="reset" class="btn dark_btn" value="Clear form" />
-                            <input type="submit" class="btn send_btn" value="Send!" />
-                            <div class="clear"></div>
-                        </form>
+                    <div class="span4">
+                    	<h2 class="title">Categories</h2>
+                        
+                                    <ul>
+                                        {% if settings.SOCIAL_LINK_FACEBOOK %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><img src="{% static 'img/fb.jpeg' %}"/></a></li>
+                                        {% endif %}
+                                        {% if settings.VIDEO_SHARING_LINK_VIMEO %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" title="Vimeo" class="vimeo">Vimeo</a></li>
+                                        {% endif %}
+                                        {% if settings.BLOGGING_LINK_TUMBRL %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_TWITTER %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter" class="twitter">Twitter</a></li>
+                                        {% endif %}
+                                        {% if settings.SOCIAL_LINK_DELICIOUS %}
+                                            <li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" title="Delicious" class="delicious">Delicious</a></li>
+                                        {% endif %}
+                                    </ul>
+                        
                     </div> 
-                    <div class="span3">
+                    <div class="span4">
                     	<h2 class="title">Testimonials</h2>
                         <ul>
                         	<li>
-                            	<span class="testimonials_arrow"></span>Orci nisi, luctus vitae imperdiet a, iquam vel urna. Pellentesque tincidunt laoreet est, in tristique sapien consequat a purus at ullamcorper pulvinar, massa libero magna.
+                            	<span class="testimonials_arrow"></span>I bought a lovely shirt from "You name it" and I'm greatly excited with the quality of shirt and fast shipping. I am so glad you are in business, guys!
                             	<div class="clear"></div>
-                                <div class="author">Anna Smith, Company inc.</div>
+                                <div class="author">Anna Smith, USA</div>
                             </li>
                             <li>
-                            	<span class="testimonials_arrow"></span>Luctus vitae imperdiet a, iquamorci nisi lorem. Pellentesque tincidunt laoreet est, in tristique sapien consequat a purus at ullam pulvinar, massa libero consequat egestas mas.
+                            	<span class="testimonials_arrow"></span>Well, at first I was skeptical about this company as I've never heard about it. But I decided to give it a try and, guess what, they exceeded my expectations by their fast response and great service, thanks for that!
                             	<div class="clear"></div>
-                                <div class="author">John Doe, Company inc.</div>
+                                <div class="author">John Doe, Canada</div>
                             </li>
                         </ul>                     
                     </div>
@@ -237,8 +238,8 @@
             	<div class="container">
                 	<div class="row">
                 		<div class="span5">
-                        	<div class="foot_logo"><a href="index.html"><img src="{% static "img/foot_logo.png" %}" alt="" /></a></div>    
-                        	<div class="copyright">&copy; 2014 DK. Worldwide marketplace. All Rights Reserved.</div>                        
+                        	<div class="foot_logo"><a href="index.html"><img src="{% static "img/logo.jpg" %}" alt="You Name It" width="50" /></a></div>    
+                        	<div class="copyright">&copy; 2014 DK. Worldwide marketplace. All Rights Reserved.</div>           
                         </div>
                         <div class="span7">
                         	<div class="foot_right_block">
@@ -247,37 +248,16 @@
                                         <input class="inp_search" name="q" type="text" value="Search the Site" onfocus="if (this.value == 'Search the Site') this.value = '';" onblur="if (this.value == '') this.value = 'Search the Site';" />                                        
                                     </form>
                                 </div>
-                                <div class="follow_us">
-                                	<ul>
-						{% if settings.SOCIAL_LINK_FACEBOOK %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook" class="facebook">Facebook</a></li>
-					    	{% endif %}
-		                           	{% if settings.VIDEO_SHARING_LINK_VIMEO %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.VIDEO_SHARING_LINK_VIMEO }}" title="Vimeo" class="vimeo">Vimeo</a></li>
-		                            	{% endif %}
-		                            	{% if settings.BLOGGING_LINK_TUMBRL %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a></li>
-		                            	{% endif %}
-		                            	{% if settings.SOCIAL_LINK_TWITTER %}
-		                            		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter" class="twitter">Twitter</a></li>
-		                            	{% endif %}
-		                            	{% if settings.SOCIAL_LINK_DELICIOUS %}
-		                             		<li><a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_DELICIOUS }}" title="Delicious" class="delicious">Delicious</a></li>
-					    	{% endif %}
-		                       </ul>
-                                </div>
+                                
                                 <div class="clear"></div>
                             
                             	<div class="clear"></div>
                             	<div class="foot_menu">
-                            		<ul>
-                                        <li><a href="index.html" class="current">Home</a></li>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="scaffolding.html">features</a></li>
-                                        <li><a href="portfolio_2columns.html">Portfolio</a></li>
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="contacts.html">Contacts</a></li>
-                                    </ul>
+                            		<nav id="main_menu">
+                                        <div class="menu_wrap">
+                                            {% page_menu "pages/menus/dropdown.html" %}
+                                        </div>
+                                    </nav> 
                             	</div>
                             </div>                            
                         </div>

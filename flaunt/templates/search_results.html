@@ -14,7 +14,8 @@
 </li>
 <li class="active">{% trans "Search Results" %}</li>
 {% endblock %}
-
+{% block main_span_size %}12{% endblock %}
+{% block panel_span_size %}{% endblock %}
 {% block main %}
 
 {% if results.paginator.count == 0 %}
