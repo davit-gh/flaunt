@@ -62,7 +62,7 @@
 
 {% if orders %}
 
-<table class="outer">
+<table class="outer" style="width: 100%">
     <thead>
         <th class="left">ID</th>
         <th class="left">{% trans "Date/time" %}</th>
@@ -87,7 +87,7 @@
     <tr>
         <td colspan='6' class="tdwithtable">
             
-                <table class="table-responsive inner">
+                <table class="table-responsive inner" style="width: 100%">
                 <thead>
                     
                     <th>Image</th>
@@ -104,12 +104,12 @@
                                     <td>
                                         {% if product.image %}
                                             <a href="{{ product.get_absolute_url }}">
-                                                <img alt="{{ product.title }}" src="{{ MEDIA_URL }}{% thumbnail product.image 30 30 %}">
+                                                <img alt="{{ product.title }}" src="{{ MEDIA_URL }}{% thumbnail product.image 60 60 %}">
                                             </a>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <p title="{{ product.title }}">{{ product.title }}</p>
+                                        <p title="{{ product.title }}" style="font-size: 10px">{{ product.title }}</p>
                                     </td>
                                     <td class="rating">
                                         
