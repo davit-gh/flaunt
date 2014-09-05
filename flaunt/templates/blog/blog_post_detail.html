@@ -21,6 +21,20 @@
 <li class="active">{{ blog_post.title }}</li>
 {% endblock %}
 
+{% block extra_css %}
+<style type="text/css">
+    #id_value > li{
+        display: inline-block;
+    }
+    a{
+        color: blue;
+    }
+    .editable-original{
+        text-align: justify;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
 
 {% block blog_post_detail_postedby %}
