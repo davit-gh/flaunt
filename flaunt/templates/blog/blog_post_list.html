@@ -23,6 +23,17 @@
 {% endif %}
 {% endblock %}
 
+{% block extra_css %}
+<style type="text/css">
+	a{
+		color: blue;
+	}
+	.editable-original{
+		text-align: justify;
+	}
+</style>
+{% endblock %}
+
 {% block breadcrumb_menu %}
 {{ block.super }}
 {% if tag or category or year or month or author %}
@@ -134,7 +145,7 @@
 
     {% block blog_post_list_post_content %}
     {% editable blog_post.content %}
-    {{ blog_post.description_from_content|safe }}
+    {{ blog_post.description_from_content|safe|truncatewords_html:99 }}
     {% endeditable %}
     {% endblock %}    
     <a href="{{ blog_post.get_absolute_url }}" class="arrow_link">Read more</a>
