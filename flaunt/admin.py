@@ -59,4 +59,12 @@ class InboundmailAdmin(admin.ModelAdmin):
 #        format_as_html.short_description = 'Body'
 admin.site.register(Inboundmail, InboundmailAdmin)
 
+from flaunt.models import Btcinvoices
+from flaunt.models import Pendingbtcinvoices
+class Btcinvoicesadmin(admin.ModelAdmin):
+	list_display=('invoice_key','transaction_hash','value_in_btc')
 
+class Pendingbtcinvoicesadmin(admin.ModelAdmin):
+	list_display=('invoice_key','transaction_hash','value_in_btc')
+admin.site.register(Btcinvoices,Btcinvoicesadmin)
+admin.site.register(Pendingbtcinvoices,Pendingbtcinvoicesadmin)
