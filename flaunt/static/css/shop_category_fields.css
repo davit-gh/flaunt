@@ -177,7 +177,7 @@ div#option.panel-body > ul{
 }
 
 div#option.panel-body > ul > li > a {
-	
+	color: rgba(37, 61, 192, 1);
 	font-size: 14px;
 	padding-left: 10px;
 	text-decoration: none;
