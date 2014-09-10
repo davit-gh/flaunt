@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{{ title }}</li>
+{% endblock %}
+
+{% block main_span_size %}9{% endblock %}
+{% block panel_span_size %}3{% endblock %}
+
+{% block main %}
+<div class="inline">
+	<p>{% trans "Enter your username or email address and you'll receive an email with a link you need to click, in order to log in and change your password." %}</p>
+</div>
+<div id="text" class="inline">
+{% errors_for form %}
+
+	<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+	    <fieldset style="margin-left: 80px">
+	    <legend>{{ title }}</legend>
+	    {% fields_for form %}
+	    <div class="form-actions">
+	        {% block account_form_actions %}
+	        <input class="btn btn-primary btn-lg pull-right" type="submit" value="{{ title }}">
+	        {% endblock %}
+	    </div>
+	    </fieldset>
+	</form>
+</div>
+
+{% endblock %}

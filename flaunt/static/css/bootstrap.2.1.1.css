@@ -1500,10 +1500,10 @@ select:focus:required:invalid {
 input:focus:required:invalid:focus,
 textarea:focus:required:invalid:focus,
 select:focus:required:invalid:focus {
-  border-color: #e9322d;
-  -webkit-box-shadow: 0 0 6px #f8b9b7;
-     -moz-box-shadow: 0 0 6px #f8b9b7;
-          box-shadow: 0 0 6px #f8b9b7;
+  border-color: #2C92EB;
+  -webkit-box-shadow: 0 0 6px rgba(74, 122, 237, 1);
+     -moz-box-shadow: 0 0 6px rgba(74, 122, 237, 1);;
+          box-shadow: 0 0 6px rgba(74, 122, 237, 1);;
 }
 
 .form-actions {
