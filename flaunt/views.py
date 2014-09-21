@@ -29,10 +29,24 @@ def ajax_country(request):
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
 	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), mimetype="application/json")
 
+from cartridge.shop.forms import DiscountForm
+def get_discount_on_update(request, discount_form_class=DiscountForm):
+	discount_form = discount_form_class(request, request.POST or None)
+	valid = discount_form.is_valid()
+        if valid:
+		discount_form.set_discount()
+		recalculate_cart(request)
+		discount_total = float("{0:.2f}".format(float(request.session.get('discount_total','0.00'))))
+	else:
+		discount_total = 0
+	
+ 	return discount_total
+
 
 from cartridge.shop.forms import CartItemFormSet
 def update_cart(request):
 	if request.is_ajax() and request.method == "POST":
+		
 		sub = {}
 		grand = 0
 		form = request.POST
@@ -40,14 +54,17 @@ def update_cart(request):
 		cart_formset = CartItemFormSet(request.POST, instance=request.cart)
 		cart = cart_formset[0].instance.cart
 
+		
 		valid = cart_formset.is_valid()
 		if valid:
 			cart_formset.save()
 			sub = [float(f.instance.total_price) for f in cart_formset]
-			grand = float(cart.total_price()) 
-			
+			subtotal = float(cart.total_price())
+			discount = get_discount_on_update(request)
+			grand = "{0:.2f}".format(subtotal - discount)
 			total_qty = int(cart.total_quantity())
-			return HttpResponse(json.dumps({'sub':sub, 'grand':grand, 'total_qty':total_qty}), content_type='application/json')
+
+			return HttpResponse(json.dumps({'sub':sub, 'subtotal' : subtotal, 'grand':grand, 'total_qty':total_qty, 'discount_total':discount}), content_type='application/json')
 		else:
 			errors = cart_formset._errors
 			cart_formset = CartItemFormSet(instance=request.cart)
@@ -70,11 +87,18 @@ def get_carrier(request):
 			shipping_type = 'Regular'
 			shipping_total = 0.0
 			set_shipping(request, shipping_type, shipping_total)
-		total = float(request.cart.total_price())
+		
+		subtotal = float(request.cart.total_price())
+		discount = float(request.session.get('discount_total','0.00'))
+		total = subtotal - discount + shipping_total
+		total = "{0:.2f}".format(total)
+
 		#resp = render_to_string('shop/cart.html', { 'request': request })
 	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
 									'shipping_total' : shipping_total, 
-									'total_price' : total}), content_type='application/json')
+									'total_price' : total,
+									'discount':discount,
+									'subtotal':subtotal}), content_type='application/json')
 
 from flaunt.forms import FeedbackForm
 from flaunt.models import Feedback
@@ -258,3 +282,19 @@ def get_category_products(request):
 		prods = [(x.id, x.title.strip(), x.image, float(x.unit_price), float(x.price()), x.get_absolute_url()) if x.on_sale() else (x.id, x.title.strip(), x.image, float(x.price()), x.get_absolute_url()) for x in products]
 		return HttpResponse(json.dumps({'prods':zip(*prods)}), mimetype="application/json")
 	return HttpResponse('Not OK!')
+
+
+def get_discount(request, discount_form_class=DiscountForm):
+	if request.method == 'POST' and request.is_ajax():
+		discount_form = discount_form_class(request, request.POST or None)
+		ship_type = request.session.get('shipping_type','Shipping fee:')
+		ship_total = request.session.get('shipping_total','0.00')
+		valid = discount_form.is_valid()
+        if valid:
+        	discount_form.set_discount()
+        	recalculate_cart(request)
+        	discount_total = float(request.session.get('discount_total',0))
+		return HttpResponse(json.dumps({'discount_total': "{0:.2f}".format(discount_total), 'cart_total':float(request.cart.total_price()),'shipping_total':ship_total, 'shipping_type':ship_type}), mimetype="application/json")
+        else:
+        	return HttpResponse(json.dumps(discount_form.errors), mimetype="application/json")
+		

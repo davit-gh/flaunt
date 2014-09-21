@@ -40,3 +40,17 @@ table.outer th{
 .form-actions{
 	background-color: rgba(199, 215, 234, 0.5);
 }
+
+input#id_discount_code{
+	width: 100px;
+}
+
+input#id_discount_code:focus{
+    border-color: #2C92EB;
+    box-shadow: 0px 0px 6px #4A7AED;
+
+}
+
+input#discount_button{
+	margin-right: 30px;
+}

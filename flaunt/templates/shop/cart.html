@@ -66,6 +66,8 @@
                 url: '/update_cart', 
                 data: $(this).serialize(),
                 success: function(data){
+                    var discount = data.discount_total;
+                    
                     var clicked_id = $('#subtotal').data('notenoughstockid'),
                         quantity = $('#'+clicked_id).data('quantity'),
                         input_field = $('#'+clicked_id).parent().find('input');
@@ -73,28 +75,40 @@
                         $('.alert').addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
                         $(input_field).val(quantity);
                     }else{
-                        var subtotal = parseFloat(data['grand']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        var subtotal = parseFloat(data['subtotal']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                            grand = data.grand;
                         var shipping_fee = $('#subtotal').val();
                         if (shipping_fee == '0'){
                             shipping_fee = 'Not set yet';
-                            grand = subtotal;
+                            
                         }else{
                             shipping_fee = $('#subtotal').val();
-                            grand = (parseFloat(subtotal) + parseFloat(shipping_fee)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            grand = parseFloat(grand) + parseFloat(shipping_fee);
                             shipping_fee = '$' + $('#subtotal').val();
                         }
                         var shipping_type = $('#subtotal').attr('name');
                         var sub = data['sub'];
-                        var total_qty = data['total_qty'];
+                        var total_qty = data['total_qty'],
+                            html;
                         $('#subtotal').attr('class',total_qty);
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                        if(discount === '0.00'){
+                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                        } else {
+                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                        }
+
                         $('#total_cell').html(html);
                         $.each(sub,function(index,element){
                             var i = parseInt(index)+1;
                             $('table tr:eq('+i+') td:eq(4)').html('$'+parseFloat(element).toFixed(2));
                             
                         });
-                        if ($('#subtotal').attr('class') == '0'){$('#cart_menu').html(' 0 item in cart: $0.00');}
+                        var count = $("#id_items-TOTAL_FORMS").val();
+                        if (count === '0'){
+                            $('div.span9.middle').html('<h4>{% trans "Your Cart is empty." %}</h4>');
+                            $('a.dropdown-toggle > span#cart_menu').html(' 0 items in cart, total: $0.00');
+
+                        }
                         if (total_qty != 1){
                             $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+grand);
                         }else{
@@ -104,7 +118,11 @@
                     }
                             
                 },
-                error: function(data){console.log('error'+JSON.stringify(data));}
+                error: function(xhRequest, ErrorText, thrownError){
+                    console.log('xhRequest: ' + JSON.stringify(xhRequest) + "\n");
+                    console.log('ErrorText: ' + ErrorText + "\n");
+                    console.log('thrownError: ' + thrownError + "\n");
+                }
             });
             return false;       
         });
@@ -121,17 +139,52 @@
             var chkbx_id = id.slice(0,id.length-2) + 'DELETE';
             $('#'+chkbx_id).prop("checked",true);
             $('#main_form').submit();
+            $(this).parents('.dynamic-form').remove();
             var forms = $('.dynamic-form');
             $('#id_items-TOTAL_FORMS').val(forms.length);
             for (var i=0, formCount=forms.length; i<formCount; i++) {
-                    $(forms.get(i)).children().not(':last').children().each(function() {
-                        updateElementIndex(this, 'items', i);
-                    });
+                $(forms.get(i)).children().not(':last').children().each(function() {
+                    updateElementIndex(this, 'items', i);
+                });
             }
-
+            
             return false;
         });
+        $('#discount_button').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'disc' %}",
+                data: {'discount_code':$('#id_discount_code').val()}, 
+                success: function(data){
 
+                            if (data.discount_code){
+                                $('.alert p').html(data['discount_code']).parent().addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                                return false;
+                            }
+                            var discount = data.discount_total,
+                                cart_total = data.cart_total,
+                                ship_total = data.shipping_total,
+                                ship_type = data.shipping_type,
+                                total = (parseFloat(cart_total)-parseFloat(discount)+parseFloat(ship_total)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                                html; 
+                                
+
+                            if (discount === "0.00"){
+
+                                html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
+                            } else {
+                                html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
+                            }
+                            $('#total_cell').html(html);
+
+                            
+                         },
+                error: function(data){
+                    console.log('error'+JSON.stringify(data));
+                }
+            });
+            return false;
+        })
 {% endblock %}
 
 {% block main_span_size %}9{% endblock %}
@@ -175,7 +228,7 @@
         <td style="text-align: center;">{{ item.unit_price|currency }}</td>
         <td class="quantity">{{ form.quantity }}<a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}' class="btn-sm btn-custom" style="margin-left:10px">Update</a></td>
         <td id="price-{{ item.id }}">{{ item.total_price|currency }}</td>
-        <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''><img alt="Remove" src="{% static "img/delete.png" %}" width="20"></a></td>
+        <td class="center">{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''><img alt="Remove" onclick="event.preventDefault();" src="{% static "img/delete.png" %}" width="20"></a></td>
     </tr>
     {% endwith %}
     {% endfor %}
@@ -194,7 +247,15 @@
                 {% endif %}
             {% endfor %}
         </td>
-        <td colspan="3" id="total_cell" style="text-align:center" >{% order_totals %}</td>
+        <td>
+            {% if discount_form %}
+                <form method="post" class="discount-form col-md-12 text-right">
+                    {% fields_for discount_form %}
+                    <input type="submit" id="discount_button" class="btn btn-custom" value="{% trans "Apply" %}">
+                </form>
+            {% endif %}
+        </td>
+        <td colspan="2" id="total_cell" style="text-align:center" >{% order_totals %}</td>
         
     </tr>
     <tr>
@@ -220,16 +281,12 @@
 <input type="hidden" id="chosen_country" />
 
 </form>
+<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
+    <p></p>
+</div>
 
-{% if discount_form %}
-<form method="post" class="discount-form col-md-12 text-right">
-    {% fields_for discount_form %}
-    <input type="submit" class="btn btn-default" value="{% trans "Apply" %}">
-</form>
-{% endif %}
-{{ countryForm.as_p }}
 {% else %}
-<p>{% trans "Your Cart is empty." %}</p>
+<h4>{% trans "Your Cart is empty." %}</h4>
 {{ request | remove_shipping_info:'shipping_type' }}
 {{ request | remove_shipping_info:'shipping_total' }}
 {% endif %}
