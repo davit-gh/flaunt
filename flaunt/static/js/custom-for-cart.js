@@ -1,3 +1,11 @@
+function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -44,6 +52,9 @@ function setCarriers(s){
     if($("#required").length){
         $("#required").remove();
     }
+    if(s.value == 'priority'){
+        $('#id_carrier').prop('disabled',false);
+    }
     var country_name = $('#chosen_country').val();
     $.post('/ajax_country',{'country' : country_name}, function(data){ 
         
@@ -65,14 +76,24 @@ function setCarriers(s){
                 data: {'free_shipping' : 'True'}, 
                 success: function(data){
                     var total_qty = $('#subtotal').attr('class'),
-                        total = parseFloat(data.total_price);
+                        subtotal = parseFloat(data.subtotal),
+                        discount = parseFloat(data.discount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                        total = data.total_price,
+                        shipping_type, shipping_total;
+
                     $('#subtotal').attr('name','Regular');
                     if (total_qty != '1'){
                             $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
                         }else{
                             $('#cart_menu').html(' 1 item in cart, total: $'+total);
                         }
-                    var html = "<div class='order_totals'><div><label>Sub total:</label>$"+total+"</div><d0iv><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    var html;    
+                    if(discount){
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    } else {
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    }
+                    
                     $('#total_cell').html(html);
                 },
                 error: function(data){
@@ -96,18 +117,24 @@ function getCarrier(sel){
                     var shipping_total = data.shipping_total;
                     $('#subtotal').val(shipping_total);
                     $('#subtotal').attr('name',shipping_type);
-                    var subtotal = data.total_price;
-                    var total = parseFloat(shipping_total) + parseFloat(subtotal);
-                    shipping_total = parseFloat(shipping_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    subtotal = parseFloat(subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    var total_qty = $('#subtotal').attr('class');
+                    var subtotal = data.subtotal,
+                        discount = parseFloat(data.discount),
+                        total = data.total_price,
+                        shipping_total = parseFloat(shipping_total),
+                        subtotal = parseFloat(subtotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                        total_qty = $('#subtotal').attr('class');
+
                     if (total_qty != '1'){
                             $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
                         }else{
                             $('#cart_menu').html(' 1 item in cart, total: $'+total);
                         }
-                    var html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    var html;
+                    if(discount){
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+shipping_type+":</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    } else {
+                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                    }
                     $('#total_cell').html(html);
                 },
         error: function(data){
