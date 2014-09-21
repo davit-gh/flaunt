@@ -206,7 +206,7 @@ MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['128.199.160.27','you-name-it.net']
+ALLOWED_HOSTS = ['128.199.160.27', 'you-name-it.net', 'www.you-name-it.net']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -509,46 +509,3 @@ SOCIAL_LINK_TWITTER = 'https://twitter.com/_younameit'
 MY_BTC_ADDRESS = '1DcRmYAEGc8CEXiPQr6wqGxWp6H44mH7wX'
 BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
 
-
-########################
-# LOGGING ##############
-########################
-LOGGING = {
- 'version': 1,
- 'disable_existing_loggers': False,
- 'handlers': {
- # Include the default Django email handler for errors
- # This is what you'd get without configuring logging at all.
- 'mail_admins': {
- 'class': 'django.utils.log.AdminEmailHandler',
- 'level': 'ERROR',
- # But the emails are plain text by default - HTML is nicer
- 'include_html': True,
- },
- # Log to a text file that can be rotated by logrotate
- 'logfile': {
- 'class': 'logging.handlers.WatchedFileHandler',
- 'filename': '/home/flaunt/flaunt.log'
- },
- },
- 'loggers': {
- # Again, default Django configuration to email unhandled exceptions
- 'django.request': {
- 'handlers': ['mail_admins'],
- 'level': 'ERROR',
- 'propagate': True,
- },
- # Might as well log any errors anywhere else in Django
- 'django': {
- 'handlers': ['logfile'],
- 'level': 'ERROR',
- 'propagate': False,
- },
- # Your own app - this assumes all your logger names start with "myapp."
- 'flaunt': {
- 'handlers': ['logfile'],
- 'level': 'WARNING', # Or maybe INFO or DEBUG
- 'propagate': False
- },
- },
-}
