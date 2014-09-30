@@ -52,22 +52,26 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
   		if (ids.indexOf(77) >= 0){
   			return;
   		}
+  		
   		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
+  			console.log(JSON.stringify(data));
   			var post_ids = data.prods[0];
   			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
   			for(i in comp){
   				var ind = post_ids.indexOf(comp[i]);
-  				if(data.prods.length == 5){
-  					var url = data.prods[4][ind],
+  				
+  					var url = data.prods[5][ind], 
   						price =  data.prods[3][ind],
-  						unit_price = '';
-  				} else {
-  					var url = data.prods[5][ind]; 
-  						unit_price =  data.prods[3][ind],
-  						price = data.prods[4][ind];
-  				}
+  						unit_price = data.prods[4][ind],
+  						price_field;
+  					if (price != unit_price){
+  						price_field = "<span class='old-price'>Old price: $"+ price +"</span>On sale: $" + unit_price;
+  					} else {
+  						price_field = "<span>Price: $" + price + "</span>";
+  					}
+
   				var image = data.prods[2][ind].slice(0,-4).split('/'), 
-  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">{% if product.on_sale %}<span class="old-price">Old price: $'+ unit_price +'</span>On sale: $' + unit_price + '{% else %}<span>Price: $' + price + '</span>{% endif %}<p id="77">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
+  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
   				figure = document.createElement('figure');
   				figure.className = figure.className + 'span3 picture-item';
   				figure.setAttribute('data-item-price', data.prods[3][ind]);
@@ -75,7 +79,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
   				$(figure).html(html);
   				items.push(figure);
   				frag.appendChild(figure);
-  				console.log(image);
+  				
   			}
   			document.getElementById("grid").appendChild(frag);
   			$items = $(items);

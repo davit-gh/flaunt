@@ -279,7 +279,10 @@ def get_category_products(request):
 
 		category = Category.objects.get(title=request.POST.get('cat'))
 		products = category.products.all()
-		prods = [(x.id, x.title.strip(), x.image, float(x.unit_price), float(x.price()), x.get_absolute_url()) if x.on_sale() else (x.id, x.title.strip(), x.image, float(x.price()), x.get_absolute_url()) for x in products]
+		#prods = [{"prods_on_sale": {"id": x.id, "title": x.title.strip(), "image": x.image, "unit_price": float(x.unit_price), "price": float(x.price()), "url": x.get_absolute_url()}} if x.on_sale() else {"prods":{"id": x.id, "title":x.title.strip(), "image": x.image, "price": float(x.price()), "url": x.get_absolute_url()}} for x in products]
+		
+		prods = [(x.id, x.title.strip(), x.image, float(x.unit_price), float(x.price()), x.get_absolute_url()) for x in products]
+		
 		return HttpResponse(json.dumps({'prods':zip(*prods)}), mimetype="application/json")
 	return HttpResponse('Not OK!')
 
