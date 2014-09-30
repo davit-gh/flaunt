@@ -54,7 +54,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
   		}
   		
   		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
-  			console.log(JSON.stringify(data));
+  			
   			var post_ids = data.prods[0];
   			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
   			for(i in comp){

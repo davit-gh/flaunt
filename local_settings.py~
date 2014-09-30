@@ -7,16 +7,16 @@ NEVERCACHE_KEY = "682c6e13-f25a-46de-8fa9-3cf426479aad1987ffef-a787-42f9-8953-ca
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         # DB name or path to database file if using sqlite3.
-        "NAME": "dev.db",
+        "NAME": "prod",
         # Not used with sqlite3.
-        "USER": "",
+        "USER": "prod",
         # Not used with sqlite3.
-        "PASSWORD": "",
+        "PASSWORD": "thisisaproductiondatabase",
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "",
+        "HOST": "127.0.0.1",
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "",
+        "PORT": "5432",
     }
 }
