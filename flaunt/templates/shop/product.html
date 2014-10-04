@@ -78,6 +78,19 @@ $('#wishlist').click(function(){
     return false;
 });
 
+var selections = $('select#Colour');
+selections.change(function() {
+            var variation = $.grep(variations, function(v) {
+                var valid = true;
+                $.each(selections, function() {
+                    valid = valid && v[this.name] == this[this.selectedIndex].value;
+                });
+
+                return valid;
+            });
+            $('img#' + variation[0].image_id).click();
+});
+
 $('select').on('mouseenter',function(){
     open($(this));
 });
@@ -122,7 +135,7 @@ $("#zoom_03").bind("click", function(e) {
         <div id="gal1">    
             {% for image in images %}
             <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}">
-                <img id="img01" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 55 75 %}">
+                <img id="{{ image.id }}" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 55 75 %}">
             </a>
             {% endfor %}
         </div>
