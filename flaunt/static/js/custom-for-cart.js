@@ -35,55 +35,7 @@ $.ajaxSetup({
         }
     }
 });
-function getCountry(sel){
-    console.log($("#required"));
-    if($("#required").length){
-        $("#required").remove();
-    }
-    if($('#country_first').length){
-        $('#country_first').remove();
-    }
-	$('#chosen_country').val(sel.value);
-    $('#id_shipping_type').val("");
-
-    $('#id_carrier').find('option').remove().end().append('<option value="0">Please select shipping type</option').val("0").prop('disabled',true);;
-    //var shipping_type = document.getElementById('id_shipping_type');
-    //shipping_type.options.length = 1;
-    //shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
-    //shipping_type.options.add(new Option('Regular Shipping', 'regular'));
-    
-}
-function setCarriers(s){
-    if($("#required").length){
-        $("#required").remove();
-    }
-    var country_name = $('#chosen_country').val();
-
-    if (country_name === ""){
-        $("#id_shipping_type").val('');
-        if(!$("#country_first").length){
-            $("label[for='id_country']").after("<span id='country_first'>Please select country first</span>");
-            
-        }
-        return false;
-    }
-    var carrier = document.getElementById('id_carrier');
-    if(s.value === "Priority Shipping (fast)" && country_name != ""){
-        $(carrier).prop('disabled',false);
-        $.post('/ajax_country',{'country' : country_name}, function(data){ 
-            
-           var priority = data['carriers_priority'];
-            //var regular = data['carriers_regular'];
-            carrier.name = s.value;
-            
-            carrier.options.length = 1;
-            for(pri in priority){
-                carrier.options.add(new Option(priority[pri], priority[pri]));
-            }   
-        });
-    } else if (s.value === ""){
-
-                $(carrier).val("0").prop('disabled','disabled');
+function ajaxcallfree(){
                 $.ajax({
                     url: '/get_carrier',
                     type: 'POST',
@@ -114,6 +66,58 @@ function setCarriers(s){
                         console.log('error'+data);
                     } 
                 });
+}
+function getCountry(sel){
+    console.log($("#required"));
+    if($("#required").length){
+        $("#required").remove();
+    }
+    if($('#country_first').length){
+        $('#country_first').remove();
+    }
+	$('#chosen_country').val(sel.value);
+    $('#id_shipping_type').val("");
+
+    $('#id_carrier').find('option').remove().end().append('<option value="0">Please select shipping type</option').val("0").prop('disabled',true);;
+    ajaxcallfree()
+    //var shipping_type = document.getElementById('id_shipping_type');
+    //shipping_type.options.length = 1;
+    //shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
+    //shipping_type.options.add(new Option('Regular Shipping', 'regular'));
+    
+}
+function setCarriers(s){
+    if($("#required").length){
+        $("#required").remove();
+    }
+    var country_name = $('#chosen_country').val();
+
+    if (country_name === ""){
+        $("#id_shipping_type").val('');
+        if(!$("#country_first").length){
+            $("#id_country").after("<div id='country_first'>Select country first, please</div>");
+            
+        }
+        return false;
+    }
+    var carrier = document.getElementById('id_carrier');
+    if(s.value === "Priority Shipping (fast)" && country_name != ""){
+        $(carrier).prop('disabled',false);
+        $.post('/ajax_country',{'country' : country_name}, function(data){ 
+            
+           var priority = data['carriers_priority'];
+            //var regular = data['carriers_regular'];
+            carrier.name = s.value;
+            
+            carrier.options.length = 1;
+            for(pri in priority){
+                carrier.options.add(new Option(priority[pri], priority[pri]));
+            }   
+        });
+    } else if (s.value === ""){
+
+                $(carrier).val("0").prop('disabled','disabled');
+                ajaxcallfree();
             }
         
     
