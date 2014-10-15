@@ -1,0 +1,7 @@
+label[for="id_same_billing_shipping"], label[for="id_remember"] {
+    display: inline;
+}
+
+input[type="checkbox"]{
+	margin-bottom: 5px;
+}

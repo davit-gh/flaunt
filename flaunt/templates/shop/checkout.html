@@ -53,7 +53,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
             {{ request | remove_shipping_info:'shipping_type' }}
             {{ request | remove_shipping_info:'shipping_total' }}
             <br>
-            <p><a class="btn btn-lg btn-primary" href="{% url "page" "shop" %}">{% trans "Continue Shopping" %}</a></p>
+            <p><a class="btn btn-lg btn-primary" href="/">{% trans "Continue Shopping" %}</a></p>
         {% endif %}
     {% endblock %}
 

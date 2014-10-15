@@ -35,17 +35,19 @@
 
 	{% load widget_tweaks %}
 	<div class="contact_form" style="margin-left:200px">  
+
 		<form class="row-fluid" method="post">
 			{% csrf_token %}
 
 			<h2 class="title"><span>Get In Touch</span></h2>
 		        {% for hidden in form.hidden_fields %}
-			{{hidden}}
-			{% endfor %}
+					{{hidden}}
+				{% endfor %}
+
 			{% for vis in form.visible_fields %}
 				<fieldset class="control-group">
 		                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
-		 
+		 					{{ vis.errors }}
 		                    <div style="width:60%" class="form-group">
 		                        {% render_field vis style="height: 25px" %}
 		                    </div>

@@ -23,19 +23,19 @@
 {% endblock %}
 
 {% block extra_js %}
-
+    {{ block.super }}
     $(document).bind("ajaxSend", function(){
         $("#loading").show();
     }).bind("ajaxComplete", function(){
         $("#loading").hide();
     });
-    $('#id_carrier').prop('disabled',false);
+    $('#id_carrier').prop('disabled',true);
     $('#id_shipping_type').val("");
-    $('#id_country').val("");
-    $("select[name='country'] option:eq(0)").attr('disabled','disabled');
-    $("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
-    $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
 
+    $("select[name='country'] option:eq(0)").attr('disabled','disabled');
+    //$("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
+    $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
+    $('#id_carrier').prop('disabled','disabled');
   
     $('#checkout').click(function(){
         var country = $("#id_country");
@@ -46,11 +46,11 @@
                 country.after("<span id='required'>* required</span>");
             } 
             return false;
-        } else if(!ship_type.prop('selectedIndex')){
-             if(!$("#required").length){
-                ship_type.after("<span id='required'>* required</span>");
-             }
-             return false;
+//        } else if(!ship_type.prop('selectedIndex')){
+  //           if(!$("#required").length){
+    //            ship_type.after("<span id='required'>* required</span>");
+      //       }
+        //     return false;
         } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
              if(!$("#required").length){
                 carrier.after("<span id='required'>* required</span>");
@@ -158,7 +158,8 @@
                 success: function(data){
 
                             if (data.discount_code){
-                                $('.alert p').html(data['discount_code']).parent().addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                                $('.alert p').html(data['discount_code']).parent().fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+
                                 return false;
                             }
                             var discount = data.discount_total,
@@ -281,9 +282,6 @@
 <input type="hidden" id="chosen_country" />
 
 </form>
-<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
-    <p></p>
-</div>
 
 {% else %}
 <h4>{% trans "Your Cart is empty." %}</h4>
@@ -325,4 +323,8 @@
 {% endif %}
 {% endwith %}
 {% endif %}
+<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
+    <p></p>
+</div>
+
 {% endblock %}

@@ -36,72 +36,86 @@ $.ajaxSetup({
     }
 });
 function getCountry(sel){
+    console.log($("#required"));
     if($("#required").length){
         $("#required").remove();
     }
+    if($('#country_first').length){
+        $('#country_first').remove();
+    }
 	$('#chosen_country').val(sel.value);
     $('#id_shipping_type').val("");
-    $('#id_carrier').find('option').remove().end().append('<option value="0">Please select a country first</option').val("0");
-    var shipping_type = document.getElementById('id_shipping_type');
-    shipping_type.options.length = 1;
-    shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
-    shipping_type.options.add(new Option('Regular Shipping', 'regular'));
+
+    $('#id_carrier').find('option').remove().end().append('<option value="0">Please select shipping type</option').val("0").prop('disabled',true);;
+    //var shipping_type = document.getElementById('id_shipping_type');
+    //shipping_type.options.length = 1;
+    //shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
+    //shipping_type.options.add(new Option('Regular Shipping', 'regular'));
     
 }
 function setCarriers(s){
     if($("#required").length){
         $("#required").remove();
     }
-    if(s.value == 'priority'){
-        $('#id_carrier').prop('disabled',false);
-    }
     var country_name = $('#chosen_country').val();
-    $.post('/ajax_country',{'country' : country_name}, function(data){ 
-        
-        var carrier = document.getElementById('id_carrier');
-        var priority = data['carriers_priority'];
-        var regular = data['carriers_regular'];
-        carrier.name = s.value;
-        if(s.value == 'priority'){
-            carrier.options.length = 1;
 
+    if (country_name === ""){
+        $("#id_shipping_type").val('');
+        if(!$("#country_first").length){
+            $("label[for='id_country']").after("<span id='country_first'>Please select country first</span>");
+            
+        }
+        return false;
+    }
+    var carrier = document.getElementById('id_carrier');
+    if(s.value === "Priority Shipping (fast)" && country_name != ""){
+        $(carrier).prop('disabled',false);
+        $.post('/ajax_country',{'country' : country_name}, function(data){ 
+            
+           var priority = data['carriers_priority'];
+            //var regular = data['carriers_regular'];
+            carrier.name = s.value;
+            
+            carrier.options.length = 1;
             for(pri in priority){
                 carrier.options.add(new Option(priority[pri], priority[pri]));
             }   
-        }else{
-            $(carrier).prop('disabled','disabled');
-            $.ajax({
-                url: '/get_carrier',
-                type: 'POST',
-                data: {'free_shipping' : 'True'}, 
-                success: function(data){
-                    var total_qty = $('#subtotal').attr('class'),
-                        subtotal = parseFloat(data.subtotal),
-                        discount = parseFloat(data.discount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-                        total = data.total_price,
-                        shipping_type, shipping_total;
+        });
+    } else if (s.value === ""){
 
-                    $('#subtotal').attr('name','Regular');
-                    if (total_qty != '1'){
-                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
-                        }else{
-                            $('#cart_menu').html(' 1 item in cart, total: $'+total);
+                $(carrier).val("0").prop('disabled','disabled');
+                $.ajax({
+                    url: '/get_carrier',
+                    type: 'POST',
+                    data: {'free_shipping' : 'True'}, 
+                    success: function(data){
+                        var total_qty = $('#subtotal').attr('class'),
+                            subtotal = parseFloat(data.subtotal),
+                            discount = parseFloat(data.discount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                            total = data.total_price,
+                            shipping_type, shipping_total;
+
+                        $('#subtotal').attr('name','Regular');
+                        if (total_qty != '1'){
+                                $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
+                            }else{
+                                $('#cart_menu').html(' 1 item in cart, total: $'+total);
+                            }
+                        var html;    
+                        if(discount){
+                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                        } else {
+                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                         }
-                    var html;    
-                    if(discount){
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                    } else {
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                    }
-                    
-                    $('#total_cell').html(html);
-                },
-                error: function(data){
-                    console.log('error'+data);
-                } 
-            });
-        }
-    });
+                        
+                        $('#total_cell').html(html);
+                    },
+                    error: function(data){
+                        console.log('error'+data);
+                    } 
+                });
+            }
+        
     
 }
 function getCarrier(sel){

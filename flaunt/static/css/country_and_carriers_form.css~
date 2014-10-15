@@ -1,0 +1,9 @@
+#required, #country_first{
+	padding-left: 20px;
+	color: red;
+	font-size: 14px;
+}
+
+label[for=id_country]{
+	width: 30%;
+}

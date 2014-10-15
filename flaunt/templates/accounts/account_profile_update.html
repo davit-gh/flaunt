@@ -31,6 +31,7 @@
 		    {% for vis in form.visible_fields %}
 	                <div class="form-group">
 	                    <label class="control-label" for="id_{{ vis.name }}"><h5>{{ vis.label }}</h5></label>
+	                    {{ vis.errors }}
 	                    {{ vis }}
 	                </div>
 		   {% endfor %}
