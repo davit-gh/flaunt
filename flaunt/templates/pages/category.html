@@ -49,13 +49,15 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
   			$items,
   			vis_items,
   			figure;
-  		if (ids.indexOf(77) >= 0){
+  		console.log(ids);
+  		if (ids.indexOf(77777) >= 0){
   			return;
   		}
   		
   		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
   			
   			var post_ids = data.prods[0];
+  			
   			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
   			for(i in comp){
   				var ind = post_ids.indexOf(comp[i]);
@@ -71,7 +73,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
   					}
 
   				var image = data.prods[2][ind].slice(0,-4).split('/'), 
-  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
+  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77777">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
   				figure = document.createElement('figure');
   				figure.className = figure.className + 'span3 picture-item';
   				figure.setAttribute('data-item-price', data.prods[3][ind]);
