@@ -36,7 +36,7 @@ urlpatterns += patterns('',
     # one homepage pattern, so if you use a different one, comment this
     # one out.
 
-    #url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url("^$", direct_to_template, {"template": "pages/category.html"}, name="home"),
 
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------
@@ -54,7 +54,7 @@ urlpatterns += patterns('',
     # "/.html" - so for this case, the template "pages/index.html" can
     # be used.
 
-    url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+    #url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     url(r"^ajax_country", "flaunt.views.ajax_country"),
     url(r"^update_cart", "flaunt.views.update_cart"),
     url(r"^get_carrier", "flaunt.views.get_carrier"),
@@ -62,8 +62,14 @@ urlpatterns += patterns('',
     url(r"^callback", "flaunt.views.blockchain_callback"),
     url(r"^check_request", "flaunt.views.check_request", name="check"),
     url(r"^handle_wishlist/(?P<slug>.*)", "flaunt.views.handle_wishlist", name="wish"),
+    url(r"^remove_wish_item", "flaunt.views.remove_wishlist_item", name="remove_WL_item"),
+    url(r"^mail", "flaunt.views.mail_from_postmark", name="postmark"),
+    url(r"^getprod", "flaunt.views.get_category_products", name="getproduct"),
+    url(r"^getdiscount", "flaunt.views.get_discount", name="disc"),
     (r'^paypal-ipn-4d4k9t485j5d4g1re56t25rr2de/', include('paypal.standard.ipn.urls')),
     
+    url(r"^postmark/bounce/$", "postmark.views.bounce", name="postmark_bounce_hook"),
+
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
     # This pattern points the homepage to the blog post listing page,

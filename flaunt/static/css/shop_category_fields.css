@@ -3,7 +3,7 @@
 	border: 1px solid #3399CC;
 	font-size: 15px;
 	
-	width: 65%;
+	width: 70%;
 	display: inline-block;
 	box-shadow: 7px 7px 9px #888888;
 	-webkit-box-shadow: 7px 7px 9px #888888;
@@ -15,7 +15,7 @@ input[type=number]{
 	border: 1px solid #3399CC;
 	font-size: 15px;
 	
-	width:30%;
+	width:50%;
 	box-shadow: 7px 7px 9px #888888;
 	-webkit-box-shadow: 7px 7px 9px #888888;
 	-moz-box-shadow: 7px 7px 9px #888888;

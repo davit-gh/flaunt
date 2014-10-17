@@ -56,6 +56,7 @@ def update_cart(request):
 
 		
 		valid = cart_formset.is_valid()
+		
 		if valid:
 			cart_formset.save()
 			sub = [float(f.instance.total_price) for f in cart_formset]
@@ -66,10 +67,10 @@ def update_cart(request):
 
 			return HttpResponse(json.dumps({'sub':sub, 'subtotal' : subtotal, 'grand':grand, 'total_qty':total_qty, 'discount_total':discount}), content_type='application/json')
 		else:
-			errors = cart_formset._errors
+			error = cart_formset.errors[0]['quantity'][0]
 			cart_formset = CartItemFormSet(instance=request.cart)
-			cart_formset._errors = errors
-			return HttpResponse(json.dumps({'errors' : errors}), content_type='application/json')
+			#cart_formset._errors = errors
+			return HttpResponse(json.dumps({'error': error}), content_type='application/json')
 	else:
 		return HttpResponse('Sth went wrong.')
 
