@@ -59,7 +59,8 @@
 		$(document).ready(function(){	
 			
             {% if messages %}
-                $('#message-box').delay(5000).fadeTo('slow',0);
+                $('#message-box').addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+
             {% endif %}
             
             {% block extra_js %}{% endblock %}

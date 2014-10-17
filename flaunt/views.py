@@ -6,6 +6,7 @@ from cartridge.shop.utils import set_shipping
 from django.template.loader import render_to_string
 from cartridge.shop.utils import recalculate_cart
 from mezzanine.conf import settings
+from django.contrib import messages
 import json
 
 # Create your views here.
@@ -69,6 +70,7 @@ def update_cart(request):
 		else:
 			error = cart_formset.errors[0]['quantity'][0]
 			cart_formset = CartItemFormSet(instance=request.cart)
+			messages.info(request, _(error))
 			#cart_formset._errors = errors
 			return HttpResponse(json.dumps({'error': error}), content_type='application/json')
 	else:
@@ -245,7 +247,7 @@ def handle_wishlist(request, slug, form_class=AddProductForm):
 		return HttpResponse(json.dumps(add_product_form.errors), mimetype="application/json")
 	return HttpResponse('not post')
 
-from django.contrib import messages
+
 def remove_wishlist_item(request):
 	if request.method == 'POST':
 		skus = request.wishlist

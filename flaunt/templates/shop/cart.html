@@ -72,7 +72,8 @@
                         quantity = $('#'+clicked_id).data('quantity'),
                         input_field = $('#'+clicked_id).parent().find('input');
                     if (data.error){
-                        $('.alert').html("<p>"+data.error+"</p>").addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                        $('.alert p').html(data.error).parent().fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+
                         $(input_field).val(quantity);
                     }else{
                         var subtotal = parseFloat(data['subtotal']).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
@@ -275,9 +276,7 @@
     </tr>
     </tbody>
 </table>
-<div class="alert alert-info modal fade" id="dialog-message" data-alert="alert">
-    
-</div>
+
 <input type="hidden" id="subtotal" value="0" name="Shipping fee" data-notenoughstockid="" class="{{ request.cart.total_quantity }}" />
 <input type="hidden" id="chosen_country" />
 
