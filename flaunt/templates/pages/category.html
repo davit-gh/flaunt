@@ -1,263 +1,112 @@
 {% extends "pages/page.html" %}
 
-{% load staticfiles mezzanine_tags shop_tags i18n %}
+{% load mezzanine_tags shop_tags i18n pages_tags %}
 {% block body_id %}category{% endblock %}
 
-<meta name="p:domain_verify" content="c0cddbe2b937c6771ba64945a61a846e"/>
-
-{% block extra_css %}
-{{ block.super }}
-<!-- make the corners of select tag for sorting round and move it 
-upper to allign with its left div. cart/checkout block also moves up (panel class)-->
-<link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
-
-<link rel="stylesheet" type="text/css" href="{% static "css/shuffle-styles.css" %}">
-
-{% endblock %}
-{% block slider_js %}
-
-<script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
-
-{% endblock %}
-{% block extra_js %}
-
-
-	$('.collapse').on('show.bs.collapse', function () {
-       $(this).parent().find('.toggle').addClass("expanded");
-    });
-
-    $('.collapse').on('hide.bs.collapse', function () {
-       $(this).parent().find('.toggle').removeClass("expanded");
-    });
-	
-
-	var $cont = $('#grid');
-		
-	$cont.shuffle({
-		itemSelector: '.picture-item',
-		
-		delimeter: ', '
-
-	});
-	
-	$cont.on('shrink.shuffle', function( evt, $collection, shuffle ) {
-  		var group = $collection['group'];
-  		var ids = $('.filtered figcaption > p').map(function(){return parseInt($(this).attr('id'),10);}).get(),
-  			frag = document.createDocumentFragment(),
-  			self = this,
-  			items = [],
-  			$items,
-  			vis_items,
-  			figure;
-  		console.log(ids);
-  		if (ids.indexOf(77777) >= 0){
-  			return;
-  		}
-  		
-  		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
-  			
-  			var post_ids = data.prods[0];
-  			
-  			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
-  			for(i in comp){
-  				var ind = post_ids.indexOf(comp[i]);
-  				
-  					var url = data.prods[5][ind], 
-  						price =  data.prods[3][ind],
-  						unit_price = data.prods[4][ind],
-  						price_field;
-  					if (price != unit_price){
-  						price_field = "<span class='old-price'>Old price: $"+ price +"</span>On sale: $" + unit_price;
-  					} else {
-  						price_field = "<span>Price: $" + price + "</span>";
-  					}
-
-  				var image = data.prods[2][ind].slice(0,-4).split('/'), 
-  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77777">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
-  				figure = document.createElement('figure');
-  				figure.className = figure.className + 'span3 picture-item';
-  				figure.setAttribute('data-item-price', data.prods[3][ind]);
-  				figure.setAttribute('data-groups', group);
-  				$(figure).html(html);
-  				items.push(figure);
-  				frag.appendChild(figure);
-  				
-  			}
-  			document.getElementById("grid").appendChild(frag);
-  			$items = $(items);
-  			$collection.$el.data('shuffle').appended( $items );
-  		}, error: function(data){console.log(JSON.stringify(data));}});
-  		
-	});
-
-	$('#option > ul > li > a').click(function(e){
-		e.preventDefault();
-		var group = $(this).data('group');
-		$cont.shuffle('shuffle',group);
-	});
-	$('#option > a').click(function(e){
-		e.preventDefault();
-		var group = $(this).data('group');
-		$cont.shuffle('shuffle',group);
-	});
-	$('#option').each( function( i, buttonGroup ) {
-	    var $buttonGroup = $( buttonGroup );
-	    $buttonGroup.on( 'click', 'a', function() {
-	      $buttonGroup.find('.selected').removeClass('selected');
-	      $( this ).addClass('selected');
-	    });
-	});
-	$('.sort-options').on('change', function() {
-	  var sort = this.value,
-	      opts = {};
-
-	  // We're given the element wrapped in jQuery
-	  if ( sort === 'item-price-rev' ) {
-	    opts = {
-	      reverse: true,
-	      by: function($el) {
-	        return $el.data('item-price');
-	      }
-	    };
-	  } else if ( sort === 'item-price' ) {
-	    opts = {
-	      by: function($el) {
-	        return $el.data('item-price');
-	      }
-	    };
-	  }
-
-	  // Filter elements
-	  $cont.shuffle('sort', opts);
-	});
-    $('.form-control').mouseenter(function() {
-        open($(this));
-    });
-
-{% endblock %}
-{% block main_span_size %}12{% endblock %}
 {% block main %}{{ block.super }}
-	
-	{% if slider_images %}
-        <!--slider-->
-        <div id="main_slider">
-            <div class="camera_wrap" id="camera_wrap_1">
-		{% for slide in slider_images %}
-                <div data-src="{{ MEDIA_URL }}{% thumbnail slide.image 1920 690 %}"></div>                 
-		{% endfor %}
-            </div><!-- #camera_wrap_1 -->
-            <div class="clear"></div>	
-        </div>        
-        <!--//slider-->
-    {% endif %}
 
- 	{% editable page.category.content %}
-	{{ page.category.content|safe }}
-	{% endeditable %}
+{% editable page.category.content %}
+{{ page.category.content|safe }}
+{% endeditable %}
 
-			
-				
-			<div style="display: inline-block; margin: 0px 0px 20px 20px">
-				<label for="sorting-select">{% trans "Sort by" %}</label>
-				<select class="sort-options form-control" id="sorting-select" style="width:211px">
-				  <option value="">Recently Added</option>
-				  <option value="item-price">Least Expensive</option>
-				  <option value="item-price-rev">Most Expensive</option>
-				</select>
-			</div>
-  <div class="row">
-    <div class="span3">
-		<div class="left-sidebar">
-
-					<h2>Category</h2>
-						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
-						    <div class="panel panel-default">
-			    				<div class="panel-heading">
-									<h4 class="panel-title">
-										<div id="option" class="panel-body">
-										<ul><li>
-						  				<a href="" data-group="all">All</a>
-						  				</li></ul>
-						  				</div>
-						  			</h4>
-						  		</div>
-						  	</div>
-						  {% for category, subcat in catsubcat.items %}
-			    			<div class="panel panel-default">
-			    				<div class="panel-heading">
-									<h4 class="panel-title">
-										
-											{% if subcat %}
-												<a data-toggle="collapse" data-parent="#accordian" href="#{{ category.title|slugify }}">
-													<div class="toggle pull-right"></div>
-												{{ category.title }}
-												</a>
-											{% else %}
-												<div id="option" class="panel-body">
-													<a href="" data-group="{{category.title}}">
-													{{ category.title }}
-													</a>
-												</div>
-											{% endif %}
-											
-									</h4>
-								</div>
-								{% if subcat %}
-								<div id="{{ category.title|slugify }}" class="panel-collapse collapse">
-									<div id="option" class="panel-body">
-										
-										<ul>
-											{% for cat in subcat %}
-											<li>
-												<a href="" data-group="{{cat.title}}">
-													{{ cat.title }}
-												</a>
-											</li>
-											{% endfor %}
-										</ul>
-									</div>
-								</div>
-								{% endif %}
-							</div>
-			    	  	  {% endfor %}
-							
-						</div><!--/category-products-->	
-    	</div>
+{% if child_categories %}
+<div class="row shop-category-list">
+{% if settings.SHOP_CATEGORY_USE_FEATURED_IMAGE %}
+    {% for category in child_categories %}
+    <div class="col-xs-6 col-sm-4 col-lg-3">
+    <a href="{{ category.get_absolute_url }}" class="thumbnail">
+        {% if category.featured_image %}
+        <img src="{{ MEDIA_URL }}{% thumbnail category.featured_image 148 148 %}" />
+        {% else %}
+        <div class="placeholder"></div>
+        {% endif %}
+        <div class="caption">
+            <h4>{{ category.title }}</h4>
+        </div>
+    </a>
+    </div>  
+    {% endfor %}
+{% else %}
+    {% for category in child_categories %}
+    <div class="col-xs-6 col-sm-4 col-lg-3">
+    <a href="{{ category.get_absolute_url }}" class="thumbnail">
+        <div class="caption"><h4>{{ category.title }}</h4></div>
+    </a>
     </div>
-    <div class="span9">
-		<div id="grid" class="row shuffle--container shuffle--fluid">	
-			{% for product, categories in prodcats.items %}
-			  <figure class="span3 picture-item" data-groups='{{ categories|join:", " }}' data-item-price='{% if product.on_sale %}{{ product.unit_price }}{% else %}{{ product.price }}{% endif %}' style="padding: 0px 20px 20px 0px">
-			  	{% if product.image %}
-				  	<div class="picture-item__inner"  style="height:400px">
-				  		<a href="{{ product.get_absolute_url }}">
-					    	<img src="{{ MEDIA_URL }}{% thumbnail product.image 460 500 %}"/>
-					    </a>
-					    	<div class="picture-item__details">
-					      		<figcaption id="figcap" class="picture-item__title">
-					      			{% if product.on_sale %}
-									    <span class="old-price">Old price: {{ product.unit_price|currency }}</span>
-									    {% trans "On sale: " %}{{ product.price|currency }}
-									{% else %}
-										<span>Price: {{ product.price|currency }}</span>
-									{% endif %} 
-									<p id="{{ product.id }}">{{ product }}</p>
-								</figcaption>
-					    	</div>
-					    
-					</div>
-				{% else %}
-					<div class="placeholder">No Image Yet</div>
-				{% endif %}
-			  </figure>
-			{% endfor %}
-			
-		</div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endif %}
+
+{% if products.paginator.count != 0 %}
+
+<form class="product-sorting" role="form">
+    <div class="form-group">
+    <label class="control-label" for="sorting-select">{% trans "Sort by" %}</label>
+        <select onchange="location.href = this[this.selectedIndex].value;" class="form-control" id="sorting-select">
+        {% for name, option in settings.SHOP_PRODUCT_SORT_OPTIONS %}
+        {% if "rating" not in option or settings.SHOP_USE_RATINGS %}
+        <option{% if option == products.sort_by %} selected{% endif %}
+            value="{{ category.get_absolute_url }}?sort={{ option }}{{ querystring }}">
+            {{ name }}
+        </option>
+        {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+</form>
+
+
+	<div class="row products">
+		{% for product in products.object_list %}
+			<div class="col-md-4 col-sm-6">
+	            <div class="product">
+	                <div class="image">
+	                    <a href="{{ product.get_absolute_url }}">
+	                        <img src="{{ MEDIA_URL }}{{ product.image }}" alt="" class="img-responsive image1">
+	                    </a>
+	                </div>
+	                <!-- /.image -->
+	                <div class="text">
+	                    <h3><a href="detail.html">{{ product }}</a></h3>
+	                    {% if product.has_price %}
+				            {% if product.on_sale %}
+				            <p class="price">{{ product.unit_price|currency }}</p>
+				            {% trans "On sale:" %}
+				            {% endif %}
+				            <p class="price">{{ product.price|currency }}</p>
+				        {% else %}
+				            <span class="coming-soon">{% trans "Coming soon" %}</span>
+				        {% endif %}
+	                    
+	                    <p class="buttons">
+	                        <a href="{{ product.get_absolute_url }}" class="btn btn-default">View detail</a>
+	                        <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+	                    </p>
+	                </div>
+	                <!-- /.text -->
+	            </div>
+	            <!-- /.product -->
+	        </div>	
+	    {% endfor %}	
 	</div>
-	<div class="span6">
-		{% pagination_for products %}
-	</div>
+
+
+{% pagination_for products %}
+
+{% endif %}
+
 {% endblock %}
-{% block right_panel_wrapper %}
-	
+{% block right_panel %}
+<div class="panel panel-default sidebar-menu">
+
+	<div class="panel-heading">
+	     <h3 class="panel-title">Categories</h3>
+	</div>
+
+	<div class="panel-body">
+		{% page_menu "pages/menus/tree.html" %}
+	</div>
+</div>
+
 {% endblock %}

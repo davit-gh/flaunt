@@ -18,114 +18,114 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 {% block extra_js %}
 
 
-    $('.collapse').on('show.bs.collapse', function () {
+	$('.collapse').on('show.bs.collapse', function () {
        $(this).parent().find('.toggle').addClass("expanded");
     });
 
     $('.collapse').on('hide.bs.collapse', function () {
        $(this).parent().find('.toggle').removeClass("expanded");
     });
-    
+	
 
-    var $cont = $('#grid');
-        
-    $cont.shuffle({
-        itemSelector: '.picture-item',
-        
-        delimeter: ', '
+	var $cont = $('#grid');
+		
+	$cont.shuffle({
+		itemSelector: '.picture-item',
+		
+		delimeter: ', '
 
-    });
-    
-    $cont.on('shrink.shuffle', function( evt, $collection, shuffle ) {
-        var group = $collection['group'];
-        var ids = $('.filtered figcaption > p').map(function(){return parseInt($(this).attr('id'),10);}).get(),
-            frag = document.createDocumentFragment(),
-            self = this,
-            items = [],
-            $items,
-            vis_items,
-            figure;
-        console.log(ids);
-        if (ids.indexOf(77777) >= 0){
-            return;
-        }
-        
-        $.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
-            
-            var post_ids = data.prods[0];
-            
-            var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
-            for(i in comp){
-                var ind = post_ids.indexOf(comp[i]);
-                
-                    var url = data.prods[5][ind], 
-                        price =  data.prods[3][ind],
-                        unit_price = data.prods[4][ind],
-                        price_field;
-                    if (price != unit_price){
-                        price_field = "<span class='old-price'>Old price: $"+ price +"</span>On sale: $" + unit_price;
-                    } else {
-                        price_field = "<span>Price: $" + price + "</span>";
-                    }
+	});
+	
+	$cont.on('shrink.shuffle', function( evt, $collection, shuffle ) {
+  		var group = $collection['group'];
+  		var ids = $('.filtered figcaption > p').map(function(){return parseInt($(this).attr('id'),10);}).get(),
+  			frag = document.createDocumentFragment(),
+  			self = this,
+  			items = [],
+  			$items,
+  			vis_items,
+  			figure;
+  		console.log(ids);
+  		if (ids.indexOf(77777) >= 0){
+  			return;
+  		}
+  		
+  		$.ajax({type: 'POST', url:'getproduct', data: {'cat': group, 'csrfmiddlewaretoken': '{{ csrf_token  }}'}, success: function(data){
+  			
+  			var post_ids = data.prods[0];
+  			
+  			var comp = post_ids.filter(function(e){return ids.indexOf(e) < 0});
+  			for(i in comp){
+  				var ind = post_ids.indexOf(comp[i]);
+  				
+  					var url = data.prods[5][ind], 
+  						price =  data.prods[3][ind],
+  						unit_price = data.prods[4][ind],
+  						price_field;
+  					if (price != unit_price){
+  						price_field = "<span class='old-price'>Old price: $"+ price +"</span>On sale: $" + unit_price;
+  					} else {
+  						price_field = "<span>Price: $" + price + "</span>";
+  					}
 
-                var image = data.prods[2][ind].slice(0,-4).split('/'), 
-                html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77777">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
-                figure = document.createElement('figure');
-                figure.className = figure.className + 'span3 picture-item';
-                figure.setAttribute('data-item-price', data.prods[3][ind]);
-                figure.setAttribute('data-groups', group);
-                $(figure).html(html);
-                items.push(figure);
-                frag.appendChild(figure);
-                
-            }
-            document.getElementById("grid").appendChild(frag);
-            $items = $(items);
-            $collection.$el.data('shuffle').appended( $items );
-        }, error: function(data){console.log(JSON.stringify(data));}});
-        
-    });
+  				var image = data.prods[2][ind].slice(0,-4).split('/'), 
+  				html = '<div class="picture-item__inner"  style="height:400px"><a href="'+url+'"><img src="{{ MEDIA_URL }}'+image[0]+'/.thumbnails/'+image[1]+'.jpg/'+image[1]+'-460x500.jpg"/></a><div class="picture-item__details"><figcaption id="figcap" class="picture-item__title">' + price_field + '<p id="77777">'+ data.prods[1][ind] +'</p></figcaption></div></div>';
+  				figure = document.createElement('figure');
+  				figure.className = figure.className + 'span3 picture-item';
+  				figure.setAttribute('data-item-price', data.prods[3][ind]);
+  				figure.setAttribute('data-groups', group);
+  				$(figure).html(html);
+  				items.push(figure);
+  				frag.appendChild(figure);
+  				
+  			}
+  			document.getElementById("grid").appendChild(frag);
+  			$items = $(items);
+  			$collection.$el.data('shuffle').appended( $items );
+  		}, error: function(data){console.log(JSON.stringify(data));}});
+  		
+	});
 
-    $('#option > ul > li > a').click(function(e){
-        e.preventDefault();
-        var group = $(this).data('group');
-        $cont.shuffle('shuffle',group);
-    });
-    $('#option > a').click(function(e){
-        e.preventDefault();
-        var group = $(this).data('group');
-        $cont.shuffle('shuffle',group);
-    });
-    $('#option').each( function( i, buttonGroup ) {
-        var $buttonGroup = $( buttonGroup );
-        $buttonGroup.on( 'click', 'a', function() {
-          $buttonGroup.find('.selected').removeClass('selected');
-          $( this ).addClass('selected');
-        });
-    });
-    $('.sort-options').on('change', function() {
-      var sort = this.value,
-          opts = {};
+	$('#option > ul > li > a').click(function(e){
+		e.preventDefault();
+		var group = $(this).data('group');
+		$cont.shuffle('shuffle',group);
+	});
+	$('#option > a').click(function(e){
+		e.preventDefault();
+		var group = $(this).data('group');
+		$cont.shuffle('shuffle',group);
+	});
+	$('#option').each( function( i, buttonGroup ) {
+	    var $buttonGroup = $( buttonGroup );
+	    $buttonGroup.on( 'click', 'a', function() {
+	      $buttonGroup.find('.selected').removeClass('selected');
+	      $( this ).addClass('selected');
+	    });
+	});
+	$('.sort-options').on('change', function() {
+	  var sort = this.value,
+	      opts = {};
 
-      // We're given the element wrapped in jQuery
-      if ( sort === 'item-price-rev' ) {
-        opts = {
-          reverse: true,
-          by: function($el) {
-            return $el.data('item-price');
-          }
-        };
-      } else if ( sort === 'item-price' ) {
-        opts = {
-          by: function($el) {
-            return $el.data('item-price');
-          }
-        };
-      }
+	  // We're given the element wrapped in jQuery
+	  if ( sort === 'item-price-rev' ) {
+	    opts = {
+	      reverse: true,
+	      by: function($el) {
+	        return $el.data('item-price');
+	      }
+	    };
+	  } else if ( sort === 'item-price' ) {
+	    opts = {
+	      by: function($el) {
+	        return $el.data('item-price');
+	      }
+	    };
+	  }
 
-      // Filter elements
-      $cont.shuffle('sort', opts);
-    });
+	  // Filter elements
+	  $cont.shuffle('sort', opts);
+	});
     $('.form-control').mouseenter(function() {
         open($(this));
     });
@@ -133,19 +133,19 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 {% endblock %}
 {% block main_span_size %}12{% endblock %}
 {% block main %}{{ block.super }}
-    
-    {% if slider_images %}
+	
+	{% if slider_images %}
         <!-- *** SLIDER ***
-    _________________________________________________________ -->
+	_________________________________________________________ -->
 
     <div id="slider" class="owl-carousel owl-theme">
         {% for slide in slider_images %}      
             <div class="item">
-                <a href="#">
-                    <img src="{{ MEDIA_URL }}{% thumbnail slide.image 450 450 %}" alt="" class="img-responsive">
-                    </a>
-            </div>         
-        {% endfor %}
+		        <a href="#">
+	                <img src="{{ MEDIA_URL }}{% thumbnail slide.image 450 450 %}" alt="" class="img-responsive">
+		            </a>
+	        </div>         
+		{% endfor %}
     </div>
     <!-- /#slider -->
 
@@ -218,36 +218,36 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                         <h4 class="text-muted"><span class="accent">Free shipping</span> on all</h4>
                     </div>
 
-                    <div id="grid" class="row shuffle--container shuffle--fluid">   
-                        {% for product in products %}
-                            <div class="col-md-3 col-sm-4" data-groups='{{ product.categories.all|join:", " }}'>
-                                <div class="product">
-                                    <div class="image">
-                                        <a href="{{ product.get_absolute_url }}">
-                                            <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive image1">
-                                        </a>
-                                    </div>
-                                    <!-- /.image -->
-                                    <div class="text">
-                                        <h3><a href="{{ product.get_absolute_url }}">{{ product }}</a></h3>
-                                        <p class="price">{{ product.price|currency }}</p>
+                    <div class="row products">
+               			{% for product, categories in prodcats.items %}
+                        	<div class="col-md-3 col-sm-4">
+	                            <div class="product">
+	                                <div class="image">
+	                                    <a href="{{ product.get_absolute_url }}">
+	                                        <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive image1">
+	                                    </a>
+	                                </div>
+	                                <!-- /.image -->
+	                                <div class="text">
+	                                    <h3><a href="{{ product.get_absolute_url }}">{{ product }}</a></h3>
+	                                    <p class="price">{{ product.price|currency }}</p>
 
-                                    </div>
-                                    <!-- /.text -->
+	                                </div>
+	                                <!-- /.text -->
 
-                                    <p class="buttons">
-                                        <a href="{{ product.get_absolute_url }}" class="btn btn-default">View detail</a>
-                                        <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </p>
-                                </div>
-                                <!-- /.product -->
-                            </div>
-                        {% endfor %}                            
+	                                <p class="buttons">
+	                                    <a href="{{ product.get_absolute_url }}" class="btn btn-default">View detail</a>
+	                                    <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+	                                </p>
+	                            </div>
+	                            <!-- /.product -->
+                        	</div>
+	                    {% endfor %}                        	
                     </div>
                     <div class="span6">
-                        {% pagination_for products %}
-                    </div>
-                    <div class="box text-center">
+						{% pagination_for products %}
+					</div>
+    				<div class="box text-center">
                         <h3 class="text-uppercase">From our blog</h3>
 
                         <p class="text-italic text-large">What's new in the world of fashion? <span class="accent">Check our blog!</span>
@@ -288,8 +288,8 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                 
            
     
-    
+	
 {% endblock %}
 {% block right_panel_wrapper %}
-    
+	
 {% endblock %}

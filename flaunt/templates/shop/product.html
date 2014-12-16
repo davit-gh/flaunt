@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range %}
+{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range widget_tweaks pages_tags %}
 
 {% block meta_title %}{{ product.meta_title }}{% endblock %}
 {% block body_id %}category{% endblock %}
@@ -34,8 +34,6 @@
 <link rel="stylesheet" href="{% static "mezzanine/css/magnific-popup.css" %}">
 <link rel="stylesheet" href="{% static "css/responsiveslides.css" %}">
 
-<link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
-<link rel="stylesheet" type="text/css" href="{% static "css/cart-button.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/elevatezoom.css" %}">
 
 {% endblock %}
@@ -122,116 +120,192 @@ $("#zoom_03").bind("click", function(e) {
 {% block title %}
 {% editable product.title %}{{ product.title }}{% endeditable %}
 {% endblock %}
+            {% block extra_content %}
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a>
+                        </li>
+                        <li><a href="#">Ladies</a>
+                        </li>
+                        <li><a href="#">Tops</a>
+                        </li>
+                        <li>White Blouse Armani</li>
+                    </ul>
+                    <div class="box text-center">
 
-{% block main %}
-
-<div class="span9">
-    <p class="product_title">{{ product.title }}</p>
-</div>
-<div id="messages" class="alert alert-info modal" style="display:none"></div>
-<div class="row" style="padding-top: 40px">
-    <div class="span5">
-        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}"/>
-        <div id="gal1">    
-            {% for image in images %}
-            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}">
-                <img id="{{ image.id }}" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 55 75 %}">
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    
-    
-    <div class="span4" style="margin-top: -20px">
-        
-            {% if product.available and has_available_variations %}
-            
-                {% errors_for add_product_form %}
-                {% load widget_tweaks %}
-                <form method="post" id="add-cart" class="shop-form" style="padding-left: 10px">
-                    {% csrf_token %}
-                    
-                        <table class="t1">
-                            <tr>
-                            <td class="td1">
-                         
-                            {% for field in add_product_form %}
-                                {% if field.is_hidden %}
-                                    {{ field }}
-                                {% elif not forloop.first %}
-                                    <div class="fields">
-                                        {% if field.label %}
-                                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                                        {% endif %}
-                                        {% render_field field class="form-control" id=field.label %}
-                                        <br/>
-                                        {% if field.help_text %}
-                                            <p class="help-block">{{ field.help_text }}</p>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                    
-                            {% with add_product_form.visible_fields|first as quantity %}
-                            <div class="quantity-field">
-                                <label for="{{ quantity.auto_id }}">{{ quantity.label }}</label>
-                                {% render_field quantity %}
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <h1>{{ product.title }}</h1>
+                                <p class="text-muted">In our Ladies department we offer wide selection of the best products we have found and carefully selected worldwide. Pellentesque habitant morbi tristique senectus et netuss.</p>
+                                <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
+                                </p>
                             </div>
-                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+{% block main %}
+                
+
+<div id="messages" class="alert alert-info modal" style="display:none"></div>
+        <div class="row" id="productMain">
+                        <div class="col-sm-6">
+                            <div id="mainImage">
+                                <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}" class="img-responsive" />
+                            </div>
+
+                            <div class="ribbon sale">
+                                <div class="theribbon">SALE</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+
+                            <div class="ribbon new">
+                                <div class="theribbon">NEW</div>
+                                <div class="ribbon-background"></div>
+                            </div>
+                            <!-- /.ribbon -->
+
+                        </div>
+            <div class="col-sm-6">
+                <div class="box">
+                    {% if product.available and has_available_variations %}
+                    {% errors_for add_product_form %}
+
+                        <form>
+                            {% csrf_token %}
+                        
+                            <table class="t1">
+                                <tr>
+                                    <td class="td1">
+                                 
+                                    {% for field in add_product_form %}
+                                        {% if field.is_hidden %}
+                                            {{ field }}
+                                        {% else  %}
+                                            <div class="fields">
+                                                {% if field.label %}
+                                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                {% endif %}
+                                                {% render_field field class="form-control" id=field.label %}
+                                                <br/>
+                                                {% if field.help_text %}
+                                                    <p class="help-block">{{ field.help_text }}</p>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                             
-                            </td>
-                            <td>
-                            <div class="pull-left" id="pricediv">
-                                <h2  style="margin-left:18px;">Price</h2>
-                                <ul id="variations" class="list-unstyled">
-                                {% for variation in variations %}
-                                <li id="variation-{{ variation.sku }}"
-                                    {% if not variation.default %}style="display:none;"{% endif %}>
-                                    {% if variation.has_price %}
-                                        {% if variation.on_sale %}
-                                            <span class="old-price">{{ variation.unit_price|currency }}</span>
-                                            <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
-                                        {% endif %}
-                                        <span class="new-price">{{ variation.price|currency }}</span>
-                                    {% else %}
-                                        {% if has_available_variations %}
-                                        <span class="error-msg">
-                                        {% trans "The selected options are currently unavailable." %}
-                                        </span>
-                                        {% endif %}
-                                    {% endif %}
-                                </li>
-                                {% endfor %}
-                                </ul>
-                           </div>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td colspan="2">
-                    <div id="buttons">
-                        <input type="submit" class="action-button shadow animate blue" name="add_cart" value="{% trans "ADD TO CART" %}">
-                        {% if settings.SHOP_USE_WISHLIST %}
-                        <a id="wishlist" href="" class="shadow animate" name="add_wishlist" >ADD TO WISHLIST</a>
+                                    </td>
+                                </tr>
+                            </table>
+                                            <ul id="variations" class="list-unstyled">
+                                            {% for variation in variations %}
+                                            <li id="variation-{{ variation.sku }}"
+                                                {% if not variation.default %}style="display:none;"{% endif %}>
+                                                {% if variation.has_price %}
+                                                    {% if variation.on_sale %}
+                                                        <p class="price">{{ variation.unit_price|currency }}</p>
+                                                        <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                                    {% endif %}
+                                                    <p class="price">{{ variation.price|currency }}</p>
+                                                {% else %}
+                                                    {% if has_available_variations %}
+                                                    <span class="error-msg">
+                                                    {% trans "The selected options are currently unavailable." %}
+                                                    </span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </li>
+                                            {% endfor %}
+                                            </ul>
+                                       
+                                        <p class="text-center">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="fa fa-heart-o"></i>
+                                            </button>
+                                        </p>
+
+                        </form>
+                    {% else %}
+                            <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
+                    {% endif %}
+                </div>
+
+                <div class="row" id="thumbs">
+                                
+                    {% for image in images %}
+                        <div class="col-xs-4">
+                            <a href="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}" class="thumb">
+                                <img id="{{ image.id }}" src="{{ MEDIA_URL }}{% thumbnail image.file 85 85 %}" alt="{{ image.description }}" class="img-responsive">
+                            </a>
+                        </div>
+                    {% endfor %}
+                                
+                </div>
+            </div>
+
+        </div>
+
+                    <div class="box" id="details">
+                        <p>
+                            <h4>Product details</h4>
+                            <p>White lace top, woven, has a round neck, short sleeves, has knitted lining attached</p>
+                            <h4>Material & care</h4>
+                            <ul>
+                                <li>Polyester</li>
+                                <li>Machine wash</li>
+                            </ul>
+                            <h4>Size & Fit</h4>
+                            <ul>
+                                <li>Regular fit</li>
+                                <li>The model (height 5'8" and chest 33") is wearing a size S</li>
+                            </ul>
+
+                            <blockquote>
+                                <p><em>Define style this season with Armani's new range of trendy tops, crafted with intricate details. Create a chic statement look by teaming this lace number with skinny jeans and pumps.</em>
+                                </p>
+                            </blockquote>
+                    </div>
+
+                    <div class="box social" id="product-social">
+                        <h4>Show it to your friends</h4>
+                        <p>
+                            <a href="#" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="box">
+                                <h3>You may also like these products</h3>
+                            </div>
+                        </div>
+                        
+                        {% if settings.SHOP_USE_RELATED_PRODUCTS and related_products %}
+                        {% for product in related_products %}
+                            <div class="col-md-3 col-sm-6">
+                                <div class="product">
+                                    <div class="image">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive image1">
+                                        </a>
+                                    </div>
+                                    <div class="text">
+                                        <h3>{{ product }}</h3>
+                                        <p class="price">{{ product.price|currency }}</p>
+
+                                    </div>
+                                </div>
+                                <!-- /.product -->
+                            </div>
+                        {% endfor %}
                         {% endif %}
                     </div>
-                    </td>
-                    </tr>
-                    </table>
-                </form>
-                       
-        
-            
-            {% else %}
-                <div class="span6">
-                    <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
-                    
 
-                </div>
-            {% endif %}
-
-                
-    </div>
-</div>
 {% editable product.content %}
 {{ product.content|richtext_filters|safe }}
 {% endeditable %}
@@ -247,32 +321,14 @@ $("#zoom_03").bind("click", function(e) {
 
 {% endblock %}
 {% block right_panel %}
-    {% if settings.SHOP_USE_RELATED_PRODUCTS and related_products %}
-<h2>{% trans "Related Products" %}</h2>
-<div class="row related-products">
-    {% for product in related_products %}
-    <div class="col-xs-6 col-sm-4 col-md-3 product-thumb">
-        <a class="thumbnail" href="{{ product.get_absolute_url }}">
-            {% if product.image %}
-            <img src="{{ MEDIA_URL }}{% thumbnail product.image 90 90 %}">
-            {% endif %}
-            <div class="caption">
-            <h6>{{ product }}</h6>
-            <div class="price-info">
-            {% if product.has_price %}
-                {% if product.on_sale %}
-                <span class="old-price">{{ product.unit_price|currency }}</span>
-                {% trans "On sale:" %}
-                {% endif %}
-                <span class="price">{{ product.price|currency }}</span>
-            {% else %}
-                <span class="coming-soon">{% trans "Coming soon" %}</span>
-            {% endif %}
-            </div>
-            </div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+                        <!-- *** MENUS AND FILTERS ***
+ _________________________________________________________ -->
+                    <div class="panel panel-default sidebar-menu">
+
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Categories</h3>
+                        </div>
+                        {% page_menu "shop/includes/categories.html" %}
+                    </div>
+                            
 {% endblock %}

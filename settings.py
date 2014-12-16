@@ -13,6 +13,7 @@ RATINGS_RANGE = range(5,1,-1)
 
 # Setting to turn on featured images for shop categories. Defaults to False.
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
+SHOP_USE_RELATED_PRODUCTS = True
 SHOP_USE_RATINGS = False
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "first_name",

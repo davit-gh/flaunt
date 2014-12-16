@@ -30,7 +30,7 @@
         e.preventDefault();
         var url = $(this).data('form');
         var title_text = $(this).data('desc');
-        console.log(title_text);
+        
         $('#feedbackModal').load(url, function(){
             $(this).modal('show');
             $('input[id="id_item_title"]').val(title_text);

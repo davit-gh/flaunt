@@ -28,7 +28,7 @@ def ajax_country(request):
 	else:
 		carriers = "not ajax"
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
-	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), mimetype="application/json")
+	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), content_type=="application/json")
 
 from cartridge.shop.forms import DiscountForm
 def get_discount_on_update(request, discount_form_class=DiscountForm):
@@ -213,7 +213,7 @@ def check_request(request):
 def render_to_json(data):
     return HttpResponse(
         json.dumps(data, ensure_ascii=False),
-        mimetype="application/json")
+        content_type="application/json")
 
 from cartridge.shop.forms import AddProductForm
 from django.shortcuts import get_object_or_404
@@ -244,7 +244,7 @@ def handle_wishlist(request, slug, form_class=AddProductForm):
 			response = render(request,'messages.html')
 			set_cookie(response, "wishlist", ",".join(skus))
 			return response
-		return HttpResponse(json.dumps(add_product_form.errors), mimetype="application/json")
+		return HttpResponse(json.dumps(add_product_form.errors), content_type="application/json")
 	return HttpResponse('not post')
 
 
@@ -286,7 +286,7 @@ def get_category_products(request):
 		
 		prods = [(x.id, x.title.strip(), x.image, float(x.unit_price), float(x.price()), x.get_absolute_url()) for x in products]
 		
-		return HttpResponse(json.dumps({'prods':zip(*prods)}), mimetype="application/json")
+		return HttpResponse(json.dumps({'prods':zip(*prods)}), content_type="application/json")
 	return HttpResponse('Not OK!')
 
 
@@ -302,5 +302,5 @@ def get_discount(request, discount_form_class=DiscountForm):
         	discount_total = float(request.session.get('discount_total',0))
 		return HttpResponse(json.dumps({'discount_total': "{0:.2f}".format(discount_total), 'cart_total':float(request.cart.total_price()),'shipping_total':ship_total, 'shipping_type':ship_type}), mimetype="application/json")
         else:
-        	return HttpResponse(json.dumps(discount_form.errors), mimetype="application/json")
+        	return HttpResponse(json.dumps(discount_form.errors), content_type="application/json")
 		

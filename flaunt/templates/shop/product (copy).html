@@ -1,0 +1,278 @@
+{% extends "shop/base.html" %}
+{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range %}
+
+{% block meta_title %}{{ product.meta_title }}{% endblock %}
+{% block body_id %}category{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% for keyword in product.keywords.all %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ product.description }}
+{% endmetablock %}{% endblock %}
+
+<!--drop down the select menu list on mouseenter using auto_dropdown_select.js-->
+
+{% block slider_js %}
+
+    <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "js/jquery.elevateZoom-3.0.8.min.js" %}"></script>
+    <script type="text/javascript">
+        function trim1 (str) {
+            return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        }
+    </script>
+{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "mezzanine/css/magnific-popup.css" %}">
+<link rel="stylesheet" href="{% static "css/responsiveslides.css" %}">
+
+<link rel="stylesheet" type="text/css" href="{% static "css/shop_category_fields.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/cart-button.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/elevatezoom.css" %}">
+
+{% endblock %}
+
+{% block extra_js %}
+
+$('#wishlist').click(function(){
+    var plain = {};
+    var qty = $('input[type="number"]').val();
+    $.each($('select'), function(index, value){
+        plain[$(value).attr('name')] = $(value).val();
+    });
+    plain['quantity'] = qty;
+    plain['csrfmiddlewaretoken'] = '{{ csrf_token  }}';
+    $.ajax({
+        url: "{% url 'wish' product.slug %}",
+        data: plain,
+        type: 'POST',
+        success: function(data){  
+            console.log(data)         
+            if(data.__all__){
+                $('#messages').html(data.__all__).fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                return false;
+            }
+            var message = trim1(data);
+            var new_count = message.charAt(9);
+            if(new_count == '1'){
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' item ');
+            }else{
+                $('#wishlist_menu').html('Wishlist contains ' + new_count + ' items ');
+            }
+            $('#messages').html(message).fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+        }, 
+        error: function(data){ 
+            console.log('error '+JSON.stringify(data));
+            
+        }
+
+    });
+    return false;
+});
+
+var selections = $('select#Colour');
+selections.change(function() {
+            var variation = $.grep(variations, function(v) {
+                var valid = true;
+                $.each(selections, function() {
+                    valid = valid && v[this.name] == this[this.selectedIndex].value;
+                });
+
+                return valid;
+            });
+            $('img#' + variation[0].image_id).click();
+});
+
+$('select').on('mouseenter',function(){
+    open($(this));
+});
+    //initiate the plugin and pass the id of the div containing gallery images
+$("#zoom_03").elevateZoom({constrainType:"height", constrainSize:550, zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
+
+//pass the images to Fancybox
+$("#zoom_03").bind("click", function(e) {  
+  var ez =   $('#zoom_03').data('elevateZoom'); 
+    $.fancybox(ez.getGalleryList());
+  return false;
+});
+
+{% endblock %}
+
+{% block extra_head %}
+<script>var variations = {{ variations_json|safe }};</script>
+<script src="{% static "cartridge/js/product_variations.js" %}"></script>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+
+{% endblock %}
+
+{% block main_span_size %}9{% endblock %}
+{% block panel_span_size %}3{% endblock %}
+
+{% block title %}
+{% editable product.title %}{{ product.title }}{% endeditable %}
+{% endblock %}
+
+{% block main %}
+
+<div class="span9">
+    <p class="product_title">{{ product.title }}</p>
+</div>
+<div id="messages" class="alert alert-info modal" style="display:none"></div>
+<div class="row" style="padding-top: 40px">
+    <div class="span5">
+        <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}"/>
+        <div id="gal1">    
+            {% for image in images %}
+            <a  href="#" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}">
+                <img id="{{ image.id }}" alt="{{ image.description }}" src="{{ MEDIA_URL }}{% thumbnail image.file 55 75 %}">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+    <div class="span4" style="margin-top: -20px">
+        
+            {% if product.available and has_available_variations %}
+            
+                {% errors_for add_product_form %}
+                {% load widget_tweaks %}
+                <form method="post" id="add-cart" class="shop-form" style="padding-left: 10px">
+                    {% csrf_token %}
+                    
+                        <table class="t1">
+                            <tr>
+                            <td class="td1">
+                         
+                            {% for field in add_product_form %}
+                                {% if field.is_hidden %}
+                                    {{ field }}
+                                {% elif not forloop.first %}
+                                    <div class="fields">
+                                        {% if field.label %}
+                                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        {% endif %}
+                                        {% render_field field class="form-control" id=field.label %}
+                                        <br/>
+                                        {% if field.help_text %}
+                                            <p class="help-block">{{ field.help_text }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                    
+                            {% with add_product_form.visible_fields|first as quantity %}
+                            <div class="quantity-field">
+                                <label for="{{ quantity.auto_id }}">{{ quantity.label }}</label>
+                                {% render_field quantity %}
+                            </div>
+                            {% endwith %}
+                            
+                            </td>
+                            <td>
+                            <div class="pull-left" id="pricediv">
+                                <h2  style="margin-left:18px;">Price</h2>
+                                <ul id="variations" class="list-unstyled">
+                                {% for variation in variations %}
+                                <li id="variation-{{ variation.sku }}"
+                                    {% if not variation.default %}style="display:none;"{% endif %}>
+                                    {% if variation.has_price %}
+                                        {% if variation.on_sale %}
+                                            <span class="old-price">{{ variation.unit_price|currency }}</span>
+                                            <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                        {% endif %}
+                                        <span class="new-price">{{ variation.price|currency }}</span>
+                                    {% else %}
+                                        {% if has_available_variations %}
+                                        <span class="error-msg">
+                                        {% trans "The selected options are currently unavailable." %}
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                                </ul>
+                           </div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td colspan="2">
+                    <div id="buttons">
+                        <input type="submit" class="action-button shadow animate blue" name="add_cart" value="{% trans "ADD TO CART" %}">
+                        {% if settings.SHOP_USE_WISHLIST %}
+                        <a id="wishlist" href="" class="shadow animate" name="add_wishlist" >ADD TO WISHLIST</a>
+                        {% endif %}
+                    </div>
+                    </td>
+                    </tr>
+                    </table>
+                </form>
+                       
+        
+            
+            {% else %}
+                <div class="span6">
+                    <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
+                    
+
+                </div>
+            {% endif %}
+
+                
+    </div>
+</div>
+{% editable product.content %}
+{{ product.content|richtext_filters|safe }}
+{% endeditable %}
+
+
+
+{% if settings.SHOP_USE_RATINGS %}
+<div class="panel panel-default rating">
+    <div class="panel-body">{% rating_for product %}</div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+{% block right_panel %}
+    {% if settings.SHOP_USE_RELATED_PRODUCTS and related_products %}
+<h2>{% trans "Related Products" %}</h2>
+<div class="row related-products">
+    {% for product in related_products %}
+    <div class="col-xs-6 col-sm-4 col-md-3 product-thumb">
+        <a class="thumbnail" href="{{ product.get_absolute_url }}">
+            {% if product.image %}
+            <img src="{{ MEDIA_URL }}{% thumbnail product.image 90 90 %}">
+            {% endif %}
+            <div class="caption">
+            <h6>{{ product }}</h6>
+            <div class="price-info">
+            {% if product.has_price %}
+                {% if product.on_sale %}
+                <span class="old-price">{{ product.unit_price|currency }}</span>
+                {% trans "On sale:" %}
+                {% endif %}
+                <span class="price">{{ product.price|currency }}</span>
+            {% else %}
+                <span class="coming-soon">{% trans "Coming soon" %}</span>
+            {% endif %}
+            </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

@@ -38,6 +38,7 @@ ProductAdmin.fieldsets = product_fieldsets
 #-----------------------------------------------------------------
 admin.site.unregister(Product)
 admin.site.register(Product, ProductAdmin)
+#admin.site.register(Slide, SlideAdmin)
 admin.site.register(HomePage,HomePageAdmin)
 admin.site.register(Portfolio,PageAdmin)
 admin.site.register(PortfolioItem,PortfolioItemAdmin)
