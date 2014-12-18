@@ -100,7 +100,7 @@ _________________________________________________________ -->
                                         <div class="col-sm-3">
                                             <img src="{% static "img/purchased/men.jpg" %}" class="img-responsive hidden-xs" alt="">
                                         </div>
-                                        {% for key,val in context.men.items %}
+                                        {% for key,val in men.items %}
                                             <div class="col-sm-3">
                                                 <h3>{{ key }}</h3>
                                                 <ul>
@@ -138,14 +138,14 @@ _________________________________________________________ -->
                                         <div class="col-sm-3">
                                             <img src="{% static "img/purchased/women.jpg" %}" class="img-responsive hidden-xs" alt="">
                                         </div>
-                                        {% for key,val in context.women.items %}
+                                        {% for key,val in women.items %}
                                             <div class="col-sm-3">
                                                 <h3>{{ key }}</h3>
                                                 <ul>
                                                     {% for entry in val %}
                                                         <li>
                                                             <a href="{% url 'page' entry|last %}">
-                                                                {{ entry }}
+                                                                {{ entry|first }}
                                                             </a>
                                                         </li>
                                                     {% endfor %}
@@ -232,17 +232,24 @@ _________________________________________________________ -->
         _________________________________________________________
         _________________________________________________________
         -->
+        <div>
+            <ul class="breadcrumb">
+                {% spaceless %}
+                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                {% endspaceless %}
+            </ul>
+        </div>
 		<div id="content">
             <div class="container">
                 {% block extra_content %}
                 {% endblock %}
 				{% block main_wrapper %}
-					<div class="col-sm-{% block main_span_size %}9{% endblock %}">
+					<div class="col-{% block main_span_size %}sm-9{% endblock %}" id="{% block div_id%}{% endblock %}">
 						{% block main %}{% endblock %}
 	    				</div>
 				{% endblock main_wrapper%}
 				{% block right_panel_wrapper %}
-					<div class="col-sm-{% block panel_span_size %}3{% endblock %}">
+					<div class="col-{% block panel_span_size %}sm-3{% endblock %}">
 						{% block right_panel %}
 						{% endblock %}
 					</div>
@@ -421,59 +428,9 @@ _________________________________________________________ -->
         <!-- *** COPYRIGHT END *** -->
 
     <!--footer-->
-    <div id="footer">
-    	<div class="wrap">
-    		<div class="container">
-            	<div class="row">
-                	 
-                    <div class="span4">
-                    	<h2 class="title">Testimonials</h2>
-                        <ul id="lightSlider">
-                        	<li style="text-align: justify">
-                            	<span class="testimonials_arrow"></span>I bought a pair of sneakers from "You name it" and I'm very satisfied with the quality and fast shipping. I am so glad you are in business, guys!
-                            	
-                                <div class="author">Danielle Garcia, USA</div>
-                            </li>
-                            <li style="text-align: justify">
-                            	
-                            	<span class="testimonials_arrow"></span>Well, at first I was skeptical about this website as I've never heard about it. But I decided to give it a try and, guess what, they exceeded my expectations by their fast response and great service, thanks for that!
-                            	
-                                <div class="author">George Cross, USA</div>
-                            </li>
-                            <li style="text-align: justify">
-                            	<span class="testimonials_arrow"></span>I ordered a backpack here but I was worried about the quality as the price was cheap! I received my order recently and I'm very glad with it. Will come back again.
-                            	
-                                <div class="author">Johanna Koenig, Germany</div>
-                            </li>
-                            <li style="text-align: justify">
-                            	<span class="testimonials_arrow"></span>I was looking for an affordable 'HEAD' tennis racket for long time. I found it here with free shipping. Very good, thank you...
-                            	
-                                <div class="author">Victorine Leroy, France</div>
-                            </li>
-                            <li style="text-align: justify">
-                            	<span class="testimonials_arrow"></span>I bought a bag from You Name It, it was so nice. I'm grateful to You Name It and hopefully it will become more popular in Tbilisi.
-                            	
-                                <div class="author">Nino Pruidze, Georgia</div>
-                            </li>
-                        </ul>                     
-                    </div>
-		{% if settings.PHOTO_SHARING_FLICKR_ID %}
-                    <div class="span3">
-                    	<h2 class="title">flickr photostream</h2>
-                        <div class="flickrs">
-                            <div class="FlickrImages">
-                                <ul></ul>
-                                <div class="clear"></div>
-                            </div>
-                        </div> 
-                    </div>      
-		{% endif %}   	
-            	</div>
-        	</div>            
-        </div>
         
         
-    </div>
+    
     <!--//footer-->    
 
     {% block no_compress %}

@@ -13,51 +13,72 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
 {% endblock %}
 
 {% block breadcrumb_menu %}
-{% for step in steps %}
-<li>
-    {% if step.title == step_title %}
-    <strong>{{ step.title }}</strong>
-    {% else %}
-    {{ step.title }}
-    {% endif %}
-</li>
-{% endfor %}
-<li>{% trans "Complete" %}</li>
+
 {% endblock %}
 
 {% block extra_css %}
     <link href="{% static "css/checkout_form.css" %}" rel="stylesheet">
 {% endblock %}
 
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+{% block div_id %}checkout{% endblock %}
+
+{% block extra_content %}
+    <div class="col-md-12 clearfix">
+        <ul class="breadcrumb">
+            <li><a href="{% url "home" %}">Home</a>
+            </li>
+            <li>Checkout - {{ step_title }}</li>
+        </ul>
+
+        <div class="box text-center">
+
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <h1>Checkout - {{ step_title }}</h1>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
 {% block main %}
 
 {% block before-form %}{% endblock %}
+<div class="box">
+    <form method="post">
+        {% csrf_token %}
 
-<form method="post" class="col-md-8 checkout-form">
-    {% csrf_token %}
+        {% block fields %}{% endblock %}
+        
+        {% block nav-buttons %}
+            {% if request.cart.has_items %}
+                <div class="box-footer">
+                    {% if not CHECKOUT_STEP_FIRST %}
+                        <div class="pull-left">
+                            <input type="submit" name="back" class="btn btn-default"><i class="fa fa-chevron-left"></i>{% trans "Back" %}</input>
+                        </div>
+                    {% endif %}
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">{% trans "Next" %}<i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            {% else %}
+                <p>{% trans "Your cart is empty." %}</p>
+                <p>{% trans "This may be due to your session timing out after a period of inactivity." %}</p>
+                <p>{% trans "We apologize for the inconvenience." %}</p>
+                {{ request | remove_shipping_info:'shipping_type' }}
+                {{ request | remove_shipping_info:'shipping_total' }}
+                <br>
+                <p><a class="btn btn-lg btn-primary" href="/">{% trans "Continue Shopping" %}</a></p>
+            {% endif %}
+        {% endblock %}
 
-    {% block fields %}{% endblock %}
-    
-    {% block nav-buttons %}
-        {% if request.cart.has_items %}
-            <div class="form-actions">
-                <input type="submit" class="btn btn-large btn-primary pull-right" value="{% trans "Next" %}">
-                {% if not CHECKOUT_STEP_FIRST %}
-                <input type="submit" class="btn btn-lg pull-left" name="back" value="{% trans "Back" %}">
-                {% endif %}
-            </div>
-        {% else %}
-            <p>{% trans "Your cart is empty." %}</p>
-            <p>{% trans "This may be due to your session timing out after a period of inactivity." %}</p>
-            <p>{% trans "We apologize for the inconvenience." %}</p>
-            {{ request | remove_shipping_info:'shipping_type' }}
-            {{ request | remove_shipping_info:'shipping_total' }}
-            <br>
-            <p><a class="btn btn-lg btn-primary" href="/">{% trans "Continue Shopping" %}</a></p>
-        {% endif %}
-    {% endblock %}
-
-</form>
+    </form>
+</div>
 {% endblock %}
 {% if request.cart.has_items %}
 {% block right_panel %}
@@ -79,7 +100,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
     </ul>
     {% order_totals %}
     <br style="clear:both;">
-    <a class="btn btn-custom" href="{% url "shop_cart" %}">{% trans "Edit Cart" %}</a>
+    <a class="btn btn-primary" href="{% url "shop_cart" %}">{% trans "Edit Cart" %}</a>
     </div>
     </div>
 </div>

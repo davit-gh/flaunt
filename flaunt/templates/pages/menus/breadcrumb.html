@@ -1,12 +1,11 @@
 {% load i18n future pages_tags %}
 
 {% if on_home %}
-<li>{% trans "Home" %}</li>
 {% else %}
 
 {% for page in page_branch %}
 
-    {% if not has_home and page.is_primary and forloop.first %}
+    {% if page.is_primary and forloop.first %}
     <li id="breadcrumb-menu-home">
         <a href="{% url "home" %}">{% trans "Home" %}</a>
     </li>
@@ -18,8 +17,10 @@
     {% else %}
     <li id="breadcrumb-menu-{{ page.html_id }}">
         <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
-	<span class="divider">/</span>
     </li>
+    {% if page.has_children_in_menu %}
+          {% page_menu page %}
+        {% endif %}
     {% endif %}
     
     {% endif %}

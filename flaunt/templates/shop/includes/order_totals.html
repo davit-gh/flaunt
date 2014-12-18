@@ -1,40 +1,41 @@
 {% load shop_tags i18n %}
-<div>
-    {% if discount_total or shipping_total %}
-    <div><label>{% trans "Sub total" %}:</label> {{ item_total|currency }}</div>
-    {% endif %}
-    {% if discount_total %}
-    <div>
-        <label>
-        {% if discount_type %}
-        {{ discount_type }}:
-        {% else %}
-        {% trans "Discount" %}:
-        {% endif %}
-        </label> {{ discount_total|currency }}
-    </div>
-    {% endif %}
-    {% if shipping_type or shipping_total %}
-    <div>
-        <label>
-        {% if shipping_type %}
-        {{ shipping_type }}:
-        {% else %}
-        {% trans "Shipping" %}:
-        {% endif %}
-        </label> {{ shipping_total|currency }}
-    </div>
-    {% endif %}
-    {% if tax_total %}
-    <div>
-        <label>
-        {% if tax_type %}
-        {{ tax_type }}:
-        {% else %}
-        {% trans "Tax" %}:
-        {% endif %}
-        </label> {{ tax_total|currency }}
-    </div>
-    {% endif %}
-    <div class="total"><label>{% trans "Total" %}:</label> {{ order_total|currency }}</div>
+<div class="table-responsive">
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Order subtotal</td>
+                {% if discount_total or shipping_total %}
+                    <th>{{ item_total|currency }}</th>
+                {% endif %}
+            </tr>
+            {% if discount_total %}
+                <tr>
+                    <td>Discount</td>
+                    <th>{{ discount_total|currency }}</th>
+                </tr>
+            {% endif %}
+            {% if shipping_type or shipping_total %}
+                <tr>
+                    <td>
+                        {% if shipping_type %}
+                            {{ shipping_type }}:
+                        {% else %}
+                            {% trans "Shipping" %}:
+                        {% endif %}
+                    </td>
+                    <th>{{ shipping_total|currency }}</th>
+                </tr>
+            {% endif %}
+            {% if tax_total %}
+            <tr>
+                <td>Tax</td>
+                <th>{{ tax_total|currency }}</th>
+            </tr>
+            {% endif %}
+            <tr class="total">
+                <td>Total</td>
+                <th>{{ order_total|currency }}</th>
+            </tr>
+        </tbody>
+    </table>
 </div>

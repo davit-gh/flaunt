@@ -13,6 +13,7 @@ RATINGS_RANGE = range(5,1,-1)
 
 # Setting to turn on featured images for shop categories. Defaults to False.
 SHOP_CATEGORY_USE_FEATURED_IMAGE = True
+SHOP_USE_UPSELL_PRODUCTS = True
 SHOP_USE_RELATED_PRODUCTS = True
 SHOP_USE_RATINGS = False
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
@@ -386,6 +387,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
     "mezzanine.pages.context_processors.page",
+    "flaunt.context_processors.get_men_women_categories",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,

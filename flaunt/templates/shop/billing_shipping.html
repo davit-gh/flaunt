@@ -1,5 +1,5 @@
 {% extends "shop/checkout.html" %}
-{% load staticfiles i18n future mezzanine_tags %}
+{% load staticfiles i18n future mezzanine_tags widget_tweaks %}
 {% block extra_head %}
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" href="{% static "css/billing_shipping.css"%}">
@@ -26,11 +26,41 @@
 
 		{% errors_for form %}
 
+		<ul class="nav nav-pills nav-justified">
+            <li class="active"><a href="#"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="disabled"><a href="#"><i class="fa fa-truck"></i><br>Delivery Method</a>
+            </li>
+            <li class="disabled"><a href="#"><i class="fa fa-money"></i><br>Payment Method</a>
+            </li>
+            <li class="disabled"><a href="#"><i class="fa fa-eye"></i><br>Order Review</a>
+            </li>
+        </ul>
+        <div class="content"><div class="row">
+        	{% with form.billing_detail_fields as fields%}
+            	{% for field in fields %}
+				                <div class="col-sm-4">
+				                    <div class="form-group">
+				                        {{ field.label_tag }}
+				                        {% render_field field class="form-control" %}
+				                    </div>
+				                </div>
+				                	{% if forloop.last %}
+								      </div>
+								    {% else %}
+								      {% if forloop.counter|divisibleby:"3" %}
+								        </div><div class="row">
+								      {% endif %}
+								    {% endif %}				        
+		            
+                {% endfor %}
+            {% endwith %}
+        </div>
+       
 
-		<fieldset>
-		    <legend>{% trans "Billing Details" %}</legend>
-		    {% fields_for form.billing_detail_fields %}
-		</fieldset>
+		    
+		    
+
 
 		<fieldset>
 		    <legend>{% trans "Delivery Details" %}</legend>

@@ -110,33 +110,27 @@ $("#zoom_03").bind("click", function(e) {
 {% endblock %}
 
 {% block breadcrumb_menu %}
-{{ block.super }}
 
 {% endblock %}
 
-{% block main_span_size %}9{% endblock %}
-{% block panel_span_size %}3{% endblock %}
+{% block main_span_size %}md-9{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
 
-{% block title %}
-{% editable product.title %}{{ product.title }}{% endeditable %}
-{% endblock %}
             {% block extra_content %}
                 <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li><a href="#">Home</a>
-                        </li>
-                        <li><a href="#">Ladies</a>
-                        </li>
-                        <li><a href="#">Tops</a>
-                        </li>
-                        <li>White Blouse Armani</li>
-                    </ul>
+                    
                     <div class="box text-center">
 
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
-                                <h1>{{ product.title }}</h1>
-                                <p class="text-muted">In our Ladies department we offer wide selection of the best products we have found and carefully selected worldwide. Pellentesque habitant morbi tristique senectus et netuss.</p>
+                                {% block title %}
+                                    {% editable product.title %}{{ product.title }}{% endeditable %}
+                                {% endblock %}
+                                
+                                {% editable product.content %}
+                                    {{ product.short_desc|richtext_filters|safe }}
+                                {% endeditable %}
+                                
                                 <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
                                 </p>
                             </div>
@@ -172,7 +166,7 @@ $("#zoom_03").bind("click", function(e) {
                     {% if product.available and has_available_variations %}
                     {% errors_for add_product_form %}
 
-                        <form>
+                        <form method="post" id="add-cart" class="shop-form">
                             {% csrf_token %}
                         
                             <table class="t1">
@@ -200,29 +194,30 @@ $("#zoom_03").bind("click", function(e) {
                                 </tr>
                             </table>
                                             <ul id="variations" class="list-unstyled">
-                                            {% for variation in variations %}
-                                            <li id="variation-{{ variation.sku }}"
-                                                {% if not variation.default %}style="display:none;"{% endif %}>
-                                                {% if variation.has_price %}
-                                                    {% if variation.on_sale %}
-                                                        <p class="price">{{ variation.unit_price|currency }}</p>
-                                                        <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                                {% for variation in variations %}
+                                                <li id="variation-{{ variation.sku }}"
+                                                    {% if not variation.default %}style="display:none;"{% endif %}>
+                                                    {% if variation.has_price %}
+                                                        {% if variation.on_sale %}
+                                                            <p class="price">{{ variation.unit_price|currency }}</p>
+                                                            <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                                        {% endif %}
+                                                        <p class="price">{{ variation.price|currency }}</p>
+                                                    {% else %}
+                                                        {% if has_available_variations %}
+                                                        <span class="error-msg">
+                                                        {% trans "The selected options are currently unavailable." %}
+                                                        </span>
+                                                        {% endif %}
                                                     {% endif %}
-                                                    <p class="price">{{ variation.price|currency }}</p>
-                                                {% else %}
-                                                    {% if has_available_variations %}
-                                                    <span class="error-msg">
-                                                    {% trans "The selected options are currently unavailable." %}
-                                                    </span>
-                                                    {% endif %}
-                                                {% endif %}
-                                            </li>
-                                            {% endfor %}
+                                                </li>
+                                                {% endfor %}
                                             </ul>
                                        
                                         <p class="text-center">
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
-                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="fa fa-heart-o"></i>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> {% trans "Add to cart" %}</button>
+
+                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans "Add to wishlist" %}"><i class="fa fa-heart-o"></i>
                                             </button>
                                         </p>
 
@@ -237,7 +232,7 @@ $("#zoom_03").bind("click", function(e) {
                     {% for image in images %}
                         <div class="col-xs-4">
                             <a href="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}" class="thumb">
-                                <img id="{{ image.id }}" src="{{ MEDIA_URL }}{% thumbnail image.file 85 85 %}" alt="{{ image.description }}" class="img-responsive">
+                                <img id="{{ image.id }}" src="{{ MEDIA_URL }}{{ image.file }}" alt="{{ image.description }}" class="img-responsive">
                             </a>
                         </div>
                     {% endfor %}
@@ -328,7 +323,7 @@ $("#zoom_03").bind("click", function(e) {
                         <div class="panel-heading">
                             <h3 class="panel-title">Categories</h3>
                         </div>
-                        {% page_menu "shop/includes/categories.html" %}
+                        {% page_menu "pages/menus/footer.html" %}
                     </div>
                             
 {% endblock %}
