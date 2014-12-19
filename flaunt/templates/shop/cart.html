@@ -10,6 +10,7 @@
 <li>{% trans "Your Cart" %}</li>
 {% endblock %}
 {% block extra_css %}
+
 {% endblock %}
 {% block slider_js %}
     <script type="text/javascript" src="{% static "js/custom-for-cart.js" %}"></script>
@@ -17,6 +18,7 @@
 
 {% block extra_js %}
     {{ block.super }}
+
     $(document).bind("ajaxSend", function(){
         $("#loading").show();
     }).bind("ajaxComplete", function(){
@@ -36,22 +38,18 @@
         var carrier = $('#id_carrier');
         if(!country.prop('selectedIndex')) {
             if(!$("#required").length){
-                country.after("<span id='required'>* required</span>");
+                $("label[for='id_country']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
             } 
             return false;
-//        } else if(!ship_type.prop('selectedIndex')){
-  //           if(!$("#required").length){
-    //            ship_type.after("<span id='required'>* required</span>");
-      //       }
-        //     return false;
         } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
              if(!$("#required").length){
-                carrier.after("<span id='required'>* required</span>");
+                $("label[for='id_carrier']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
              }
              return false;
         }
         return true;
     });
+    
 	$("input[type|='checkbox']").hide();
         $('#main_form').submit(function(){
             $.ajax({
@@ -86,9 +84,9 @@
                             html;
                         $('#subtotal').attr('class',total_qty);
                         if(discount === '0.00'){
-                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
                         } else {
-                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>Discount:&nbsp;</label>$"+discount+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
                         }
 
                         $('#total_cell').html(html);
@@ -103,10 +101,12 @@
                             $('a.dropdown-toggle > span#cart_menu').html(' 0 items in cart, total: $0.00');
 
                         }
-                        if (total_qty != 1){
-                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+grand);
+                        $("span.badge").html(total_qty.toString());
+                        
+                        if (total_qty != '1'){
+                                $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items - $'+grand);
                         }else{
-                            $('#cart_menu').html(' 1 item in cart, total: $'+grand);
+                                $('#cart_menu').html(' 1 item - $'+grand);
                         }
                         
                     }
@@ -189,7 +189,7 @@
 {% block main %}
 {% if request.cart.has_items %}
 <div class="box">
-    <form method="post">
+    <form id='main_form' method="post">
     {% csrf_token %}
     {% if cart_formset.errors %}
     {% for error in cart_formset.errors %}
@@ -204,7 +204,6 @@
                     <th colspan="2">{% trans "Item" %}</th>
                     <th>{% trans "Quantity" %}</th>
                     <th>{% trans "Unit Price" %}</th>
-                    <th>{% trans "Discount" %}</th>
                     <th>{% trans "Price" %}</th>
                 </tr>
             </thead>
@@ -219,14 +218,14 @@
                                         <img alt="{{ item.description }}" src="{{ MEDIA_URL }}{% thumbnail item.image 70 70 %}">
                                     </a>
                                 {% endif %}
-                            <td><a href="{{ item.get_absolute_url }}">{{ item.description }}</a>
+                            <td id="desc_td"><a href="{{ item.get_absolute_url }}">{{ item.description }}</a>
                             </td>
                             <td>
-                                {% render_field form.quantity class="form-control" %}
+                                {% render_field form.quantity %}<br>
+                                <a id='update-{{ item.id }}' href='' data-quantity='{{ item.quantity }}' class="btn btn-primary btn-xs">Update</a>
                             </td>                            
                             </td>
                             <td>{{ item.unit_price|currency }}</td>
-                            <td>$0.00</td>
                             <td>{{ item.total_price|currency }}</td>
                             <td>{{ form.DELETE }}<a id='rem-{{ item.id }}' class='{{ item.id }}' href=''><i class="fa fa-trash-o"></i></a>
                             </td>
@@ -234,19 +233,21 @@
                     {% endwith %}
                 {% endfor %}
                         <tr>
-                            <td colspan="3" style="text-align:left; padding-left:40px;">
-                                {% make_form as form %}
-                                {% for field in form.hidden_fields %} {{ field }} {% endfor %}
-                                {% for field in form.visible_fields %}
-                                    {% if forloop.last %}
-                                        {{ field.label_tag }}
-                                        {% render_field field class="form-control" %}
-                                        <img id="loading" style="display:none" src="{% static "img/preload_img.gif" %}">
-                                    {% else %}
-                                        {{ field.label_tag }}
-                                        {% render_field field class="form-control" %}
-                                    {% endif %}
-                                {% endfor %}
+                            <td colspan="2">
+                                <div class="box">
+                                    {% make_form as form %}
+                                    {% for field in form.hidden_fields %} {{ field }} {% endfor %}
+                                    {% for field in form.visible_fields %}
+                                        {% if forloop.last %}
+                                            {{ field.label_tag }}
+                                            {% render_field field class="form-control" %}
+                                            <img id="loading" style="display:none" src="{% static "img/preload_img.gif" %}">
+                                        {% else %}
+                                            {{ field.label_tag }}
+                                            {% render_field field class="form-control" %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             </td>
 
                             <td id="total_cell" colspan="3" valign="">
@@ -262,7 +263,6 @@
             <a href="{% url "home" %}" class="btn btn-default"><i class="fa fa-chevron-left"></i> Continue shopping</a>
         </div>
         <div class="pull-right">
-            <button class="btn btn-default"><i class="fa fa-refresh"></i> Update cart</button>
             <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-primary">{% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %} <i class="fa fa-chevron-right"></i>
             </a>
         </div>
@@ -288,7 +288,7 @@
                 <div class="col-md-3">
                     <div class="product">
                         <div class="image">
-                            <a href="detail.html">
+                            <a href="{{ product.get_absolute_url }}">
                                 <img src="{{ MEDIA_URL }}{{ product.image }}" alt="" class="img-responsive image1">
                             </a>
                         </div>

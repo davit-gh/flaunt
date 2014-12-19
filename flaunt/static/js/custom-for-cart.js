@@ -47,7 +47,7 @@ function ajaxcallfree(){
                             total = data.total_price,
                             shipping_type, shipping_total;
 
-                        $('#subtotal').attr('name','Regular');
+                        $('#subtotal').attr('name','Regular Shipping');
                         $("span.badge").html(total_qty.toString());
                         
                             if (total_qty != '1'){
@@ -75,8 +75,8 @@ function getCountry(sel){
     if($("#required").length){
         $("#required").remove();
     }
-    if($('#country_first').length){
-        $('#country_first').remove();
+    if($('span#error').length){
+        $('span#error').remove();
     }
 	$('#chosen_country').val(sel.value);
     $('#id_shipping_type').val("");
@@ -98,7 +98,7 @@ function setCarriers(s){
     if (country_name === ""){
         $("#id_shipping_type").val('');
         if(!$("#country_first").length){
-            $("#id_country").after("<div id='country_first'>Select country first, please</div>");
+            $("label[for='id_country']").after("<span id='error' style='color:red'>&nbsp;Please select country first.</span>");
             
         }
         return false;
@@ -151,6 +151,7 @@ function getCarrier(sel){
                             $('#cart_menu').html(' 1 item - $'+total);
                         }
                     var html;
+                    $("span.badge").html(total_qty.toString());
                     if(discount){
                         html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+shipping_type+":</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                     } else {

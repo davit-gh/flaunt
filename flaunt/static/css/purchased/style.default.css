@@ -1016,6 +1016,7 @@ button i.fa {
   .nav-tabs-justified > .active > a:focus {
     border-bottom-color: #ffffff;
   }
+  
 }
 /* navbar */
 .navbar {
@@ -1708,4 +1709,12 @@ div.post p{
 .nav > li > .nav > li > a{
   color: #C49EB8 !important;
   font-weight: bold !important;
+}
+
+td#desc_td{
+  white-space: normal;
+}
+
+a.btn.btn-primary.btn-xs{
+  margin: 1em 0 0 -0.5em; 
 }
