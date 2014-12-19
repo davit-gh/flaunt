@@ -12,8 +12,7 @@
 {% block extra_css %}
 {% endblock %}
 {% block slider_js %}
-
-
+    <script type="text/javascript" src="{% static "js/custom-for-cart.js" %}"></script>
 {% endblock %}
 
 {% block extra_js %}
@@ -249,7 +248,8 @@
                                     {% endif %}
                                 {% endfor %}
                             </td>
-                            <td colspan="2" valign="">
+
+                            <td id="total_cell" colspan="3" valign="">
                                     {% order_totals %}
                             </td>
                         </tr>

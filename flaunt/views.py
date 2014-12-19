@@ -21,14 +21,13 @@ def ajax_country(request):
 		carriers_priority=map(lambda x: x.carrier,countrylist_country.carrierlistpriority_set.all())
 		carriers_priority=[c_p[1:-1].split(', ') for c_p in carriers_priority]
 		carriers_priority=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_priority]
-		
 		#carriers_regular = map(lambda x: x.carrier, countrylist_country.carrierlistregular_set.all())
 		#carriers_regular=[c_p[1:-1].split(', ') for c_p in carriers_regular]
 		#carriers_regular=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_regular]
 	else:
-		carriers = "not ajax"
+		carriers_priority = "not ajax"
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
-	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), content_type=="application/json")
+	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), content_type="application/json")
 
 from cartridge.shop.forms import DiscountForm
 def get_discount_on_update(request, discount_form_class=DiscountForm):
@@ -87,7 +86,7 @@ def get_carrier(request):
 			set_shipping(request, shipping_type, shipping_total)
 			recalculate_cart(request)
 		else:
-			shipping_type = 'Regular'
+			shipping_type = 'Regular Shipping'
 			shipping_total = 0.0
 			set_shipping(request, shipping_type, shipping_total)
 		
@@ -95,7 +94,6 @@ def get_carrier(request):
 		discount = float(request.session.get('discount_total','0.00'))
 		total = subtotal - discount + shipping_total
 		total = "{0:.2f}".format(total)
-
 		#resp = render_to_string('shop/cart.html', { 'request': request })
 	return HttpResponse(json.dumps({'shipping_type' : shipping_type, 
 									'shipping_total' : shipping_total, 

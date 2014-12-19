@@ -1,5 +1,8 @@
-from .models import HomePage
-#from cartridge.shop.models import Category, Product
+from .models import HomePage, Slide
+from cartridge.shop.models import Product# Category
+from mezzanine.conf import settings
+from django.template.defaultfilters import slugify
+from mezzanine.utils.views import paginate
 
 #for ajax form processor
 from mezzanine.pages.page_processors import processor_for

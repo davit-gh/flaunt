@@ -48,16 +48,19 @@ function ajaxcallfree(){
                             shipping_type, shipping_total;
 
                         $('#subtotal').attr('name','Regular');
-                        if (total_qty != '1'){
-                                $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
+                        $("span.badge").html(total_qty.toString());
+                        
+                            if (total_qty != '1'){
+                                    $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items - $'+total);
                             }else{
-                                $('#cart_menu').html(' 1 item in cart, total: $'+total);
+                                    $('#cart_menu').html(' 1 item - $'+total);
                             }
+                        
                         var html;    
                         if(discount){
-                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>Discount:&nbsp;</label>$"+discount+"</div><div><label>Regular Shipping:&nbsp;</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                         } else {
-                            html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><label>Regular:</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
+                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><label>Regular Shipping:&nbsp;</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
                         }
                         
                         $('#total_cell').html(html);
@@ -101,7 +104,7 @@ function setCarriers(s){
         return false;
     }
     var carrier = document.getElementById('id_carrier');
-    if(s.value === "Priority Shipping (fast)" && country_name != ""){
+    if(s.value === "Priority Shipping" && country_name != ""){
         $(carrier).prop('disabled',false);
         $.post('/ajax_country',{'country' : country_name}, function(data){ 
             
@@ -143,9 +146,9 @@ function getCarrier(sel){
                         total_qty = $('#subtotal').attr('class');
 
                     if (total_qty != '1'){
-                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items in cart, total: $'+total);
+                            $('#cart_menu').html('&nbsp;'+total_qty.toString()+' items - $'+total);
                         }else{
-                            $('#cart_menu').html(' 1 item in cart, total: $'+total);
+                            $('#cart_menu').html(' 1 item - $'+total);
                         }
                     var html;
                     if(discount){

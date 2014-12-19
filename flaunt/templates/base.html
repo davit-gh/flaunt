@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
-{% load pages_tags mezzanine_tags i18n future staticfiles %}
+{% load pages_tags mezzanine_tags i18n future staticfiles shop_tags %}
 
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -70,8 +70,8 @@ _________________________________________________________ -->
                         <span class="sr-only">Toggle navigation</span>
                         <i class="fa fa-align-justify"></i>
                     </button>
-                    <a class="btn btn-primary navbar-toggle" href="basket.html">
-                        <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
+                    <a class="btn btn-primary navbar-toggle" href="{% url "shop_cart" %}">
+                        <i class="fa fa-shopping-cart"></i>  <span class="badge">{{request.cart.total_quantity}}</span>
                     </a>
                     <button type="button" class="navbar-toggle btn-default" data-toggle="collapse" data-target="#search">
                         <span class="sr-only">Toggle search</span>
@@ -176,7 +176,7 @@ _________________________________________________________ -->
             <!--/.nav-collapse -->
 
             <div class="navbar-collapse collapse right" id="basket-overview">
-                <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items <span class="hidden-md">in cart</span></span></a>
+                <a href="{% url "shop_cart" %}" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm" id="cart_menu">{% blocktrans count request.cart.total_quantity as cart_quantity %}1 item {% plural %}{{ cart_quantity }} items {% endblocktrans %}<span class="hidden-md">{% order_totals_text %}</span></span></a>
             </div>
             <!--/.nav-collapse -->
 
