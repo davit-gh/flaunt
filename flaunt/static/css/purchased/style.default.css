@@ -1718,3 +1718,9 @@ td#desc_td{
 a.btn.btn-primary.btn-xs{
   margin: 1em 0 0 -0.5em; 
 }
+
+span#error{
+  color: #B94A48;
+  font-weight: bold;
+  margin-left: 1em;
+}

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
-{% load pages_tags mezzanine_tags i18n future staticfiles shop_tags %}
+{% load pages_tags mezzanine_tags i18n future staticfiles shop_tags accounts_tags widget_tweaks %}
 
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -217,7 +217,55 @@ _________________________________________________________ -->
     <!-- /#navbar -->
 
     <!-- *** NAVBAR END *** -->
-	     
+	
+        <!-- *** LOGIN MODAL ***
+_________________________________________________________ -->
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">Customer login</h4>
+                </div>
+                <div class="modal-body">
+                    {% if request.user.is_authenticated %}
+                        <p>{% trans "You're already logged in. If you'd like to log in as a different user, you'll need to log out first." %}</p>
+                        <p style="text-align: center"><a href="{% url "logout" %}">Log out</a></p>
+                    {% else %}
+                        {% login_form as form%}
+                        <form action="{% url "signup" %}" method="post">
+                            
+                            {% csrf_token %}
+            
+                            {% for hidden in form.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in form.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{{ vis.errors }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                            <p class="text-center">
+                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                            </p>
+
+                        </form>
+                        <p class="text-center text-muted">Not registered yet?</p>
+                        <p class="text-center text-muted"><a href="{% url "signup" %}"><strong>Register now</a>
+                            </strong>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+                    {% endif %}
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** LOGIN MODAL END *** -->
+
 	{% block all_content %}
     	    <!--page_container-->
     

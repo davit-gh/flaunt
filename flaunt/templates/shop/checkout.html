@@ -82,6 +82,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
 {% endblock %}
 {% if request.cart.has_items %}
 {% block right_panel %}
+{% if request.cart.has_items %}
 <div class="col-md-4">
     <div class="panel panel-default checkout-panel">
     <div class="panel-body">
@@ -104,6 +105,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
     </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 {% endif %}
 
