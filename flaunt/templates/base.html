@@ -248,6 +248,7 @@ _________________________________________________________ -->
                                     {% render_field vis class="form-control" %}
                                 </div>
                             {% endfor %}
+                            <input type="hidden" value="from_popup" name="from_popup" />
                             <p class="text-center">
                                 <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
                             </p>
@@ -271,7 +272,6 @@ _________________________________________________________ -->
     
 	<div id="all">
 
-        {% include 'messages.html' %}
                 <!-- *** ADVANTAGES ***
 _________________________________________________________ -->
 
@@ -289,6 +289,7 @@ _________________________________________________________ -->
         </div>
 		<div id="content">
             <div class="container">
+                {% include 'messages.html' %}
                 {% block extra_content %}
                 {% endblock %}
 				{% block main_wrapper %}
