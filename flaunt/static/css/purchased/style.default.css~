@@ -1725,4 +1725,6 @@ span#error{
   margin-left: 1em;
 }
 
-
+div#payment.box{
+	margin-top: 3em;
+}

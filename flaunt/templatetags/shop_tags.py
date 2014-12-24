@@ -86,3 +86,4 @@ def order_totals_text(context):
     Text version of order_totals.
     """
     return _order_totals(context)
+

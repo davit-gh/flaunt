@@ -24,7 +24,6 @@ ACCOUNTS_NO_USERNAME = False
 ACCOUNTS_VERIFICATION_REQUIRED = True
 SHOP_CHECKOUT_ACCOUNT_REQUIRED = True
 PRIMARY_PAYMENT_PROCESSOR_IN_USE = False
-SHOP_CHECKOUT_STEPS_CONFIRMATION = False
 SECONDARY_PAYMENT_PROCESSORS = (
     ('paypal', {
         'name' : 'Pay With Pay-Pal',
@@ -50,12 +49,12 @@ SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 PAYPAL_TEST = False
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
-# SHOP_CHECKOUT_STEPS_SPLIT = True
+SHOP_CHECKOUT_STEPS_SPLIT = True
 
 # If True, the checkout process has a final confirmation step before
 # completion.
-# SHOP_CHECKOUT_STEPS_CONFIRMATION = True
-
+SHOP_CHECKOUT_STEPS_CONFIRMATION = True
+SHOP_PAYMENT_STEP_ENABLED = False
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
 # used, will fall back to the system's locale.

@@ -10,9 +10,6 @@
 {% endblock %}
 
 {% block extra_css %}
-    <link href="{% static "css/feedbackform.css" %}" rel="stylesheet">
-    <link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
-    <link href="{% static "css/order_history_table.css" %}" rel="stylesheet">
     <!-- http://rog.ie/blog/css-star-rater -->
     <!-- check this for attractive rating form implementation -->
 {% endblock %}
@@ -55,87 +52,59 @@
 
 {% endblock %}
 
-{% block main_span_size %}12{% endblock %}
-{% block panel_span_size %}{% endblock %}
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+{% block div_id %}customer-orders{% endblock %}
+
+{% block extra_content %}
+    <div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>My orders</h1>
+
+                <p class="lead">Your orders on one place.</p>
+                <p class="text-muted">If you have any questions, please feel free to <a href="/contact">contact us</a>, our customer service center is working for you 24/7.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
 
 {% block main %}
 
 {% if orders %}
+<div class="box">
 
-<table class="outer" style="width: 100%">
-    <thead>
-        <th class="left">ID</th>
-        <th class="left">{% trans "Date/time" %}</th>
-        <th>{% trans "Quantity" %}</th>
-        <th>{% trans "Paid" %}</th>
-        <th class="left">{% trans "Status" %}</th>
-        <th>{% trans "Action Buttons" %}</th>
-    </thead>
-    <tbody>
-    {% for order in orders.object_list %}
-    <tr>       
-        <td>{{ order.id }}</td>
-        <td>{{ order.time }}</td>
-        <td>{{ order.quantity_total }}</td>
-        <td>{{ order.total|currency }}</td>
-        <td>{{ order.get_status_display }}</td>   
-        <td class="order-actions">
-            <a class="btn btn-sm btn-custom" href="{% url "shop_invoice" order.id %}?format=pdf">{% trans "Download PDF" %}</a>
-            <a class="btn btn-sm btn-custom" target="_blank" href="{% url "shop_invoice" order.id %}">{% trans "View invoice" %}</a>
-        </td>
-    </tr>
-    <tr>
-        <td colspan='6' class="tdwithtable">
-            
-                <table class="table-responsive inner" style="width: 100%">
-                <thead>
-                    
-                    <th>Image</th>
-                    <th>{% trans "Description" %}</th>
-                    <th>{% trans "Rating" %}</th>
-                    <th>{% trans "Feedback, please" %}</th>
-                </thead>
-                <tbody>
-                    {% for item in order.items.all %}
-                    <tr>     
-                            {% get_all_products as products %}
-                            {% for product in products %}
-                                {% if item.sku == product.sku %}
-                                    <td>
-                                        {% if product.image %}
-                                            <a href="{{ product.get_absolute_url }}">
-                                                <img alt="{{ product.title }}" src="{{ MEDIA_URL }}{% thumbnail product.image 60 60 %}">
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <p title="{{ product.title }}" style="font-size: 10px">{{ product.title }}</p>
-                                    </td>
-                                    <td class="rating">
-                                        
-                                       {% rating_for product %}
-                              
-                                    </td>
-                                    <td>
-                                        <a class="fback btn btn-sm btn-custom" href="#" data-form="{% url "feedback" product.id %}" data-desc="{{ product.title }}">{% trans "Leave feedback" %}</a>
-                                        <div class="modal hide" id="feedbackModal"></div>
-                                    </td>
-                                {% endif %}
-                            {% endfor %}
-                        
-                        
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Order" %}</th>
+                    <th>{% trans "Date/time" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Paid" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Action Buttons" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders.object_list %}
+                    <tr>
+                        <th># {{ order.id }}</th>
+                        <td>{{ order.time|date:"d/m/y" }}</td>
+                        <td>{{ order.quantity_total }}</td>
+                        <td>{{ order.total|currency }}</td>
+                        <td><span class="label label-info">{{ order.get_status_display }}</span>
+                        </td>
+                        <td>
+                            <a href="{% url "shop_invoice" order.id %}" target="_blank" class="btn btn-primary btn-sm">View</a>
+                        </td>
                     </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-            
-        </td>
-    </tr>
-    <tr class="spacer"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr class="pseudo_header"><td>ID</td><td>{% trans "Date/time" %}</td><td>{% trans "Quantity" %}</td><td>{% trans "Paid" %}</td><td>{% trans "Status" %}</td><td>{% trans "Action Buttons" %}</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% pagination_for orders %}
 
 {% else %}
@@ -143,5 +112,30 @@
 {% endif %}
 
 {% endblock %}
-{% block right_panel_wrapper %}
+{% block right_panel %}
+    <div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Customer section</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active">
+                <a href="{% url "shop_order_history" %}"><i class="fa fa-list"></i> {% trans "My orders" %}</a>
+            </li>
+            <li>
+                <a href="{% url "shop_wishlist" %}"><i class="fa fa-heart"></i> {% trans "My wishlist" %}</a>
+            </li>
+            <li>
+                <a href="{% url "profile_update" %}"><i class="fa fa-user"></i> {% trans "My account" %}</a>
+            </li>
+            <li>
+                <a href="{% url "logout" %}?next={{ request.path }}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
 {% endblock %}

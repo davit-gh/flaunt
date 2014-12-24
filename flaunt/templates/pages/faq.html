@@ -1,0 +1,24 @@
+{% extends "pages/page.html" %}
+
+{% load i18n mezzanine_tags staticfiles %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block extra_js %}
+	
+{% endblock %}
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+ <!-- https://gist.github.com/joshcartme/5130702 -->
+
+ {% block main %}
+ 	<div class="box" id="text-page">
+ 	{% editable page.content %}{% endeditable %}
+ 	</div>
+	
+{% endblock %}
+
+{% block right_panel %}
+	  
+{% endblock %}

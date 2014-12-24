@@ -1,9 +1,13 @@
 {% extends "pages/page.html" %}
 
-{% load mezzanine_tags staticfiles %}
+{% load i18n mezzanine_tags staticfiles %}
 
 {% block extra_css %}
-    <link href="{% static "css/checkout_form.css" %}" rel="stylesheet">
+    <style type="text/css">
+    	textarea#id_field_4.form-control{
+    		height: 5em;
+    	}
+    </style>
 {% endblock %}
 
 {% block extra_js %}
@@ -13,6 +17,7 @@
 	{% endif %}
 	
 {% endblock %}
+{% block main_span_size %}md-12{% endblock %}
  <!-- https://gist.github.com/joshcartme/5130702 -->
 	{% block main %}
 
@@ -34,34 +39,45 @@
 	{% errors_for form %}
 
 	{% load widget_tweaks %}
-	<div class="contact_form" style="margin-left:200px">  
+	<h2 class="text-center">{% trans "Contact form" %}</h2>
 
-		<form class="row-fluid" method="post">
+		<form method="post">
 			{% csrf_token %}
-
-			<h2 class="title"><span>Get In Touch</span></h2>
-		        {% for hidden in form.hidden_fields %}
-					{{hidden}}
-				{% endfor %}
-
-			{% for vis in form.visible_fields %}
-				<fieldset class="control-group">
-		                    <label class="control-label" for="id_{{ vis.name }}">{{ vis.label }}</label>
-		 					{{ vis.errors }}
-		                    <div style="width:60%" class="form-group">
-		                        {% render_field vis style="height: 25px" %}
-		                    </div>
-		        </fieldset>
+			{% for hidden in form.hidden_fields %}
+				{{hidden}}
 			{% endfor %}
-			<input type="submit" style="margin-left:80px" class="btn btn-large btn-primary" id="sbmt_btn" value="{{ page.form.button_text }}"/>
+			
+			<div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                	{% for vis in form.visible_fields %}
+                		{% if forloop.last %}
+                			<div class="col-sm-12">
+		                        <div class="form-group">
+		                            {{ vis.label_tag }}{{ vis.errors }}
+		                            {% render_field vis class="form-control" %}
+		                        </div>
+		                    </div>
+		                {% else %}
+		                    <div class="col-sm-6">
+		                        <div class="form-group">
+		                            {{ vis.label_tag }}{{ vis.errors }}
+		                            {% render_field vis class="form-control" %}
+		                        </div>
+		                    </div>
+		                {% endif %}
+             		{% endfor %}
+			    </div>
+			    <div class="col-sm-12 text-center">
+					<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> {{ page.form.button_text }}</button>
+				</div>
+			</div>
+			
+			
 		</form>
-	</div>
+	<hr>
 {% endif %}
 {% endblock %}
 
-{% block right_panel %}
-	<h2 class="title"><span>Contact Info</span></h2>
-                            
-                            <p><span  style="font-weight:bold; font-size: 14px">Warehouse located in:</span><br/>1st F of Building E, Wen Tao<br/> Industrial Park, Ying Ren Shi Village,<br/>
-                            Shenzhen, China</p>Email: <a href="mailto:#">info@you-name-it.net</a><br/>Web: <a href="/">http://you-name-it.net</a></p>  
+{% block right_panel_wrapper %}
+	  
 {% endblock %}

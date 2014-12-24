@@ -1,37 +1,152 @@
 {% extends "shop/checkout.html" %}
-{% load i18n shop_tags %}
+{% load i18n shop_tags staticfiles multipayment_forms cart_obj %}
+
+{% block extra_css %}
+<style type="text/css">
+    .box .box-footer {
+        margin: 10px -20px -20px;
+    }
+    div#payment.box{
+        margin-top: 3em;
+    }
+</style>
+{% endblock %}
+
+{% block slider_js %}
+<script type="text/javascript">
+    function load_qr(){
+        var usd_amount = $('#id_amount').val();
+        var invoice_key = '{{ request.session.session_key }}';
+        var cart_pk = '{{ request.cart.pk }}';
+        $.getJSON( '/create.php', {invoice_key:invoice_key, cart_pk: cart_pk, usd_amount:usd_amount}, function(data) {
+            var addr = data['input_address'];
+            var btc_amount = data['btc_amount'];
+            var url = data['url'];
+            $('#amount_to_pay').html(btc_amount+'BTC ($'+usd_amount+')');
+            $('#qrcode').attr('src',url);
+            $('#btc_addr').html(addr);
+        });
+    }
+</script>
+{% endblock %}
+
+{% block extra_js %}
+
+    $(window).load(load_qr());
+    
+    
+    $('#confirm_payment').click(function(){
+                
+                $.ajax({
+                        url: "{% url 'check' %}",
+                        data: {csrfmiddlewaretoken: '{{ csrf_token  }}'},
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(data){
+                                if (data['responsito'] == 'redirect'){
+                                    $('a#redir')[0].click();
+                                }
+                                else{
+                                    $('.alert p').html(data['responsito']).parent().addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                                    
+                                    
+                                }
+                        },
+                        error: function(data){ 
+                                console.log('error '+JSON.stringify(data));
+                        }
+                });
+                return false;
+    });
+    
+{% endblock %}
 
 {% block fields %}
 {% if request.cart.has_items %}
 
-<div class="confirmation col-md-6">
-    <div class="panel panel-default">
-    <div class="panel-body">
-    <h3>{% trans "Billing Details" %}</h3>
-        <ul class="list-unstyled">
-        {% for field, value in form.billing_detail_fields.values %}
-            <li><label>{{ field }}:</label> {{ value }}</li>
-        {% endfor %}
-    </ul>
-    </div>
-    </div>
-</div>
+<ul class="nav nav-pills nav-justified">
+            <li><a href="{% url 'shop_checkout' %}" name="back"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="active"><a href="#"><i class="fa fa-eye"><i class="fa fa-money"></i></i><br> Review & Payment</a>
+            </li>
+            
+            <li class="disabled"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
+            </li>
+        </ul>
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="box payment-method">
+                        <h4>{% trans "Billing Details" %}</h4>
+                        <ul class="list-unstyled">
+                            {% for field, value in form.billing_detail_fields.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+    
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="box payment-method">
 
-<div class="confirmation col-md-6">
-    <div class="panel panel-default">
-    <div class="panel-body">
-    <h3>{% trans "Shipping Details" %}</h3>
-    <ul class="list-unstyled">
-        {% for field, value in form.shipping_detail_fields.values %}
-            <li><label>{{ field }}:</label> {{ value }}</li>
-        {% endfor %}
-        {% for field, value in form.additional_instructions_field.values %}
-            <li><label>{{ field }}:</label> {{ value }}</li>
-        {% endfor %}
-    </ul>
-    </div>
-    </div>
-</div>
+                        <h4>{% trans "Shipping Details" %}</h4>
+                        <ul class="list-unstyled">
+                            {% for field, value in form.shipping_detail_fields.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                            {% for field, value in form.additional_instructions_field.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% get_cart_object request as cart_discount %}
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Product</th>
+                            <th>Quantity</th>
+                            <th>Unit price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_discount.cart %}
+                            <tr>
+                                <td>
+                                    <a href="{{ item.url }}">
+                                        <img src="{{ MEDIA_URL }}{{ item.image }}" alt="{{ item.description }}">
+                                    </a>
+                                </td>
+                                <td><a href="{{ item. }}">{{ item.description }}</a>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.unit_price }}</td>
+                                <td>{{ item.total_price }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">{% trans "Discount" %}</th>
+                            <th>{{ cart_discount.discount|currency }}</th>
+                        </tr>
+                        
+                        <tr>
+                            <th colspan="5">{% trans "Total" %}</th>
+                            <th>{{ cart_discount.cart.total_price|currency }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+            <!-- /.table-responsive -->
+        </div>
 {% if settings.SHOP_PAYMENT_STEP_ENABLED %}
 {% comment %}
 <br style="clear:both;">
@@ -64,6 +179,31 @@
 {% endif %}
 <br style="clear:both;">
 
+{% for field in form %}{{ field }}{% endfor %}
 
 {% endif %}
+{% endblock %}
+
+{% block after-form %}
+    <div class="box" id="payment">
+        <h4>Pay with</h4>
+        <div class="row">
+            <div class="col-sm-6">
+            {% multipayment_forms request form as multipayment_forms %}
+                {% if multipayment_forms %}
+                    <form method="post" action="https://www.paypal.com/cgi-bin/webscr">
+                        {% for name,multiform in multipayment_forms %}
+                            {{ multiform.as_p }}
+                        {% endfor %}
+                        <input type="image" value="{% trans name %}" src="{% static 'img/assets/paypal.jpg' %}" class="img-responsive">
+                    </form>
+                {% endif %}
+                
+            </div>
+            <div class="col-sm-6">
+                <a id="pay_btc_button" class="btn-custom" href="#" data-toggle="modal" data-target="#myModal"><img src="{% static 'img/assets/btc.png' %}" class="img-responsive"></a>      
+            </div>
+        </div>
+    </div>
+    {% include "shop/includes/btc_popup.html" %}
 {% endblock %}

@@ -81,15 +81,20 @@
                         var shipping_type = $('#subtotal').attr('name');
                         var sub = data['sub'];
                         var total_qty = data['total_qty'],
-                            html;
+                            html,
+                            order_summary_html;
                         $('#subtotal').attr('class',total_qty);
                         if(discount === '0.00'){
                             html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
                         } else {
                             html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>Discount:&nbsp;</label>$"+discount+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+
+                            order_summary_html = "<td>Total:</td><th>$"+grand+"</th>";
                         }
 
                         $('#total_cell').html(html);
+                        $('tr.total').html(order_summary_html);
+                        
                         $.each(sub,function(index,element){
                             var i = parseInt(index)+1;
                             $('table tr:eq('+i+') td:eq(4)').html('$'+parseFloat(element).toFixed(2));
@@ -97,7 +102,7 @@
                         });
                         var count = $("#id_items-TOTAL_FORMS").val();
                         if (count === '0'){
-                            $('div.span9.middle').html('<h4>{% trans "Your Cart is empty." %}</h4>');
+                            $('div.box').html('<h4>{% trans "Your Cart is empty." %}</h4>');
                             $('a.dropdown-toggle > span#cart_menu').html(' 0 items in cart, total: $0.00');
 
                         }

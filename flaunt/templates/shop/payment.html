@@ -4,7 +4,6 @@
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.min.css"  %}">
-<link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static "css/modal-message.css"%}">
 {% endblock %}
 
@@ -75,83 +74,54 @@
 	});
 {% endblock %}
 
-<div class="form-actions clearfix">
-        <div class="form-actions-wrap">
-	    <input type="submit" value="Next" class="btn btn-large btn-primary">
-        
-        </div>
-    </div>
 
 {% block before-form %}
-	{% if request.cart.has_items %}
-		{% multipayment_forms request form as multipayment_forms %}
-		{% if multipayment_forms %}
-			<div class="form-actions clearfix">
-				<div class="form-actions-wrap">
-					{% for name,form in multipayment_forms %}<form method="post" action="{{ form.action }}">
-						{{ form.as_p }}
-						<input type="image" value="{% trans name %}" src="{% static "img/ppl-checkout-blue.png" %}" width="200" height="50">
-						<span id='or'><i>OR</i></span>
-						<a class="btn-custom" href="#" id="pay_btc_button"><span>Pay with</span>&nbsp;<img src="{% static "img/btc.png" %}" width="20%" height="20%"></a>
-					</form>{% endfor %}
-
-				</div>
-
-			</div>
-			<div>
-				<h5>
-					If you choose to pay with Paypal then after making the payment please click <i>'return to purchase@you-name-it.net'</i> to finish the transaction and receive the electronic payment confirmation. Thank you!
-				</h5>
-				<h5>
-					If you choose to pay with Bitcoin please wait 4 ~ 6 minutes after payment while the transfer propagates through blockchain then click <i>'Confirm'</i> button to receive electronic payment confirmation. If you don't want to wait you can leave the page, we will email you the invoice after the first confirmation anyway. Thank you!
-				</h5>
-			</div>
-			<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
-    			<p></p>
-			</div>
-		{% endif %}
-	{% endif %}
+	
 	
 {% endblock %}
 
 {% block fields %}
-	{% if request.cart.has_items %}
-		{% include "shop/includes/payment_fields.html" %}
-		{% if not PRIMARY_PAYMENT_PROCESSOR_IN_USE %}<div style="display:none">{% endif %}
-		{{ form.other_fields.as_ul }}
-		{% if not PRIMARY_PAYMENT_PROCESSOR_IN_USE %}</div>{% endif %}
-	{% endif %}
 	
-	<div id="pay_btc" title="Pay with Bitcoin" class="element">
-		<img id="qrcode" style="float:left" />
-		<h5>Total:&nbsp;<span id="amount_to_pay"></span></h5>
-		
-		<p><b>Bitcoin address:</b>
-			<br/>
-			<span id="btc_addr"></span>
-		</p>
-		<p style="margin-bottom: 0px;">
-    		Please click "Confirm" after payment.
-		</p>
-		<a class="btn btn-custom" href="{% url 'shop_complete' %}" id="confirm_payment">Confirm Payment</a>
-		<a style="display:none" id="redir" href="{% url 'shop_complete'  %}">redir</a>
-	</div>
+		<ul class="nav nav-pills nav-justified">
+            <li><a href="{% url 'shop_checkout' %}" name="back"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="active"><a href="#"><i class="fa fa-eye"><i class="fa fa-money"></i></i><br> Review & Payment</a>
+            </li>
+            
+            <li class="disabled"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
+            </li>
+        </ul>
+        <div class="content">
+	        <div class="row">
+	            <div class="col-sm-6">
+	                <div class="box payment-method">
+				    	<h4>{% trans "Billing Details" %}</h4>
+				        <ul class="list-unstyled">
+					        {% for field, value in form.billing_detail_fields.values %}
+					            <li><label>{{ field }}:</label> {{ value }}</li>
+					        {% endfor %}
+					    </ul>
+    
+	                </div>
+	            </div>
+	            <div class="col-sm-6">
+	                <div class="box payment-method">
+
+	                    <h4>{% trans "Shipping Details" %}</h4>
+					    <ul class="list-unstyled">
+					        {% for field, value in form.shipping_detail_fields.values %}
+					            <li><label>{{ field }}:</label> {{ value }}</li>
+					        {% endfor %}
+					        {% for field, value in form.additional_instructions_field.values %}
+					            <li><label>{{ field }}:</label> {{ value }}</li>
+					        {% endfor %}
+					    </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	{% for field in form %}{{ field }}{% endfor %}
+
 {% endblock %}
 
 
-{% block nav-buttons %}
-	{% if request.cart.has_items %}
-		<div class="form-actions clearfix">
-			<div class="form-actions-wrap">
-			{% if PRIMARY_PAYMENT_PROCESSOR_IN_USE %}
-				<input type="submit" class="btn btn-large btn-primary" value="{% trans "Next" %}">
-			{% endif %}
-			{% if not CHECKOUT_STEP_FIRST %}
-				<input type="submit" class="btn btn-large" name="back" value="{% trans "Back" %}">
-			{% endif %}
-			</div>
-		</div>
-	{% else %}
-		{{ block.super }}
-	{% endif %}
-{% endblock %}

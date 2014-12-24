@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block extra_css %}
-    <link href="{% static "css/action_buttons.css" %}" rel="stylesheet">
+    
 {% endblock %}
 
 {% block slider_js %}
@@ -43,41 +43,58 @@
     })
 {% endblock %}
 
+{% block extra_content %}
+    <div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>My wishlist</h1>
+
+                <p class="lead">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+
 {% block main %}
 
 {% if error %}{{ error }}{% endif %}
 {% if request.wishlist %}
 <form method="post">
 {% csrf_token %}
-<table class="table wishlist" id="wishtable">
-    {% for item in wishlist_items %}
-    <tr id="{{ item.sku }}">
-    <td width="30">
-        {% if item.image %}
-        <a href="{{ item.get_absolute_url }}"><img alt="{{ item }}" src="{{ MEDIA_URL }}{% thumbnail item.image.file 30 30 %}"></a>
-        {% else %}
-        &nbsp;
-        {% endif %}
-    </td>
-    <td>
-        <a href="{{ item.get_absolute_url }}">{{ item }}</a>
-    </td>
-    <td class="wishlist-actions">
-
-            {{ item.unit_price|currency }}
-            
-            <input type="hidden" name="sku" value="{{ item.sku }}">
-            <input type="hidden" name="quantity" value="1">
-    </td>
-    <td>        
-            <a class="" id="remove-{{ item.sku }}" data-sku="{{ item.sku }}" name="remove_wishlist" href=""><img alt="Remove" src="{% static "img/delete.png" %}" width="20"></a>
-        
-    </td>
-    </tr>
-    {% endfor %}
-</table>
-<input type="submit" class="btn btn-sm btn-custom" name="add_cart" style="font-size:15px" value="{% trans "BUY ALL" %}">
+    <div class="row products">
+        {% for item in wishlist_items %}
+            <div class="col-md-3 col-sm-4">
+                <div class="product">
+                    <div class="image">
+                        <a href="{{ item.get_absolute_url }}">
+                            <img src="{{ MEDIA_URL }}{{ item.image.file }}" alt="{{ item }}" class="img-responsive image1">
+                        </a>
+                    </div>
+                    <!-- /.image -->
+                    <div class="text">
+                        <h3><a href="{{ item.get_absolute_url }}">{{ item }}</a></h3>
+                        <p class="price">{{ item.unit_price|currency }}</p>
+                        <input type="hidden" name="sku" value="{{ item.sku }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <p class="buttons">
+                            <a href="{{ item.get_absolute_url }}" class="btn btn-default">View detail</a>
+                            <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                        </p>
+                    </div>
+                    <!-- /.text -->
+                </div>
+                <!-- /.product -->
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-12">
+        <input type="submit" class="btn btn-sm btn-primary" name="add_cart" value="{% trans "BUY ALL" %}">
+    </div>
 </form>
+<hr>
 {% else %}
 <p>{% trans "Your wishlist is empty." %}</p>
 <br>
@@ -85,5 +102,30 @@
 {% endif %}
 {% endblock %}
 {% block right_panel %}
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Customer section</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <ul class="nav nav-pills nav-stacked">
+            <li>
+                <a href="{% url "shop_order_history" %}"><i class="fa fa-list"></i> {% trans "My orders" %}</a>
+            </li>
+            <li class="active">
+                <a href="{% url "shop_wishlist" %}"><i class="fa fa-heart"></i> {% trans "My wishlist" %}</a>
+            </li>
+            <li>
+                <a href="{% url "profile_update" %}"><i class="fa fa-user"></i> {% trans "My account" %}</a>
+            </li>
+            <li>
+                <a href="{% url "logout" %}?next={{ request.path }}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
 <div id="messages"></div>
 {% endblock %}

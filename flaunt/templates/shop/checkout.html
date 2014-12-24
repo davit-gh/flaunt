@@ -58,13 +58,15 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
                 <div class="box-footer">
                     {% if not CHECKOUT_STEP_FIRST %}
                         <div class="pull-left">
-                            <input type="submit" name="back" class="btn btn-default"><i class="fa fa-chevron-left"></i>{% trans "Back" %}</input>
+                            <button name="back" value="back" class="btn btn-default"><i class="fa fa-chevron-left"></i>{% trans "Back" %}</button>
                         </div>
                     {% endif %}
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-primary">{% trans "Next" %}<i class="fa fa-chevron-right"></i>
-                        </button>
-                    </div>
+                    {% if not CHECKOUT_STEP_LAST %}
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-primary">{% trans "Next" %}<i class="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             {% else %}
                 <p>{% trans "Your cart is empty." %}</p>
@@ -78,6 +80,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
         {% endblock %}
 
     </form>
+{% block after-form %}{% endblock %}
 </div>
 {% endblock %}
 {% block right_panel %}
@@ -95,6 +98,5 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
 {% endif %}
 {% endblock %}
 
-{% block after-form %}{% endblock %}
 
 

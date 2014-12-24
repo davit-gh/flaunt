@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags staticfiles %}
+{% load i18n mezzanine_tags staticfiles widget_tweaks %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -14,34 +14,68 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/checkout_form.css" %}">
 {% endblock %}
 
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+{% block div_id %}customer-account{% endblock %}
+
 {% block main %}
 
 
 {% errors_for form %}
-<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}" >
+<div class="box clearfix">
+    <h3>Personal details</h3>
 
-        
-        {% csrf_token %}
-        
-        {% for hidden in form.hidden_fields %}
-	       {{hidden}}
-	    {% endfor %}
-	    <div style="margin-left:300px; width:42%">
-	    	<legend style="margin-left:60px">{{ title }}</legend>
-		    {% for vis in form.visible_fields %}
-	                <div class="form-group">
-	                    <label class="control-label" for="id_{{ vis.name }}"><h5>{{ vis.label }}</h5></label>
-	                    {{ vis.errors }}
-	                    {{ vis }}
+	<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} >
+
+	        
+	        {% csrf_token %}
+	        
+	        {% for hidden in form.hidden_fields %}
+		       {{hidden}}
+		    {% endfor %}
+		    <div class="row">
+			    {% for vis in form.visible_fields %}
+	                <div class="col-sm-6">
+	                    <div class="form-group">
+	                        {{ vis.label_tag }}{{ vis.errors }}
+	                        {% render_field vis class="form-control"> %}
+	                    </div>
 	                </div>
-		   {% endfor %}
-		</div>
-		<div class="past_orders">
-			<a class="btn btn-primary btn-large pull-left" href="{% url "shop_order_history" %}">{% trans "View past orders" %}</a>
-        	<input type="submit" class="btn btn-large btn-primary" style="margin-left:180px" id="sbmt_btn" value="Update"/>
-        </div>
-</form>
+	                
+	            {% endfor %}
+		    </div>
+			<div class="col-sm-12 text-center">
+	            <button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save changes
+	            </button>
+	        </div>
 
+	</form>
+</div>
 {% endblock %}
 {% block right_panel %}
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Customer section</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <ul class="nav nav-pills nav-stacked">
+            <li>
+                <a href="{% url "shop_order_history" %}"><i class="fa fa-list"></i> {% trans "My orders" %}</a>
+            </li>
+            <li>
+                <a href="{% url "shop_wishlist" %}"><i class="fa fa-heart"></i> {% trans "My wishlist" %}</a>
+            </li>
+            <li class="active">
+                <a href="{% url "profile_update" %}"><i class="fa fa-user"></i> {% trans "My account" %}</a>
+            </li>
+            <li>
+                <a href="{% url "logout" %}?next={{ request.path }}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
 {% endblock %}
