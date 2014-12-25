@@ -1,5 +1,5 @@
 from django.contrib import admin
-from flaunt.models import HomePage, Slide, Portfolio, AddFieldsToProducts
+from flaunt.models import HomePage, Slide, Portfolio, AddFieldsToProducts, FAQ, FAQPage
 from flaunt.models import PortfolioItem, PortfolioItemImage, PortfolioItemCategory
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 from mezzanine.pages.admin import PageAdmin
@@ -7,6 +7,7 @@ from mezzanine.pages.admin import PageAdmin
 from copy import deepcopy
 from cartridge.shop.admin import ProductAdmin
 from cartridge.shop.models import Product
+
 #from cartridge.shop.forms import ProductAdminForm
 
 class SlideAdmin(TabularDynamicInlineAdmin):
@@ -14,6 +15,12 @@ class SlideAdmin(TabularDynamicInlineAdmin):
 
 class HomePageAdmin(PageAdmin):
 	inlines = [SlideAdmin,]
+
+class FAQAdmin(TabularDynamicInlineAdmin):
+	model=FAQ
+
+class FAQPageAdmin(PageAdmin):
+	inlines = [FAQAdmin,]
 
 class PortfolioItemImageInline(TabularDynamicInlineAdmin):
 	model=PortfolioItemImage
@@ -40,6 +47,8 @@ admin.site.unregister(Product)
 admin.site.register(Product, ProductAdmin)
 #admin.site.register(Slide, SlideAdmin)
 admin.site.register(HomePage,HomePageAdmin)
+admin.site.register(FAQPage,FAQPageAdmin)
+#admin.site.register(FAQ,PageAdmin)
 admin.site.register(Portfolio,PageAdmin)
 admin.site.register(PortfolioItem,PortfolioItemAdmin)
 admin.site.register(PortfolioItemCategory)

@@ -11,17 +11,25 @@
 </style>
 {% endblock %}
 
+{% block extra_content %}
+	<div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>About Us</h1>
+
+                <p>This page's aim is to show you the most common HTML elements appearance on the website. For further reference please visit official <a href="http://getbootstrap.com/css/" class="external">Bootstrap website</a>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block main %}
 
 {{ block.super }}
-<p class="para">
+{% editable page.richtextpage.content %}
+    {{ page.richtextpage.content|richtext_filters|safe }}
+{% endeditable %}
 
-We are an international team of young professionals. By making this website we aimed at providing our users with a convenient and enjoyable platform for shopping. Buy a product and get free regular shipping, no matter where you are (it takes up to 25 days depending on your location). Pay for shipping only if you need it FAST (3 ~ 7 days). Our priority shipping carrieres include Fedex, DHL, UPS. Tracking numbers are updated immediately after the product is shipped. Lead time is 2 days.
-</p>
-<p class="para">
-<b>''You Name It''</b> gives you an exceptional chance to suggest any item you can not find in our website and we'll add similar items for you to choose from. Thus, we are commited to regularly updating our ever growing list of products with items that matter for our users. You have plenty of options for contacting us: blue "contact us" ribbon for chat, <a href="/contact" style="color: blue">Contact us</a> web form, email or social buttons on our website's footer. Costumer satisfaction is our utmost priority, feel free to contact us with any question you will come up with. Our specialist will be glad to assist you in making the transaction process smoother. For payment we support Paypal and Bitcoin with credit cards coming soon. If you are not satisfied with your purchase then pay only the return shipping fee and get a full refund when we receive the package. But we firmly believe you would hardly want to do so.
-<br/><br/><i>Happy Shopping!</i>
-</p>
 {% endblock %}
 
 {% block right_panel %}

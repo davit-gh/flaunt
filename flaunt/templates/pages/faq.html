@@ -9,16 +9,77 @@
 	
 {% endblock %}
 {% block main_span_size %}md-9 clearfix{% endblock %}
-{% block panel_span_size %}md-3{% endblock %}
  <!-- https://gist.github.com/joshcartme/5130702 -->
+
+{% block extra_content %}
+	<div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>Frequently asked questions</h1>
+
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
+                    ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
  {% block main %}
  	<div class="box" id="text-page">
- 	{% editable page.content %}{% endeditable %}
+ 		<div class="panel-group" id="accordion">
+ 	{% for qa in qas %}
+ 		<div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+				    <a data-toggle="collapse" data-parent="#accordion" href="#{{ qa.id }}">
+						{{ qa.id }}. {{ qa.question }}
+				    </a>
+				</h4>
+            </div>
+	        <div id="{{ qa.id }}" class="panel-collapse collapse">
+	            <div class="panel-body">
+	                {{ qa.content|richtext_filters|safe }}
+	            </div>
+	        </div>
+	    </div>
+            <!-- /.panel -->
+ 	{% endfor %}
+ 		</div>
  	</div>
 	
 {% endblock %}
 
 {% block right_panel %}
-	  
+	<div class="panel panel-default sidebar-menu">
+
+        <div class="panel-heading">
+            <h3 class="panel-title">Pages</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="/about">About us</a>
+                </li>
+                <li>
+                    <a href="/contact">Contact us</a>
+                </li>
+                <li class="active">
+                    <a href="">FAQ</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- *** PAGES MENU END *** -->
+
+
+    <div class="banner">
+        <a href="category.html">
+            <img src="{% static "img/purchased/banner.jpg" %}" alt="sales 2014" class="img-responsive">
+        </a>
+    </div>
+    <!-- /.banner -->
 {% endblock %}

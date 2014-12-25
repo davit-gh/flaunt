@@ -89,6 +89,21 @@ class HomePage(Page, RichText):
         verbose_name = _("Home page")
         verbose_name_plural = _("Home pages")
 
+class FAQ(RichText):
+    '''
+    A FAQ page
+    '''
+    faqpage = models.ForeignKey("FAQPage", related_name="que_ans")
+    question = models.CharField(max_length=150)
+
+    class Meta:
+        verbose_name = _("FAQ")
+        verbose_name_plural = _("FAQs")
+
+class FAQPage(Page):
+    class Meta:
+        verbose_name = _("FAQ page")
+        verbose_name_plural = _("FAQ pages")
 
 class Slide(Orderable):
     '''

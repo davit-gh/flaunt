@@ -318,13 +318,13 @@ _________________________________________________________ -->
                     <h4>Pages</h4>
 
                     <ul>
-                        <li><a href="text.html">About us</a>
+                        <li><a href="/about">About us</a>
                         </li>
                         <li><a href="text-left.html">Terms and conditions</a>
                         </li>
-                        <li><a href="faq.html">FAQ</a>
+                        <li><a href="/faq">FAQ</a>
                         </li>
-                        <li><a href="contact.html">Contact us</a>
+                        <li><a href="/contact">Contact us</a>
                         </li>
                     </ul>
 
@@ -335,7 +335,7 @@ _________________________________________________________ -->
                     <ul>
                         <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
                         </li>
-                        <li><a href="register.html">Regiter</a>
+                        <li><a href="{% url "signup" %}">Regiter</a>
                         </li>
                     </ul>
 
@@ -489,15 +489,6 @@ _________________________________________________________ -->
     <!-- owl carousel -->
     <script src="{% static "js/purchased/owl.carousel.min.js" %}"></script>
 
-    <script type="text/javascript" src="{% static "js/jquery-migrate-1.2.1.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.mobile.customized.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.shuffle.modernizr.js" %}"></script>
-
-        
-    <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
-        
-    <script type="text/javascript" src="{% static "js/camera.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.lightSlider.min.js" %}"></script>
 
     {% block slider_js %}{% endblock %}
     <script type="text/javascript">
@@ -556,5 +547,6 @@ _________________________________________________________ -->
     /* custom configuration goes here (www.olark.com/documentation) */
     olark.identify('3778-127-10-6917');/*]]>*/</script><noscript><a href="https://www.olark.com/site/3778-127-10-6917/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
 <!-- end olark code -->
+    {% editable_loader %}
 </body>
 </html>

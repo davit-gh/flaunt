@@ -1,4 +1,4 @@
-from .models import HomePage, Slide
+from .models import HomePage, Slide, FAQPage, FAQ
 from cartridge.shop.models import Product# Category
 from mezzanine.conf import settings
 from django.template.defaultfilters import slugify
@@ -31,6 +31,9 @@ def home_processor(request, page):
 	#pdb.set_trace()
 	return {'products':products, 'slider_images': slider_images}
 
-
+@processor_for(FAQPage)
+def home_processor(request, page):
+	qas = FAQ.objects.all()
+	return {'qas': qas}
 
 
