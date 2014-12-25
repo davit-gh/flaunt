@@ -348,29 +348,30 @@ _________________________________________________________ -->
 
                     <h4>Top categories</h4>
 
-                    <h5>Men</h5>
+                        
+                    {% for key,val in men.items %}
+                    <h5>Men {{ key }}</h5>
 
-                    <ul>
-                        <li><a href="category.html">T-shirts</a>
-                        </li>
-                        <li><a href="category.html">Shirts</a>
-                        </li>
-                        <li><a href="category.html">Accessories</a>
-                        </li>
-                    </ul>
-
-                    <h5>Ladies</h5>
-                    <ul>
-                        <li><a href="category.html">T-shirts</a>
-                        </li>
-                        <li><a href="category.html">Skirts</a>
-                        </li>
-                        <li><a href="category.html">Pants</a>
-                        </li>
-                        <li><a href="category.html">Accessories</a>
-                        </li>
-                    </ul>
-
+                        <ul>
+                        
+                            {% for entry in val %}
+                                <li>
+                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                    
+                    {% for key,val in women.items %}
+                        <h5>Ladies {{ key }}</h5>
+                        <ul>
+                            {% for entry in val %}
+                                <li>
+                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
                     <hr class="hidden-md hidden-lg">
 
                 </div>
@@ -389,7 +390,7 @@ _________________________________________________________ -->
                         <strong>Great Britain</strong>
                     </p>
 
-                    <a href="contact.html">Go to contact page</a>
+                    <a href="/contact">Go to contact page</a>
 
                     <hr class="hidden-md hidden-lg hidden-sm">
 
