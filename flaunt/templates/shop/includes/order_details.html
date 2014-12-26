@@ -1,0 +1,137 @@
+{% extends "shop/base.html" %}
+{% load shop_tags i18n import_products %}
+
+{% block meta_title %}{% trans "Order Details" %}{% endblock %}
+{% block title %}{% trans "Order Details" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{% trans "Order Details" %}</li>
+{% endblock %}
+
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block panel_span_size %}md-3{% endblock %}
+{% block div_id%}customer-order{% endblock %}
+
+{% block extra_content %}
+<div class="col-md-12">
+    <div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>{% trans "Order" %} #{{ order.id }}</h1>
+                    <p class="lead">Order #{{ order.id }} was placed on <strong>{{ order.time|date:"d/m/y" }}</strong> and is currently <strong>{{ order.get_status_display }}</strong>.</p>
+                    <p class="text-muted">If you have any questions, please feel free to <a href="/contact">contact us</a>, our customer service center is working for you 24/7.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block main %}
+    <div class="box">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2">{% trans "Product" %}</th>
+                        <th>{% trans "Quantity" %}</th>
+                        <th>{% trans "Unit price" %}</th>
+                        <th>{% trans "Total" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for item in order.items.all %}        
+                    {% get_product_image item.sku as image %}               
+                    <tr>
+                        <td>
+                            <a href="#">
+                                <img src="{{ MEDIA_URL }}{{ image }}" alt="{{ item.description }}">
+                            </a>
+                        </td>
+                        <td><a href="#">{{ item.description }}</a>
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.unit_price|currency }}</td>
+                        <td>{{ item.total_price|currency }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5" class="text-right">{% trans "Order subtotal" %}</th>
+                        <th>{{ order.item_total|currency }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="text-right">{% trans "Shipping and handling" %}</th>
+                        <th>{{ order.shipping_total|currency }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="text-right">{% trans "Discount" %}</th>
+                        <th>{{ order.discount_total|currency }}</th>
+                    </tr>
+                    
+                    <tr>
+                        <th colspan="5" class="text-right">{% trans "Tax" %}</th>
+                        <th>{{ order.tax_total|currency }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="text-right">{% trans "Total" %}</th>
+                        <th>{{ order.total|currency }}</th>
+                    </tr>
+                    <tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <!-- /.table-responsive -->
+
+        <div class="row addresses">
+            <div class="col-sm-6">
+                <h2>{% trans "Billing Details" %}</h2>
+                {% for field, value in order_billing_detail_fields %}
+                    <strong>{{ field }}:</strong>&nbsp;&nbsp;&nbsp;{{ value }}<br>
+                {% endfor %}
+                
+            </div>
+            <div class="col-sm-6">
+                <h2>{% trans "Shipping Details" %}</h2>
+                {% for field, value in order_shipping_detail_fields %}
+                <strong>{{ field }}:</strong>&nbsp;&nbsp;&nbsp;{{ value }}<br>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- /.addresses -->
+
+    </div>
+    <!-- /.box -->
+{% endblock %}
+
+{% block right_panel %}
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Customer section</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <ul class="nav nav-pills nav-stacked">
+            <li>
+                <a href="{% url "shop_order_history" %}"><i class="fa fa-list"></i> {% trans "My orders" %}</a>
+            </li>
+            <li>
+                <a href="{% url "shop_wishlist" %}"><i class="fa fa-heart"></i> {% trans "My wishlist" %}</a>
+            </li>
+            <li>
+                <a href="{% url "profile_update" %}"><i class="fa fa-user"></i> {% trans "My account" %}</a>
+            </li>
+            <li>
+                <a href="{% url "logout" %}?next={{ request.path }}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}
+

@@ -227,12 +227,15 @@ _________________________________________________________ -->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="Login">Customer login</h4>
+                    <h4 class="modal-title" id="Login">{% if request.user.is_authenticated %}{% trans "Hello" %} {{ request.user.username }}!{% else %}{% trans "Customer login" %}{% endif %}</h4>
                 </div>
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
-                        <p>{% trans "You're already logged in. If you'd like to log in as a different user, you'll need to log out first." %}</p>
-                        <p style="text-align: center"><a href="{% url "logout" %}">Log out</a></p>
+                        
+                        <a href="{% url "shop_order_history" %}" class="btn btn-default center-block">{% trans "Order History" %}</a>
+                        <a id="update_profile" href="{% url "profile_update" %}" class="btn btn-default center-block">{% trans "Update Profile" %}</a>
+                        <hr>
+                        <p class="text-center"><a class="center-block" href="{% url "logout" %}">Log out</a></p>
                     {% else %}
                         {% login_form as form%}
                         <form action="{% url "signup" %}" method="post">
@@ -320,7 +323,7 @@ _________________________________________________________ -->
                     <ul>
                         <li><a href="/about">About us</a>
                         </li>
-                        <li><a href="text-left.html">Terms and conditions</a>
+                        <li><a href="/terms-and-condtions">Terms and conditions</a>
                         </li>
                         <li><a href="/faq">FAQ</a>
                         </li>
@@ -362,7 +365,14 @@ _________________________________________________________ -->
                         </ul>
                     {% endfor %}
                     
-                    {% for key,val in women.items %}
+                    
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-3 col-sm-6">
+                    <h4>Top categories</h4>
+                   {% for key,val in women.items %}
                         <h5>Ladies {{ key }}</h5>
                         <ul>
                             {% for entry in val %}
@@ -372,26 +382,7 @@ _________________________________________________________ -->
                             {% endfor %}
                         </ul>
                     {% endfor %}
-                    <hr class="hidden-md hidden-lg">
-
-                </div>
-                <!-- /.col-md-3 -->
-
-                <div class="col-md-3 col-sm-6">
-
-                    <h4>Where to find us</h4>
-
-                    <p><strong>Obaju Ltd.</strong>
-                        <br>13/25 New Avenue
-                        <br>New Heaven
-                        <br>45Y 73J
-                        <br>England
-                        <br>
-                        <strong>Great Britain</strong>
-                    </p>
-
-                    <a href="/contact">Go to contact page</a>
-
+                    
                     <hr class="hidden-md hidden-lg hidden-sm">
 
                 </div>

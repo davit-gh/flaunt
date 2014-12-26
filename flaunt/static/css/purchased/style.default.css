@@ -876,7 +876,7 @@ button i.fa {
   font-weight: 300;
 }
 #content #customer-order .addresses {
-  text-align: right;
+  text-align: left;
   margin-bottom: 30px;
 }
 #content #customer-order .addresses p {
@@ -1725,4 +1725,6 @@ span#error{
   margin-left: 1em;
 }
 
-
+a#update_profile.btn.btn-default.center-block{
+  margin-top: 2em;
+}

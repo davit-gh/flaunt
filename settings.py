@@ -492,7 +492,6 @@ else:
 ########################
 # SOCIAL ICON SETTINGS #
 ########################
-SOCIAL_LINK_FACEBOOK = True
 
 SITE_TITLE = "You Name It"
 
@@ -504,9 +503,6 @@ POSTMARK_API_PASSWORD = "verysecure"
 DEFAULT_FROM_EMAIL = 'admin@you-name-it.net'
 SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 
-SOCIAL_LINK_FACEBOOK = 'https://www.facebook.com/YouNameItmarket'
-SOCIAL_LINK_PINTEREST = 'http://www.pinterest.com/younameitshop/'
-SOCIAL_LINK_TWITTER = 'https://twitter.com/_younameit'
 
 MY_BTC_ADDRESS = '1DcRmYAEGc8CEXiPQr6wqGxWp6H44mH7wX'
 BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
