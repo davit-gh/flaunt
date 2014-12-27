@@ -1728,3 +1728,8 @@ span#error{
 a#update_profile.btn.btn-default.center-block{
   margin-top: 2em;
 }
+
+#checkout input.btn.btn-default, #checkout a.btn.btn-default, #checkout a.btn.btn-primary{
+  margin: 0.5em;
+
+}

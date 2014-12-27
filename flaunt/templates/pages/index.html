@@ -12,7 +12,6 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 {% endblock %}
 {% block slider_js %}
 
-<script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
 
 {% endblock %}
 {% block extra_js %}
@@ -158,42 +157,34 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                 <div class="col-md-12">
 
                     <div class="box text-center">
-                        <h3 class="text-uppercase">About Minimal</h3>
+                        <h3 class="text-uppercase">About <i>You Name It</i></h3>
 
-                        <p>Minimal contains <strong>23 beautiful HTML pages</strong> and is built with strong attention to detail.</p>
+                        <p>You Name It is a worldwide marketplace with <strong>free shipping</strong> and hand-picked products. Have your order delivered fast or have it delivered free.</p>
 
 
 
                         <div class="same-height-row row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="box same-height clickable no-border text-center-xs text-center-sm">
                                     <div class="icon"><i class="fa fa-heart-o"></i>
                                     </div>
-                                    <h4><a href="text.html">Satisfied customers</a></h4>
+                                    <h4><a href="text.html">{% trans "Satisfied customers" %}</a></h4>
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="box same-height clickable no-border text-center-xs text-center-sm">
                                     <div class="icon"><i class="fa fa-tags"></i>
                                     </div>
-                                    <h4><a href="text.html">Best prices</a></h4>
+                                    <h4><a href="text.html">{% trans "Best prices" %}</a></h4>
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
-                                <div class="box same-height clickable no-border text-center-xs text-center-sm">
-                                    <div class="icon"><i class="fa fa-send-o"></i>
-                                    </div>
-                                    <h4><a href="faq.html">Next day delivery</a></h4>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="box same-height clickable no-border text-center-xs text-center-sm">
                                     <div class="icon"><i class="fa fa-refresh"></i>
                                     </div>
-                                    <h4><a href="contact.html">Free returns for 3 months</a></h4>
+                                    <h4><a href="contact.html">{% trans "Free returns for 1 month" %}</a></h4>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +204,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
         <!-- *** ADVANTAGES END *** -->
 
                     <div class="box text-center">
-                        <h3 class="text-uppercase">New summer arrivals</h3>
+                        <h3 class="text-uppercase">Recently Added products</h3>
 
                         <h4 class="text-muted"><span class="accent">Free shipping</span> on all</h4>
                     </div>

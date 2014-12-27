@@ -69,8 +69,19 @@ _gaq.push(['_trackTrans']);
 <li><strong>{% trans "Complete" %}</strong></li>
 {% endblock %}
 
-
+{% block main_span_size %}md-9 clearfix{% endblock %}
+{% block div_id%}checkout{% endblock %}
 {% block main %}
+        <ul class="nav nav-pills nav-justified">
+            <li class="disabled"><a href="{% url 'shop_checkout' %}" name="back"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="disabled"><a href="#"><i class="fa fa-eye"><i class="fa fa-money"></i></i><br> Review & Payment</a>
+            </li>
+            
+            <li class="active"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
+            </li>
+        </ul>
+
 {% if request.session.btc %}
     <p>{{ request.session.btc }}</p>
     <p>{% trans "We've sent you a receipt via email." %}</p>
@@ -79,7 +90,7 @@ _gaq.push(['_trackTrans']);
     <p>{% trans "Thank you for shopping with us, your order is complete." %}</p>
     <p>{% trans "We've sent you a receipt via email." %}</p>
     <p>{% trans "You can also view your invoice using one of the links below." %}</p>
-{% endif %})
+{% endif %}
 <br>
 <form class="order-complete-form" method="post" action="{% url "shop_invoice_resend" order.id %}?next={{ request.path }}">
     {% csrf_token %}
@@ -89,4 +100,5 @@ _gaq.push(['_trackTrans']);
     <a class="btn btn-default" target="_blank" href="{% url "shop_invoice" order.id %}">{% trans "View invoice in your browser" %}</a>
     <input type="submit" class="btn btn-default" value="{% trans "Re-send order email" %}">
 </form>
+<hr>
 {% endblock %}
