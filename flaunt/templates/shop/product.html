@@ -93,7 +93,7 @@ $('select').on('mouseenter',function(){
     open($(this));
 });
     //initiate the plugin and pass the id of the div containing gallery images
-$("#zoom_03").elevateZoom({constrainType:"height", constrainSize:550, zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
+$("#zoom_03").elevateZoom({zoomType: "inner", containLensZoom: true, gallery:'gal1', cursor: 'pointer', galleryActiveClass: "active"}); 
 
 //pass the images to Fancybox
 $("#zoom_03").bind("click", function(e) {  
@@ -127,10 +127,6 @@ $("#zoom_03").bind("click", function(e) {
                                     {% editable product.title %}{{ product.title }}{% endeditable %}
                                 {% endblock %}
                                 
-                                {% editable product.content %}
-                                    {{ product.short_desc|richtext_filters|safe }}
-                                {% endeditable %}
-                                
                                 <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
                                 </p>
                             </div>
@@ -145,7 +141,7 @@ $("#zoom_03").bind("click", function(e) {
         <div class="row" id="productMain">
                         <div class="col-sm-6">
                             <div id="mainImage">
-                                <img id="zoom_03" src="{{ MEDIA_URL }}{% thumbnail images.0.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}" class="img-responsive" />
+                                <img id="zoom_03" src="{{ MEDIA_URL }}{{ images.0.file }}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}" class="img-responsive" />
                             </div>
 
                             <div class="ribbon sale">
@@ -227,11 +223,11 @@ $("#zoom_03").bind("click", function(e) {
                     {% endif %}
                 </div>
 
-                <div class="row" id="thumbs">
+                <div class="row" id="gal1">
                                 
                     {% for image in images %}
                         <div class="col-xs-4">
-                            <a href="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-image="{{ MEDIA_URL }}{% thumbnail image.file 370 550 %}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}" class="thumb">
+                            <a href="#" data-image="{{ MEDIA_URL }}{{ image.file }}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail image.file 720 1000 %}" class="thumb">
                                 <img id="{{ image.id }}" src="{{ MEDIA_URL }}{{ image.file }}" alt="{{ image.description }}" class="img-responsive">
                             </a>
                         </div>

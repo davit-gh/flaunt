@@ -32,7 +32,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
 				    <a data-toggle="collapse" data-parent="#accordion" href="#{{ qa.id }}">
-						{{ qa.id }}. {{ qa.question }}
+						{{ forloop.counter }}. {{ qa.question }}
 				    </a>
 				</h4>
             </div>
@@ -45,6 +45,7 @@
             <!-- /.panel -->
  	{% endfor %}
  		</div>
+        <p class="text-muted">In case you haven't found the answer for your question please feel free to <a href="/contact">contact us</a>, our customer support will be happy to help you.</p>
  	</div>
 	
 {% endblock %}

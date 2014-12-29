@@ -1,10 +1,14 @@
 {% load mezzanine_tags i18n future %}
-<style type="text/css">
-	.btn-custom { background-color: hsl(208, 100%, 75%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d1e9ff", endColorstr="#7fc3ff"); background-image: -khtml-gradient(linear, left top, left bottom, from(#d1e9ff), to(#7fc3ff)); background-image: -moz-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -ms-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d1e9ff), color-stop(100%, #7fc3ff)); background-image: -webkit-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: -o-linear-gradient(top, #d1e9ff, #7fc3ff); background-image: linear-gradient(#d1e9ff, #7fc3ff); border-color: #7fc3ff #7fc3ff hsl(208, 100%, 71%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26); -webkit-font-smoothing: antialiased; -moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;}
-</style>
-<form action="{% url "search" %}" class="navbar-form navbar-right" style="width:200px" role="search">
-    <input class="form-control" placeholder="{% trans "Search" %}" style="max-width:70%" type="text" name="q" value="{{ request.REQUEST.q }}">
-    <input type="submit" class="btn btn-custom" value="{% trans "Go" %}">
+
+<form action="{% url "search" %}" class="navbar-form" role="search">
+	<div class="input-group">
+		<input class="form-control" placeholder="{% trans "Search" %}" type="text" name="q" value="{{ request.REQUEST.q }}">
+        <span class="input-group-btn">
+			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+		</span>
+    </div>
+    
+    
 {% if search_model_choices %}
     {% if search_model_choices|length == 1 %}
     <input type="hidden" name="type" value="{{ search_model_choices.0.1 }}">

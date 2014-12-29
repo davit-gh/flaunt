@@ -1733,3 +1733,7 @@ a#update_profile.btn.btn-default.center-block{
   margin: 0.5em;
 
 }
+
+div#result_row.row{
+  margin: 2em 0;
+}

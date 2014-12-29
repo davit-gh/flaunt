@@ -16,6 +16,7 @@
 {% endblock %}
 {% block main_span_size %}12{% endblock %}
 {% block panel_span_size %}{% endblock %}
+
 {% block main %}
 
 {% if results.paginator.count == 0 %}
@@ -30,17 +31,20 @@ No results were found in {{ search_type }} matching your query: {{ query }}
 {% endif %}
 </p>
 
-<div id="search-results">
+<div class="container">
     {% for result in results.object_list %}
-    
-    <h5>{{ forloop.counter0|add:results.start_index }})
-
-        <a style="color: rgba(33, 122, 222, 1)" href="{{ result.get_absolute_url }}">
-			<img src="{{ MEDIA_URL }}{% thumbnail result.image 160 200 %}"/>
-        	{{ result }}
-        </a>
-    </h5>
-    
+    <div class="row" id="result_row">
+	    <div class="col-sm-4">
+	        <a style="color: rgba(33, 122, 222, 1)" href="{{ result.get_absolute_url }}">
+				<img src="{{ MEDIA_URL }}{% thumbnail result.image 160 200 %}"/>
+	        </a>
+	    </div>
+	    <div class="col-sm-8" style="margin-top:4em">
+	    	<a href="{{ result.get_absolute_url }}">
+				{{ result }}
+	        </a>
+	    </div>
+	</div>
     {% endfor %}
 </div>
 

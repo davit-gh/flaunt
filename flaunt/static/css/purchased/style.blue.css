@@ -1679,3 +1679,70 @@ a.list-group-item.active > .badge,
   left: 0;
   right: 0;
 }
+
+@media (max-width: 767px) {
+  .yamm .yamm-content {
+    padding: 10px 20px;
+  }
+}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+  left: 0;
+  right: 0;
+}
+
+h2.title > span{
+  color: #555;
+}
+
+div.post p{
+  text-align: justify;
+}
+
+
+
+.nav > li > .nav > li > .nav > li > a{
+  margin-left: 15px;
+  color: #584F4F !important;
+  font-weight: normal !important;
+}
+
+.nav > li > .nav > li > .nav > li.active{
+  color: blue !important;
+}
+
+.nav > li > .nav > li > .nav > li > a:hover{
+  background-color: #F0F0F0 !important;
+  color: #D6BBCD !important;
+}
+
+.nav > li > .nav > li > a{
+  color: #C49EB8 !important;
+  font-weight: bold !important;
+}
+
+td#desc_td{
+  white-space: normal;
+}
+
+a.btn.btn-primary.btn-xs{
+  margin: 1em 0 0 -0.5em; 
+}
+
+span#error{
+  color: #B94A48;
+  font-weight: bold;
+  margin-left: 1em;
+}
+
+a#update_profile.btn.btn-default.center-block{
+  margin-top: 2em;
+}
+
+#checkout input.btn.btn-default, #checkout a.btn.btn-default, #checkout a.btn.btn-primary{
+  margin: 0.5em;
+
+}
+
+div#result_row.row{
+  margin: 2em 0;
+}

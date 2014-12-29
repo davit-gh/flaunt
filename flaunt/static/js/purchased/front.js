@@ -6,7 +6,7 @@ $(function() {
 
     sliderHomepage();
     fullScreenContainer();
-    productDetailGallery(4000);
+    productDetailGallery(8000);
     menuSliding();
     productDetailSizes();
     utils();
@@ -193,9 +193,14 @@ function productDetailGallery(confDetailSwitch) {
 
 	$('.thumb').removeClass('active');
 	var bigUrl = thumb.attr('href');
+	var path_array = bigUrl.split("/");
+	var pic_name = path_array[path_array.length-1]
 	thumb.addClass('active');
-	$('#mainImage img').attr('src', bigUrl);
+	//$('#mainImage img').attr('src', bigUrl);
+	thumb[0].click();
+	//$('#mainImage img').attr('data-zoom-image',"/static/media/product/.thumbnails/"+pic_name+"/"+pic_name.split(".")[0]+"-720x1000."+pic_name.split(".")[1]);
     }
+
 }
 
 /* product detail sizes */
