@@ -1044,6 +1044,7 @@ button i.fa {
     font-size: 12px;
   }
 }
+
 @media (min-width: 768px) {
   .navbar-collapse {
     float: left;

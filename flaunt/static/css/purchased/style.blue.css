@@ -1043,6 +1043,19 @@ button i.fa {
     font-size: 12px;
   }
 }
+
+#content .bar.background-image-fixed-2 {
+  background: url('../images/fixed-background-2.jpg') center top no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#content .bar {
+  position: relative;
+  padding: 50px 0;
+  margin: 50px 0 80px;
+}
+
 @media (min-width: 768px) {
   .navbar-collapse {
     float: left;
@@ -1546,7 +1559,7 @@ p {
 }
 @media (min-width: 768px) {
   .lead {
-    font-size: 21px;
+    font-size: 21px !important;
   }
 }
 .text-small {
@@ -1745,4 +1758,55 @@ a#update_profile.btn.btn-default.center-block{
 
 div#result_row.row{
   margin: 2em 0;
+}
+
+content .icon.icon-lg {
+  font-size: 30px;
+  border-width: 2px;
+}
+
+#content .icon {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  color: #fff;
+  line-height: 80px;
+  border-radius: 40px;
+  border: solid 1px #fff;
+  font-size: 20px;
+}
+
+#content .bar.color-white h1, #content .bar.color-white h2, #content .bar.color-white h3, #content .bar.color-white h4, #content .bar.color-white h5, #content .bar.color-white h6, #content .bar.color-white p {
+  color: #fff;
+}
+
+#content .bar.color-white h1, #content .bar.color-white h2, #content .bar.color-white h3, #content .bar.color-white h4, #content .bar.color-white h5, #content .bar.color-white h6, #content .bar.color-white p {
+  color: #fff;
+}
+@media (min-width: 768px)
+  .lead {
+  font-size: 21px;
+}
+
+@media (min-width: 768px)
+.lead {
+font-size: 21px;
+}
+
+.lead {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+#content .bar .dark-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
 }
