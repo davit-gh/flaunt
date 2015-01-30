@@ -17,6 +17,7 @@
 
 <!--drop down the select menu list on mouseenter using auto_dropdown_select.js-->
 
+
 {% block slider_js %}
 
     <script type="text/javascript" src="{% static "js/auto_dropdown_select.js" %}"></script>
@@ -39,6 +40,8 @@
 {% endblock %}
 
 {% block extra_js %}
+
+productDetailGallery(8000);
 
 $('#wishlist').click(function(){
     var plain = {};
@@ -108,6 +111,7 @@ $("#zoom_03").bind("click", function(e) {
 <script>var variations = {{ variations_json|safe }};</script>
 <script src="{% static "cartridge/js/product_variations.js" %}"></script>
 {% endblock %}
+
 
 {% block breadcrumb_menu %}
 
@@ -239,24 +243,11 @@ $("#zoom_03").bind("click", function(e) {
         </div>
 
                     <div class="box" id="details">
-                        <p>
+                        
                             <h4>Product details</h4>
-                            <p>White lace top, woven, has a round neck, short sleeves, has knitted lining attached</p>
-                            <h4>Material & care</h4>
-                            <ul>
-                                <li>Polyester</li>
-                                <li>Machine wash</li>
-                            </ul>
-                            <h4>Size & Fit</h4>
-                            <ul>
-                                <li>Regular fit</li>
-                                <li>The model (height 5'8" and chest 33") is wearing a size S</li>
-                            </ul>
-
-                            <blockquote>
-                                <p><em>Define style this season with Armani's new range of trendy tops, crafted with intricate details. Create a chic statement look by teaming this lace number with skinny jeans and pumps.</em>
-                                </p>
-                            </blockquote>
+                            {% editable product.additional %}
+                                {{ product.additional|richtext_filters|safe }}
+                            {% endeditable %}
                     </div>
 
                     <div class="box social" id="product-social">

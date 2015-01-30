@@ -6,7 +6,7 @@ $(function() {
 
     sliderHomepage();
     fullScreenContainer();
-    productDetailGallery(8000);
+    
     menuSliding();
     productDetailSizes();
     utils();

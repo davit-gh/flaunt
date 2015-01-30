@@ -37,8 +37,7 @@ class MyProductAdmin(ProductAdmin):
 
 #re-registering Cartridge Products to add short_description to it
 product_fieldsets = deepcopy(ProductAdmin.fieldsets)
-product_fieldsets[0][1]["fields"] += ("short_desc",)
-
+product_fieldsets[0][1]["fields"] += ("short_desc", "additional")
 ProductAdmin.fieldsets = product_fieldsets
 #admin.site.unregister(Product)
 #admin.site.register(Product, Product_with_short_desc)

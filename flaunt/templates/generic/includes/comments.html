@@ -1,0 +1,50 @@
+{% load i18n mezzanine_tags comment_tags widget_tweaks %}
+<div id="comments">
+<h3>{% trans "Comments" %}</h3>
+{% if settings.COMMENTS_DISQUS_SHORTNAME %}
+{% include "generic/includes/disqus_comments.html" %}
+{% else %}
+<script>
+$(function() {
+    $('.reply').click(function() {
+        $('.comment-reply-form').hide();
+        $(this).siblings('.comment-reply-form').toggle();
+    });
+});
+</script>
+<style>.input_id_honeypot {display:none !important;}</style>
+{% comment_thread object_for_comments %}
+<h3>{% trans "New Comment" %}</h3>
+<form method="post" id="comment" action="{{ comment_url }}#comment">
+
+    {% if not request.POST.replied_to %}
+        {% csrf_token %}
+        {% for hidden in posted_comment_form.hidden_fields %}
+            {{hidden}}
+        {% endfor %}
+        {% for vis in posted_comment_form.visible_fields %}
+            <div class="form-group">
+              {{ vis.label_tag }}
+              {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
+                {% render_field vis class="form-control" required="required" %}
+            </div>
+        {% endfor %}
+    {% else %}
+        {% csrf_token %}
+        {% for hidden in unposted_comment_form.hidden_fields %}
+            {{hidden}}
+        {% endfor %}
+        {% for vis in unposted_comment_form.visible_fields %}
+            <div class="form-group">
+              {{ vis.label_tag }}
+              {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
+                {% render_field vis class="form-control" required="required" %}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="form-actions">
+        <input class="btn btn-primary btn-lg" type="submit" value="{% trans "Comment" %}">
+    </div>
+</form>
+{% endif %}
+</div>

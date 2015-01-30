@@ -154,10 +154,16 @@ SHOP_OPTION_TYPE_CHOICES = (
 #
 EXTRA_MODEL_FIELDS = (
       (
-	  "cartridge.shop.models.Product.short_desc",
-	  "TextField",
-	  ("Short desc",),
-	  {"blank": True},
+    	  "cartridge.shop.models.Product.short_desc",
+    	  "TextField",
+    	  ("Short desc",),
+    	  {"blank": True},
+      ),
+      (
+          "cartridge.shop.models.Product.additional",
+          "mezzanine.core.fields.RichTextField",
+          ("Additional Info",),
+          {"blank": True},
       ),
       (
         "cartridge.shop.models.Order.callback_uuid",
