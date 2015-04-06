@@ -147,18 +147,21 @@ $("#zoom_03").bind("click", function(e) {
                             <div id="mainImage">
                                 <img id="zoom_03" src="{{ MEDIA_URL }}{{ images.0.file }}" data-zoom-image="{{ MEDIA_URL }}{% thumbnail images.0.file 720 1000 %}" class="img-responsive" />
                             </div>
-
+                            {% if product.on_sale %}
                             <div class="ribbon sale">
                                 <div class="theribbon">SALE</div>
                                 <div class="ribbon-background"></div>
                             </div>
                             <!-- /.ribbon -->
+                            {% endif %}
 
+                            {% if product|isNewProduct %}
                             <div class="ribbon new">
                                 <div class="theribbon">NEW</div>
                                 <div class="ribbon-background"></div>
                             </div>
                             <!-- /.ribbon -->
+                            {% endif %}
 
                         </div>
             <div class="col-sm-6">
@@ -246,7 +249,8 @@ $("#zoom_03").bind("click", function(e) {
                         
                             <h4>Product details</h4>
                             {% editable product.additional %}
-                                {{ product.additional|richtext_filters|safe }}
+                                {{ product.content|richtext_filters|safe }}
+         <!--                       {{ product.additional|richtext_filters|safe }}  -->
                             {% endeditable %}
                     </div>
 
@@ -289,7 +293,7 @@ $("#zoom_03").bind("click", function(e) {
                     </div>
 
 {% editable product.content %}
-{{ product.content|richtext_filters|safe }}
+
 {% endeditable %}
 
 

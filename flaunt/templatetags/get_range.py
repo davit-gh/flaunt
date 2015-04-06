@@ -22,3 +22,10 @@ def get_range( value ):
     Instead of 3 one may use the variable set in the views
   """
   return range( value )
+
+from datetime import datetime
+
+@register.filter
+def isNewProduct( prod ):
+  delta = datetime.now() - prod.publish_date.replace(tzinfo=None)
+  return delta.days < 3
