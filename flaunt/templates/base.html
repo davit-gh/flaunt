@@ -93,46 +93,9 @@ _________________________________________________________ -->
                 <ul class="nav navbar-nav navbar-left">
                     <li class="active"><a href="/">Home</a>
                     </li>
+                    
                     <li class="dropdown yamm-fw">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Men<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <div class="yamm-content">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <img src="{% static "img/purchased/men.jpg" %}" class="img-responsive hidden-xs" alt="">
-                                        </div>
-                                        {% for key,val in men.items %}
-                                            <div class="col-sm-3">
-                                                <h3>{{ key }}</h3>
-                                                <ul>
-                                                    {% for entry in val %}
-                                                        <li>
-                                                            <a href="{% url 'page' entry|last %}">
-                                                                {{ entry|first }}
-                                                            </a>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="footer clearfix hidden-xs">
-                                    <h4 class="pull-right">Men</h4>
-                                    <div class="buttons pull-left">
-                                        <a href="#" class="btn btn-default"><i class="fa fa-tags"></i> Sales</a>
-                                        <a href="#" class="btn btn-default"><i class="fa fa-star-o"></i> Favourites</a>
-                                        <a href="#" class="btn btn-default"><i class="fa fa-globe"></i> Brands</a>
-                                    </div>
-                                </div>
-
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown yamm-fw">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Women <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a>
                         <ul class="dropdown-menu">
 
                             <li>
