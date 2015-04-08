@@ -6,6 +6,15 @@
 	<script src="{% static "cartridge/js/shipping_fields.js" %}"></script>
 {% endblock %}
 
+{% block slider_js %}
+	<script type="text/javascript">
+		$(function(){
+			$('input#id_billing_detail_country').val("{{ request.session.country }}");
+			$('input#id_billing_detail_country').prop("readonly", true);
+		});
+	</script>
+{% endblock %}
+
 {% block fields %}
 	{% if request.cart.has_items %}
 		{% if not request.user.is_authenticated %}

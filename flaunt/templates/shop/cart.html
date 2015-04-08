@@ -31,24 +31,24 @@
     //$("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
     $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
     $('#id_carrier').prop('disabled','disabled');
-  
-    $('#checkout').click(function(){
-        var country = $("#id_country");
-        var ship_type = $("#id_shipping_type");
-        var carrier = $('#id_carrier');
-        if(!country.prop('selectedIndex')) {
-            if(!$("#required").length){
-                $("label[for='id_country']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
-            } 
-            return false;
-        } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
-             if(!$("#required").length){
-                $("label[for='id_carrier']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
-             }
-             return false;
-        }
-        return true;
-    });
+    
+        $('#checkout').click(function(){
+            var country = $("#id_country");
+            var ship_type = $("#id_shipping_type");
+            var carrier = $('#id_carrier');
+            if(!country.prop('selectedIndex')) {
+                if(!$("#required").length){
+                    $("label[for='id_country']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
+                } 
+                return false;
+            } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
+                 if(!$("#required").length){
+                    $("label[for='id_carrier']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
+                 }
+                 return false;
+            }
+            return true;
+        });
     
 	$("input[type|='checkbox']").hide();
         $('#main_form').submit(function(){
@@ -135,17 +135,14 @@
             $(this).parent().parent().fadeOut('slow');
             var value = $(this).attr('class');
             var id = $("input[value|="+ value +"]").attr('id');
+            console.log(id);
             var chkbx_id = id.slice(0,id.length-2) + 'DELETE';
             $('#'+chkbx_id).prop("checked",true);
             $('#main_form').submit();
             $(this).parents('.dynamic-form').remove();
             var forms = $('.dynamic-form');
             $('#id_items-TOTAL_FORMS').val(forms.length);
-            for (var i=0, formCount=forms.length; i<formCount; i++) {
-                $(forms.get(i)).children().not(':last').children().each(function() {
-                    updateElementIndex(this, 'items', i);
-                });
-            }
+            
             
             return false;
         });
@@ -239,20 +236,22 @@
                 {% endfor %}
                         <tr>
                             <td colspan="2">
-                                <div class="box">
-                                    {% make_form as form %}
-                                    {% for field in form.hidden_fields %} {{ field }} {% endfor %}
-                                    {% for field in form.visible_fields %}
-                                        {% if forloop.last %}
-                                            {{ field.label_tag }}
-                                            {% render_field field class="form-control" %}
-                                            <img id="loading" style="display:none" src="{% static "img/preload_img.gif" %}">
-                                        {% else %}
-                                            {{ field.label_tag }}
-                                            {% render_field field class="form-control" %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+             
+                                    <div class="box">
+                                        {% make_form as form %}
+                                        {% for field in form.hidden_fields %} {{ field }} {% endfor %}
+                                        {% for field in form.visible_fields %}
+                                            {% if forloop.last %}
+                                                {{ field.label_tag }}
+                                                {% render_field field class="form-control" %}
+                                                <img id="loading" style="display:none" src="{% static "img/preload_img.gif" %}">
+                                            {% else %}
+                                                {{ field.label_tag }}
+                                                {% render_field field class="form-control" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                
                             </td>
 
                             <td id="total_cell" colspan="3" valign="">
@@ -268,7 +267,7 @@
             <a href="{% url "home" %}" class="btn btn-default"><i class="fa fa-chevron-left"></i> Continue shopping</a>
         </div>
         <div class="pull-right">
-            <a id="checkout" href="{% url "shop_checkout" %}" class="btn btn-primary">{% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %} <i class="fa fa-chevron-right"></i>
+            <a id="checkout" href="{% url 'shop_checkout' %}" class="btn btn-primary">{% if request.session.order.step %}{% trans "Return to Checkout" %}{% else %}{% trans "Go to Checkout" %}{% endif %} <i class="fa fa-chevron-right"></i>
             </a>
         </div>
     </div>

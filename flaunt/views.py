@@ -29,6 +29,13 @@ def ajax_country(request):
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
 	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), content_type="application/json")
 
+def ajax_set_selected_country(request):
+	if request.is_ajax() and request.method == 'POST':
+
+		#message="is ajax"
+		request.session['country'] = request.POST['country']
+	return HttpResponse()
+		
 from cartridge.shop.forms import DiscountForm
 def get_discount_on_update(request, discount_form_class=DiscountForm):
 	discount_form = discount_form_class(request, request.POST or None)
@@ -129,7 +136,9 @@ def save_feedback(request, product_id):
 
 from cartridge.shop.models import Cart, Order, ProductVariation, DiscountCode
 def remove_cart(cart_pk,session, s_key):
-	try:
+	try:	
+	    pdb.set_trace()
+	    del session.order.step
             cart = Cart.objects.get(id=cart_pk)
             try:
                 order = Order.objects.get(key=s_key)

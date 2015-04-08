@@ -71,7 +71,6 @@ function ajaxcallfree(){
                 });
 }
 function getCountry(sel){
-    console.log($("#required"));
     if($("#required").length){
         $("#required").remove();
     }
@@ -87,6 +86,18 @@ function getCountry(sel){
     //shipping_type.options.length = 1;
     //shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
     //shipping_type.options.add(new Option('Regular Shipping', 'regular'));
+    var country_name = $('#chosen_country').val();
+    $.ajax({
+        url: '/ajax_set_selected_country',
+        type: 'POST',
+        data: {'country' : country_name}, 
+        success: function(data){ 
+                    console.log("success");
+                },
+        error: function(data){
+            console.log('error '+JSON.stringify(data));
+        }
+    });
     
 }
 function setCarriers(s){

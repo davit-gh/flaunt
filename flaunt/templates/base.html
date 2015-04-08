@@ -91,7 +91,7 @@ _________________________________________________________ -->
             <div class="navbar-collapse collapse" id="navigation">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="/">Home</a>
+                    <li class="{% if page.slug == '/' %}active{% endif %}"><a href="/">Home</a>
                     </li>
                     
                     <li class="dropdown yamm-fw">
@@ -119,20 +119,19 @@ _________________________________________________________ -->
                                     </div>
                                 </div>
                                 <div class="footer clearfix hidden-xs">
-                                    <h4 class="pull-right">Women</h4>
+                                    <h4 class="pull-right">AMD</h4>
                                     <div class="buttons pull-left">
                                         <a href="#" class="btn btn-default"><i class="fa fa-tags"></i> Sales</a>
-                                        <a href="#" class="btn btn-default"><i class="fa fa-star-o"></i> Favourites</a>
-                                        <a href="#" class="btn btn-default"><i class="fa fa-globe"></i> Brands</a>
+                                        
                                     </div>
                                 </div>
 
                             </li>
                         </ul>
                     </li>
-                    <li><a href="{% url 'blog_post_list' %}">Blog</a>
+                    <li class="{% if page.slug == 'blog' %}active{% endif %}"><a href="{% url 'blog_post_list' %}">Blog</a>
                     </li>
-                    <li><a href="/contact">Contact</a>
+                    <li class="{% if page.slug == 'contact' %}active{% endif %}"><a href="/contact">Contact</a>
                     </li>
                 </ul>
 
@@ -271,7 +270,7 @@ _________________________________________________________ -->
 
         <div id="footer">
             <div class="container">
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <h4>Pages</h4>
 
                     <ul>
@@ -301,33 +300,11 @@ _________________________________________________________ -->
                 </div>
                 <!-- /.col-md-3 -->
 
-                <div class="col-md-3 col-sm-6">
 
-                    <h4>Top categories</h4>
-
-                        
-                    {% for key,val in men.items %}
-                    <h5>Men {{ key }}</h5>
-
-                        <ul>
-                        
-                            {% for entry in val %}
-                                <li>
-                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                    
-                    
-
-                </div>
-                <!-- /.col-md-3 -->
-
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <h4>Top categories</h4>
                    {% for key,val in women.items %}
-                        <h5>Ladies {{ key }}</h5>
+                        <h5>{{ key }}</h5>
                         <ul>
                             {% for entry in val %}
                                 <li>
@@ -344,7 +321,7 @@ _________________________________________________________ -->
 
 
 
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
 
                     <h4>Get the news</h4>
 
