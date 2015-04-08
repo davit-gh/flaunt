@@ -27,7 +27,14 @@
             $('#btc_addr').html(addr);
         });
     }
-    
+</script>
+<script type="text/javascript">
+    $(function(){
+        $('a#address').click(function(){
+            $('button#bck').click();
+        });
+
+    });
 </script>
 {% endblock %}
 

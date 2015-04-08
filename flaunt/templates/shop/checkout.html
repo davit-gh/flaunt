@@ -58,7 +58,7 @@ $(function() {$('.middle :input:visible:enabled:first').focus();});
                 <div class="box-footer">
                     {% if not CHECKOUT_STEP_FIRST %}
                         <div class="pull-left">
-                            <button name="back" value="back" class="btn btn-default"><i class="fa fa-chevron-left"></i>{% trans "Back" %}</button>
+                            <button id="bck" name="back" value="back" class="btn btn-default"><i class="fa fa-chevron-left"></i>{% trans "Back" %}</button>
                         </div>
                     {% endif %}
                     {% if not CHECKOUT_STEP_LAST %}
