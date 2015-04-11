@@ -38,12 +38,12 @@
             var carrier = $('#id_carrier');
             if(!country.prop('selectedIndex')) {
                 if(!$("#required").length){
-                    $("label[for='id_country']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
+                    $("label[for='id_country']").after("<span id='required' style='color:red; font-size: 16px'>&nbsp;* required</span>");
                 } 
                 return false;
             } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
                  if(!$("#required").length){
-                    $("label[for='id_carrier']").after("<span id='required' style='color:red'>&nbsp;* required</span>");
+                    $("label[for='id_carrier']").after("<span id='required' style='color:red; font-size: 16px'>&nbsp;* required</span>");
                  }
                  return false;
             }

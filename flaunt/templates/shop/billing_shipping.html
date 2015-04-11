@@ -7,10 +7,25 @@
 {% endblock %}
 
 {% block slider_js %}
+	
+	<script type="text/javascript">
+		$(function(){
+			var sameShipping = $('#id_same_billing_shipping');
+
+		    // show/hide shipping fields on change of "same as" checkbox and call on load
+		    sameShipping.change(function() {
+		        $("#shipping").toggle();
+		        console.log("asas");
+		    }).change();
+
+		});
+	</script>
 	<script type="text/javascript">
 		$(function(){
 			$('input#id_billing_detail_country').val("{{ request.session.country }}");
 			$('input#id_billing_detail_country').prop("readonly", true);
+			$('input#id_shipping_detail_country').val("{{ request.session.country }}");
+			$('input#id_shipping_detail_country').prop("readonly", true);
 		});
 	</script>
 {% endblock %}
@@ -44,38 +59,58 @@
             <li class="disabled"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
             </li>
         </ul>
-        <div class="content"><div class="row">
-        	{% with form.billing_detail_fields as fields%}
-            	{% for field in fields %}
-				                <div class="col-sm-4">
-				                    <div class="form-group">
-				                        {{ field.label_tag }}
-				                        {% render_field field class="form-control" %}
-				                    </div>
-				                </div>
-				                	{% if forloop.last %}
-								      </div>
-								    {% else %}
-								      {% if forloop.counter|divisibleby:"3" %}
-								        </div><div class="row">
-								      {% endif %}
-								    {% endif %}				        
-                {% endfor %}
-            {% endwith %}
-        </div>
+        
+        	<fieldset>
+    			<legend>{% trans "Billing Details" %}</legend>
+			        <div class="row">
+			        	{% with form.billing_detail_fields as fields%}
+			            	{% for field in fields %}
+							                <div class="col-sm-4">
+							                    <div class="form-group">
+							                        {{ field.label_tag }}
+							                        {% render_field field class="form-control" %}
+							                    </div>
+							                </div>
+							                	{% if forloop.last %}
+											      </div>
+											    {% else %}
+											      {% if forloop.counter|divisibleby:"3" %}
+											        </div><div class="row">
+											      {% endif %}
+											    {% endif %}				        
+			                {% endfor %}
+			            {% endwith %}
+	        </fieldset>
        
-
-		    
-		    
-
-
-		<fieldset>
-		    <legend>{% trans "Delivery Details" %}</legend>
 		    {% fields_for form.same_billing_shipping_field %}
-		    <div id="shipping_fields">{% fields_for form.shipping_detail_fields %}</div>
+
+		<fieldset id="shipping">
+		    <legend>{% trans "Delivery Details" %}</legend>
+
+			<div id="shipping_fields" class="row">
+	        	{% with form.shipping_detail_fields as ship_fields%}
+	            	{% for field in ship_fields %}
+					                <div class="col-sm-4">
+					                    <div class="form-group">
+					                        {{ field.label_tag }}
+					                        {% render_field field class="form-control" %}
+					                    </div>
+					                </div>
+					                	{% if forloop.last %}
+									      </div>
+									    {% else %}
+									      {% if forloop.counter|divisibleby:"3" %}
+									        </div><div class="row">
+									      {% endif %}
+									    {% endif %}				        
+	                {% endfor %}
+	            {% endwith %}
+		</fieldset>
+	        
+
+		    
 		    {% fields_for form.additional_instructions_field %}
 		    {% fields_for form.remember_field %}
-		</fieldset>
 
 		{% if not settings.SHOP_CHECKOUT_STEPS_SPLIT and settings.SHOP_PAYMENT_STEP_ENABLED %}
 			{% include "shop/includes/payment_fields.html" %}
