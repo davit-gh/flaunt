@@ -82,8 +82,11 @@
 			            {% endwith %}
 	        </fieldset>
        
-		    {% fields_for form.same_billing_shipping_field %}
-
+		    {% for f in form.same_billing_shipping_field %}
+		    	{{ f.label_tag }}
+				{% render_field f checked="checked" %}
+		    {% endfor %}
+		    <hr>
 		<fieldset id="shipping">
 		    <legend>{% trans "Delivery Details" %}</legend>
 
