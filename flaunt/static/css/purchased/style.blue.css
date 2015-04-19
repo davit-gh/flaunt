@@ -155,7 +155,7 @@ button i.fa {
   font-size: 13px;
 }
 #intro {
-  background: url('../../img/slider.jpg') no-repeat center top;
+  background: url('../../img/slider2.jpg') no-repeat center top;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -1805,4 +1805,8 @@ font-size: 21px;
   background: #000;
   opacity: 0.3;
   filter: alpha(opacity=30);
+}
+
+#conditions td{
+  text-align: justify;
 }
