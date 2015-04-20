@@ -73,8 +73,9 @@
                         <button id="login_button" type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
                     </div>
             </form>
+            
         </div>
-
+        <p>You can also <a href="{% url 'mezzanine_password_reset' %}?next={% url 'profile_update' %}">reset your password</a> if you've forgotten it.</p>
     {% endblock %}
 {% endif %}
 

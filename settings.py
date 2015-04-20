@@ -31,7 +31,7 @@ SECONDARY_PAYMENT_PROCESSORS = (
     }),
 )
 PAYPAL_CURRENCY = "USD"
-PAYPAL_BUSINESS = "purchase@you-name-it.net"
+PAYPAL_BUSINESS = "my@email.em"
 PAYPAL_RECEIVER_EMAIL = PAYPAL_BUSINESS
 # Use this to enable https on return URLs.  This is strongly recommended! (Except for sandbox)
 PAYPAL_RETURN_WITH_HTTPS = False
@@ -46,7 +46,7 @@ PAYPAL_SUBMIT_URL = 'https://www.paypal.com/cgi-bin/webscr'
 # Set an alternative OrderForm class for the checkout process.
 SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 # For real use set to False
-PAYPAL_TEST = False
+PAYPAL_TEST = True
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
 SHOP_CHECKOUT_STEPS_SPLIT = True
