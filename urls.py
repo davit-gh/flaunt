@@ -56,7 +56,7 @@ urlpatterns += patterns('',
 
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     url(r"^ajax_country", "flaunt.views.ajax_country"),
-    url(r"^ajax_set_selected_country", "flaunt.views.ajax_set_selected_country"),
+    url(r"^ajax_set_selected_country", "flaunt.views.ajax_set_selected_country", name="set_country"),
     url(r"^update_cart", "flaunt.views.update_cart"),
     url(r"^get_carrier", "flaunt.views.get_carrier"),
     url(r"^feedback/(?P<product_id>\d+)$", "flaunt.views.save_feedback", name="feedback"),

@@ -42,7 +42,7 @@ PAYPAL_RETURN_URL = lambda cart, uuid, order_form: ('shop_complete', None, None)
 PAYPAL_IPN_URL = lambda cart, uuid, order_form: ('paypal.standard.ipn.views.ipn', None, {})
 # URL the secondary-payment-form is submitted to
 # For real use set to 'https://www.paypal.com/cgi-bin/webscr'
-PAYPAL_SUBMIT_URL = 'https://www.paypal.com/cgi-bin/webscr'
+PAYPAL_SUBMIT_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 # Set an alternative OrderForm class for the checkout process.
 SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 # For real use set to False
@@ -513,3 +513,45 @@ SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 MY_BTC_ADDRESS = '1DcRmYAEGc8CEXiPQr6wqGxWp6H44mH7wX'
 BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
 
+########################
+# LOGGING ##############
+########################
+LOGGING = {
+ 'version': 1,
+ 'disable_existing_loggers': False,
+ 'handlers': {
+ # Include the default Django email handler for errors
+ # This is what you'd get without configuring logging at all.
+ 'mail_admins': {
+ 'class': 'django.utils.log.AdminEmailHandler',
+ 'level': 'ERROR',
+ # But the emails are plain text by default - HTML is nicer
+ 'include_html': True,
+ },
+ # Log to a text file that can be rotated by logrotate
+ 'logfile': {
+ 'class': 'logging.handlers.WatchedFileHandler',
+ 'filename': '/home/flaunt/flaunt.log'
+ },
+ },
+ 'loggers': {
+ # Again, default Django configuration to email unhandled exceptions
+ 'django.request': {
+ 'handlers': ['mail_admins'],
+ 'level': 'ERROR',
+ 'propagate': True,
+ },
+ # Might as well log any errors anywhere else in Django
+ 'django': {
+ 'handlers': ['logfile'],
+ 'level': 'ERROR',
+ 'propagate': False,
+ },
+ # Your own app - this assumes all your logger names start with "myapp."
+ 'flaunt': {
+ 'handlers': ['logfile'],
+ 'level': 'WARNING', # Or maybe INFO or DEBUG
+ 'propagate': False
+ },
+ },
+}

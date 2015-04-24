@@ -35,6 +35,18 @@ $.ajaxSetup({
         }
     }
 });
+
+function updateContent(discount, subtotal, total, shipping_type, shipping_total){
+    var html;    
+        if(discount){
+            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>Discount:</td><th>$" + discount + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>" + total + "</th></tr></tbody></table>"
+        } else {
+            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>" + total + "</th></tr></tbody></table>"
+        }
+        
+        $('div#id_table_responsive.table-responsive').html(html);
+}
+
 function ajaxcallfree(){
                 $.ajax({
                     url: '/get_carrier',
@@ -45,7 +57,8 @@ function ajaxcallfree(){
                             subtotal = parseFloat(data.subtotal),
                             discount = parseFloat(data.discount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
                             total = data.total_price,
-                            shipping_type, shipping_total;
+                            shipping_type = data.shipping_type,
+                            shipping_total = data.shipping_total;
 
                         $('#subtotal').attr('name','Regular Shipping');
                         $("span.badge").html(total_qty.toString());
@@ -55,15 +68,8 @@ function ajaxcallfree(){
                             }else{
                                     $('#cart_menu').html(' 1 item - $'+total);
                             }
+                        updateContent(discount, subtotal, total, shipping_type, shipping_total);
                         
-                        var html;    
-                        if(discount){
-                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>Discount:&nbsp;</label>$"+discount+"</div><div><label>Regular Shipping:&nbsp;</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                        } else {
-                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><label>Regular Shipping:&nbsp;</label>$0.00</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                        }
-                        
-                        $('#total_cell').html(html);
                     },
                     error: function(data){
                         console.log('error'+data);
@@ -81,7 +87,7 @@ function getCountry(sel){
     $('#id_shipping_type').val("");
 
     $('#id_carrier').find('option').remove().end().append('<option value="0">Please select shipping type</option').val("0").prop('disabled',true);;
-    ajaxcallfree()
+    //ajaxcallfree()
     //var shipping_type = document.getElementById('id_shipping_type');
     //shipping_type.options.length = 1;
     //shipping_type.options.add(new Option('Priority Shipping (fast)', 'priority'));
@@ -128,7 +134,7 @@ function setCarriers(s){
                 carrier.options.add(new Option(priority[pri], priority[pri]));
             }   
         });
-    } else if (s.value === ""){
+    } else if (s.value === "Regular"){
 
                 $(carrier).val("0").prop('disabled','disabled');
                 ajaxcallfree();
@@ -161,14 +167,10 @@ function getCarrier(sel){
                         }else{
                             $('#cart_menu').html(' 1 item - $'+total);
                         }
-                    var html;
+                    
                     $("span.badge").html(total_qty.toString());
-                    if(discount){
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+shipping_type+":</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                    } else {
-                        html = "<div class='order_totals'><div><label>Sub total:</label>$"+subtotal+"</div><div><label>"+shipping_type+"</label>$"+shipping_total+"</div><div class='total'><label>Total:&nbsp;</label>$"+total+"</div></div>";
-                    }
-                    $('#total_cell').html(html);
+                    updateContent(discount, subtotal, total, shipping_type, shipping_total);
+                    
                 },
         error: function(data){
             console.log('error '+JSON.stringify(data));

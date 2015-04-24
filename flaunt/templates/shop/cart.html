@@ -28,7 +28,7 @@
     $('#id_shipping_type').val("");
 
     $("select[name='country'] option:eq(0)").attr('disabled','disabled');
-    //$("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
+    $("select[name='shipping_type'] option:eq(0)").attr('disabled','disabled');
     $("select[name='carrier'] option:eq(0)").attr('disabled','disabled');
     $('#id_carrier').prop('disabled','disabled');
     
@@ -41,7 +41,14 @@
                     $("label[for='id_country']").after("<span id='required' style='color:red; font-size: 16px'>&nbsp;* required</span>");
                 } 
                 return false;
-            } else if(ship_type.prop('selectedIndex') == 1 && !carrier.prop('selectedIndex')){
+            }
+            if(ship_type.prop('selectedIndex') == 0) {
+                if(!$("#required").length){
+                    $("label[for='id_shipping_type']").after("<span id='required' style='color:red; font-size: 16px'>&nbsp;* required</span>");
+                } 
+                return false;
+            }
+            if(ship_type.prop('selectedIndex') == 2 && !carrier.prop('selectedIndex')){
                  if(!$("#required").length){
                     $("label[for='id_carrier']").after("<span id='required' style='color:red; font-size: 16px'>&nbsp;* required</span>");
                  }
@@ -254,8 +261,25 @@
                 
                             </td>
 
-                            <td id="total_cell" colspan="3" valign="">
-                                    {% order_totals %}
+                            <td id="total_cell" colspan="4" valign="">
+                                 <div class="box">
+                                    <div class="box-header">
+                                        <h4>Coupon code</h4>
+                                    </div>
+                                    <p class="text-muted">If you have a coupon code, please enter it in the box below.</p>
+                                    {% if discount_form %}
+                                        <form method="post" class="discount-form">
+                                            <div class="input-group">
+                                                {% for field in discount_form %}
+                                                    {% render_field field class='form-control' style="width: 98%" %}
+                                                {% endfor %}
+                                                <span class="input-group-btn">
+                                                    <button id="discount_button" class="btn btn-primary" type="button"><i class="fa fa-gift"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                         
@@ -336,24 +360,7 @@
     </div>
 
 
-    <div class="box">
-        <div class="box-header">
-            <h4>Coupon code</h4>
-        </div>
-        <p class="text-muted">If you have a coupon code, please enter it in the box below.</p>
-        {% if discount_form %}
-            <form method="post" class="discount-form">
-                <div class="input-group">
-                    {% for field in discount_form %}
-                        {% render_field field class='form-control' %}
-                    {% endfor %}
-                    <span class="input-group-btn">
-                        <button id="discount_button" class="btn btn-primary" type="button"><i class="fa fa-gift"></i></button>
-                    </span>
-                </div>
-            </form>
-        {% endif %}
-    </div>
+   
     
 
 

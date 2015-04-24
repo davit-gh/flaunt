@@ -7,7 +7,7 @@ import pdb
 class CountryForm(forms.Form):
 	COUNTRY_CHOICES = [('','Please select a country'), ] + [(ctry.country, ctry.country) for ctry in Countrylist.objects.all()]
 	#CARRIER_TYPES = [('','Please select shipping type')]
-	CARRIER_TYPES = [('', 'Regular Shipping (free)'), ('Priority Shipping', 'Priority Shipping')]
+	CARRIER_TYPES = [('','Please select the shipping type'), ('Regular', 'Regular Shipping (free)'), ('Priority Shipping', 'Priority Shipping')]
 	CARRIER_CHOICES   = [('','Please select shipping type')]
 	country = forms.ChoiceField(choices=COUNTRY_CHOICES, widget=forms.Select(attrs={'onchange':'getCountry(this);'}))
 	shipping_type = forms.ChoiceField(choices=CARRIER_TYPES, widget=forms.Select(attrs={'onchange':'setCarriers(this);'}))

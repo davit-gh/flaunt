@@ -121,7 +121,6 @@ _________________________________________________________ -->
                                 <div class="footer clearfix hidden-xs">
                                     <h4 class="pull-right">AMD</h4>
                                     <div class="buttons pull-left">
-                                        <a href="#" class="btn btn-default"><i class="fa fa-tags"></i> Sales</a>
                                         
                                     </div>
                                 </div>
@@ -130,6 +129,8 @@ _________________________________________________________ -->
                         </ul>
                     </li>
                     <li class="{% if page.slug == 'blog' %}active{% endif %}"><a href="{% url 'blog_post_list' %}">Blog</a>
+                    </li>
+                    <li class="{% if page.slug == 'faq' %}active{% endif %}"><a href="/faq">FAQ</a>
                     </li>
                     <li class="{% if page.slug == 'contact' %}active{% endif %}"><a href="/contact">Contact</a>
                     </li>
@@ -337,9 +338,7 @@ _________________________________________________________ -->
                                         {% if settings.SOCIAL_LINK_TWITTER %}
                                             <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter"><i class="fa fa-twitter"></i></a>
                                         {% endif %}
-                                        {% if settings.SOCIAL_LINK_PINTEREST %}
-                                            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_PINTEREST }}" title="Pinterest"><i class="fa fa-pinterest"></i></a>
-                                        {% endif %}
+                                        
                                         <a rel="tooltip" target="_blank" href="mailto:info@you-name-it.net" title="email us!"><i class="fa fa-envelope"></i></a>
                     </p>
 
