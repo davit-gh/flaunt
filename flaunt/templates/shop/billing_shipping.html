@@ -68,6 +68,11 @@
 							                <div class="col-sm-4">
 							                    <div class="form-group">
 							                        {{ field.label_tag }}
+							                        {% for er in field.errors %}
+							                        	<div id='required' style='color:red; font-size: 16px'>
+							                        		{{ er }}
+							                        	</div>
+							                        {% endfor %}
 							                        {% render_field field class="form-control" %}
 							                    </div>
 							                </div>
@@ -96,6 +101,11 @@
 					                <div class="col-sm-4">
 					                    <div class="form-group">
 					                        {{ field.label_tag }}
+					                        {% for er in field.errors %}
+					                        	<div id='required' style='color:red; font-size: 16px'>
+					                        		{{ er }}
+					                        	</div>
+					                        {% endfor %}
 					                        {% render_field field class="form-control" %}
 					                    </div>
 					                </div>
