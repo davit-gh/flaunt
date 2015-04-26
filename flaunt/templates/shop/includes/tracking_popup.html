@@ -1,0 +1,23 @@
+  {% load i18n %}
+<div class="modal fade" id="myTracking" tabindex="-1" role="dialog" aria-labelledby="myTrackingLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title">Tracking information</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-6 text-center"><span style="font-size: 20px">Carrier:</span></div><div class="col-xs-6"><h4 id="carrier"></h4></div>
+            <div class="col-xs-6 text-center"><span style="font-size: 20px">Tracking number:</span></div><div class="col-xs-6"><h4 id="track"></h4></div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Close' %}</button>
+          
+          
+        </div>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

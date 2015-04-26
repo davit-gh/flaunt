@@ -19,7 +19,7 @@
     {% for vis in rating_form.visible_fields %} {{vis.label_tag}}<span class="star-rating">{{vis}} </span>{% endfor %} 
    
     
-    <input id="rate_button" type="submit" class="btn btn-custom btn-sm" value="{% trans "Rate" %}"
+    <input id="rate_button" type="submit" class="btn btn-default" value="{% trans "Rate" %}"
         onclick="return $(this.form).find('input:checked').length == 1;">
 </form>
 {% endif %}

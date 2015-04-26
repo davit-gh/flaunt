@@ -194,8 +194,8 @@ class CarrierlistRegular(models.Model):
 class Feedback(models.Model):
     product = models.ForeignKey(Product, related_name="prod")
     user = models.ForeignKey(User, related_name="usr")
-    item_title = models.CharField(max_length=100)
-    feedback_text = models.TextField()
+    item_title = models.CharField("Title", max_length=100)
+    feedback_text = models.TextField("Your feedback")
     feedback_date = models.DateTimeField(auto_now_add=True, blank=True)
     
 class Btcinvoices(models.Model):

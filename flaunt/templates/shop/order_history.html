@@ -15,7 +15,33 @@
 {% endblock %}
 
 {% block extra_js %}
+    
+    
+    $('.feedback-form').on('submit',function(){
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
+            data: $(this).serialize(),
+            context: this,
+            success: function(data,status){
+                
 
+            },
+            error: function(data){
+                console.log('error'+JSON.stringify(data));
+            }
+        });
+        return false;
+    });
+
+    $('#myTracking').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var carrier = button.data('carrier') // Extract info from data-* attributes
+        var tracking = button.data('tracking')
+        var modal = $(this)
+        modal.find('#track').text(tracking)
+        modal.find('#carrier').text(carrier)
+    })
 {% endblock %}
 
 {% block main_span_size %}md-9 clearfix{% endblock %}
@@ -64,8 +90,58 @@
                         </td>
                         <td>
                             <a href="{% url "shop_invoice" order.id %}" target="_blank" class="btn btn-primary btn-sm">View</a>
+                            <a id="track_link" class="btn btn-primary btn-sm" href="#" data-tracking="{{ order.tracking_numbe }}" data-carrier="{{ order.carrie }}" data-toggle="modal" data-target="#myTracking">Tracking Info</a>
+                            {% include "shop/includes/tracking_popup.html" %}
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan='5' class="tdwithtable">
+                            <table class="table-responsive inner" style="width: 100%">
+                                <thead>
+                                    
+                                    <th>Image</th>
+                                    <th>{% trans "Description" %}</th>
+                                    <th>{% trans "Rating" %}</th>
+                                    <th>{% trans "Feedback, please" %}</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                    <tr>     
+                                            {% get_all_products as products %}
+                                            {% for product in products %}
+                                                {% if item.sku == product.sku %}
+                                                    <td>
+                                                        {% if product.image %}
+                                                            <a href="{{ product.get_absolute_url }}">
+                                                                <img alt="{{ product.title }}" src="{{ MEDIA_URL }}{% thumbnail product.image 60 60 %}">
+                                                            </a>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <p title="{{ product.title }}" style="font-size: 10px">{{ product.title }}</p>
+                                                    </td>
+                                                    <td class="rating">
+                                                        
+                                                       {% rating_for product %}
+                                              
+                                                    </td>
+                                                    <td>
+                                                        <a id="pay_btc_button" href="{% url "feedback" product.id %}" data-desc="{{ product.title }}" href="#" data-toggle="modal" data-target="#myModal">{% trans "Leave feedback" %}</a>
+                                                        
+                                                        
+                                                    </td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    
                 {% endfor %}
             </tbody>
         </table>
@@ -76,6 +152,8 @@
 {% else %}
 <p><h3>{% trans "You have not ordered anything from us yet." %}</h3></p>
 {% endif %}
+
+{% include "shop/includes/feedback_popup.html" %}
 
 {% endblock %}
 {% block right_panel %}

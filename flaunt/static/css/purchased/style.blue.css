@@ -1810,3 +1810,11 @@ font-size: 21px;
 #conditions td{
   text-align: justify;
 }
+
+#id_value > li{
+  display: inline-block;
+}
+
+#id_value{
+  padding-left: 0;
+}

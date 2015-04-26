@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from models import Countrylist
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, TextInput
 from flaunt.models import Feedback
 import pdb
 class CountryForm(forms.Form):
@@ -18,7 +18,13 @@ class FeedbackForm(ModelForm):
 		model = Feedback
 		fields = ['item_title', 'feedback_text']
 		widgets = {
+			'item_title': TextInput(attrs={
+				'class': 'form-control',
+				'required': 'required'
+			}),
 			'feedback_text': Textarea(attrs={
-				'placeholder':_('Thank you for your comment!')
+				'placeholder':_('Thank you for your comment!'),
+				'class': 'form-control',
+				'required': 'required'
 			}),
 		}

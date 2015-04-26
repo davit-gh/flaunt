@@ -5,8 +5,8 @@ from mezzanine.core.admin import TabularDynamicInlineAdmin
 from mezzanine.pages.admin import PageAdmin
 
 from copy import deepcopy
-from cartridge.shop.admin import ProductAdmin
-from cartridge.shop.models import Product
+from cartridge.shop.admin import ProductAdmin, OrderAdmin
+from cartridge.shop.models import Product, Order
 
 #from cartridge.shop.forms import ProductAdminForm
 
@@ -77,3 +77,10 @@ class Pendingbtcinvoicesadmin(admin.ModelAdmin):
 	list_display=('invoice_key','transaction_hash','value_in_btc')
 admin.site.register(Btcinvoices,Btcinvoicesadmin)
 admin.site.register(Pendingbtcinvoices,Pendingbtcinvoicesadmin)
+
+
+order_fieldsets = deepcopy(OrderAdmin.fieldsets)
+order_fieldsets[0][1]["fields"] += ("carrie", "tracking_numbe")
+OrderAdmin.fieldsets = order_fieldsets
+admin.site.unregister(Order)
+admin.site.register(Order, OrderAdmin)
