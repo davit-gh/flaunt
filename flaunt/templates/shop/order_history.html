@@ -86,7 +86,9 @@
                         <td>{{ order.time|date:"d/m/y" }}</td>
                         <td>{{ order.quantity_total }}</td>
                         <td>{{ order.total|currency }}</td>
-                        <td><span class="label label-info">{{ order.get_status_display }}</span>
+                        {% with order.get_status_display as status %}
+                            <td><span class="label label-{% if status == 'Unprocessed' %}info{% else %}success{% endif %}">{{ status }}</span>
+                        {% endwith %}
                         </td>
                         <td>
                             <a href="{% url "shop_invoice" order.id %}" target="_blank" class="btn btn-primary btn-sm">View</a>
