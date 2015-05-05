@@ -14,64 +14,10 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 
 {% endblock %}
+
 {% block extra_js %}
-
-
-    $('.collapse').on('show.bs.collapse', function () {
-       $(this).parent().find('.toggle').addClass("expanded");
-    });
-
-    $('.collapse').on('hide.bs.collapse', function () {
-       $(this).parent().find('.toggle').removeClass("expanded");
-    });
-    
-
-    
-    $('#option > ul > li > a').click(function(e){
-        e.preventDefault();
-        var group = $(this).data('group');
-        $cont.shuffle('shuffle',group);
-    });
-    $('#option > a').click(function(e){
-        e.preventDefault();
-        var group = $(this).data('group');
-        $cont.shuffle('shuffle',group);
-    });
-    $('#option').each( function( i, buttonGroup ) {
-        var $buttonGroup = $( buttonGroup );
-        $buttonGroup.on( 'click', 'a', function() {
-          $buttonGroup.find('.selected').removeClass('selected');
-          $( this ).addClass('selected');
-        });
-    });
-    $('.sort-options').on('change', function() {
-      var sort = this.value,
-          opts = {};
-
-      // We're given the element wrapped in jQuery
-      if ( sort === 'item-price-rev' ) {
-        opts = {
-          reverse: true,
-          by: function($el) {
-            return $el.data('item-price');
-          }
-        };
-      } else if ( sort === 'item-price' ) {
-        opts = {
-          by: function($el) {
-            return $el.data('item-price');
-          }
-        };
-      }
-
-      // Filter elements
-      $cont.shuffle('sort', opts);
-    });
-    $('.form-control').mouseenter(function() {
-        open($(this));
-    });
-
 {% endblock %}
+
 {% block main_span_size %}12{% endblock %}
 {% block main %}{{ block.super }}
     
@@ -207,8 +153,7 @@ _________________________________________________________ -->
 
             <div class="container">
                 <div class="col-sm-12">
-                    <!-- *** BLOG HOMEPAGE ***
-_________________________________________________________ -->
+                    <!-- *** BLOG HOMEPAGE *** -->
 
                     <div class="box text-center">
                         <h3 class="text-uppercase">From our blog</h3>
@@ -248,7 +193,8 @@ _________________________________________________________ -->
 
                     <!-- *** BLOG HOMEPAGE END *** -->
 
-                
+                </div>
+            </div>
            
     
     

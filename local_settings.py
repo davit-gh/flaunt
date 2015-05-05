@@ -3,7 +3,7 @@ DEBUG = True
 # Make these unique, and don't share it with anybody.
 SECRET_KEY = "b3212423-e4fe-4e90-a8cd-f25e482c8cd828c5d18b-2264-4d6d-849a-932b5fa33b2f9404e08d-a85a-4a5b-a5ba-70ed3c8ee1b4"
 NEVERCACHE_KEY = "82605bbd-169e-4a3a-9ce3-ae4978ae5d130a6030c4-f243-43b9-a614-294dd44e04f09cd0b9f6-23c4-4786-a7b9-8b5fc9b4abb0"
-
+ALLOWED_HOSTS = ["you-name-it.net", "www.you-name-it.net"]
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "orqacle".
