@@ -46,7 +46,7 @@ PAYPAL_SUBMIT_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 # Set an alternative OrderForm class for the checkout process.
 SHOP_CHECKOUT_FORM_CLASS = 'cartridge.shop.forms.OrderForm'
 # For real use set to False
-PAYPAL_TEST = True
+PAYPAL_TEST = False
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
 SHOP_CHECKOUT_STEPS_SPLIT = True
