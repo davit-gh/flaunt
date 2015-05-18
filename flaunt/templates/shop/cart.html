@@ -170,14 +170,19 @@
                                 ship_total = data.shipping_total,
                                 ship_type = data.shipping_type,
                                 total = (parseFloat(cart_total)-parseFloat(discount)+parseFloat(ship_total)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-                                html; 
+                                html, table; 
                                 
 
                             if (discount === "0.00"){
 
                                 html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
                             } else {
+                                table = "<table class='table'><tbody><tr><td>Sub total:</td><th>$"+cart_total+"</th></tr><tr><td>Discount:</td><th>$"+discount+"</th></tr><tr><td>"+ship_type+"</td><th>$"+ship_total+"</th></tr><tr class='total'><td>Total:</td><th>$"+total+"</th></tr></tbody></table>";
+
                                 html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
+
+                                $("#id_table_responsive").html(table);
+                                $('#main_form').submit();
                             }
                             $('#total_cell').html(html);
 
