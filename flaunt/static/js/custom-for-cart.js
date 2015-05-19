@@ -39,9 +39,9 @@ $.ajaxSetup({
 function updateContent(discount, subtotal, total, shipping_type, shipping_total){
     var html;    
         if(discount){
-            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>Discount:</td><th>$" + discount + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>" + total + "</th></tr></tbody></table>"
+            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>Discount:</td><th>$" + discount + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>$" + total + "</th></tr></tbody></table>"
         } else {
-            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>" + total + "</th></tr></tbody></table>"
+            html = "<table class='table'><tbody><tr><td>Sub total:</td><th>$" + subtotal + "</th></tr><tr><td>" + shipping_type + ":</td><th>$" + shipping_total + "</th></tr><tr class='total'><td>Total:</td><th>$" + total + "</th></tr></tbody></table>"
         }
         
         $('div#id_table_responsive.table-responsive').html(html);
