@@ -72,7 +72,7 @@ function ajaxcallfree(){
                         
                     },
                     error: function(data){
-                        console.log('error'+data);
+                        //console.log('error'+data);
                     } 
                 });
 }
@@ -98,10 +98,10 @@ function getCountry(sel){
         type: 'POST',
         data: {'country' : country_name}, 
         success: function(data){ 
-                    console.log("success");
+                  //  console.log("success");
                 },
         error: function(data){
-            console.log('error '+JSON.stringify(data));
+        //    console.log('error '+JSON.stringify(data));
         }
     });
     
@@ -173,7 +173,7 @@ function getCarrier(sel){
                     
                 },
         error: function(data){
-            console.log('error '+JSON.stringify(data));
+           // console.log('error '+JSON.stringify(data));
         }
     });
 }

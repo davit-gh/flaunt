@@ -69,7 +69,7 @@
                         quantity = $('#'+clicked_id).data('quantity'),
                         input_field = $('#'+clicked_id).parent().find('input');
                     if (data.error){
-                        $('.alert p').html(data.error).parent().fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                        $('#warning_alert').show();
 
                         $(input_field).val(quantity);
                     }else{
@@ -90,15 +90,14 @@
                             html,
                             order_summary_html;
                         $('#subtotal').attr('class',total_qty);
-                        if(discount === '0.00'){
-                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
-                        } else {
-                            html = "<div class='order_totals'><div><label>Sub total:&nbsp;</label>$"+subtotal+"</div><div><label>Discount:&nbsp;</label>$"+discount+"</div><div><label>" + shipping_type + "</label>"+shipping_fee+"</div><div class='total'><label>Total:&nbsp;</label>$"+grand+"</div></div>";
+
+                            table = "<table class='table'><tbody><tr><td>Sub total:</td><th>$"+subtotal+"</th></tr><tr><td>Discount:</td><th>$"+discount+"</th></tr><tr><td>"+shipping_type+"</td><th>$"+shipping_fee+"</th></tr><tr class='total'><td>Total:</td><th>$"+grand+"</th></tr></tbody></table>";
+                            
+                            $("#id_table_responsive").html(table);
 
                             order_summary_html = "<td>Total:</td><th>$"+grand+"</th>";
-                        }
 
-                        $('#total_cell').html(html);
+                        
                         $('tr.total').html(order_summary_html);
                         
                         $.each(sub,function(index,element){
@@ -160,7 +159,7 @@
                 success: function(data){
 
                             if (data.discount_code){
-                                $('#discount_alert').show();
+                                $('#warning_alert').show();
 
                                 return false;
                             }
@@ -168,23 +167,9 @@
                                 cart_total = data.cart_total,
                                 ship_total = data.shipping_total,
                                 ship_type = data.shipping_type,
-                                total = (parseFloat(cart_total)-parseFloat(discount)+parseFloat(ship_total)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-                                html, table; 
-                                
-
-                            if (discount === "0.00"){
-
-                                html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
-                            } else {
-                                table = "<table class='table'><tbody><tr><td>Sub total:</td><th>$"+cart_total+"</th></tr><tr><td>Discount:</td><th>$"+discount+"</th></tr><tr><td>"+ship_type+"</td><th>$"+ship_total+"</th></tr><tr class='total'><td>Total:</td><th>$"+total+"</th></tr></tbody></table>";
-
-                                html = "<div><div><label>Sub total:</label>$"+cart_total+"</div><div><label>Discount:</label>$"+discount+"</div><div><label>"+ship_type+"</label>$"+ship_total+"</div><div class='total'><label>Total:</label>$"+total+"</div></div>";
-
-                                $("#id_table_responsive").html(table);
+                                total = (parseFloat(cart_total)-parseFloat(discount)+parseFloat(ship_total)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                                 $('#main_form').submit();
-                            }
-                            $('#total_cell').html(html);
-
+                            
                             
                          },
                 error: function(data){
@@ -200,7 +185,7 @@
 {% block div_id %}basket{% endblock %}
 
 {% block extra_content%}
-    <div id="discount_alert" class="alert alert-danger" hidden="hidden">
+    <div id="warning_alert" class="alert alert-danger" hidden="hidden">
         <a href="#" class="close" data-dismiss="alert">×</a>
         <p style="font: 18px/20px Helvetica, Arial, sans-serif;">Invalid discount code is entered.</p>
     </div>

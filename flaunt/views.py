@@ -71,7 +71,7 @@ def update_cart(request):
 			discount = get_discount_on_update(request)
 			grand = "{0:.2f}".format(subtotal - discount)
 			total_qty = int(cart.total_quantity())
-
+			if total_qty == 0: set_shipping(request, "Shipping", 0)
 			return HttpResponse(json.dumps({'sub':sub, 'subtotal' : subtotal, 'grand':grand, 'total_qty':total_qty, 'discount_total':discount}), content_type='application/json')
 		else:
 			error = cart_formset.errors[0]['quantity'][0]
