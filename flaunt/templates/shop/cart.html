@@ -17,7 +17,6 @@
 {% endblock %}
 
 {% block extra_js %}
-    {{ block.super }}
 
     $(document).bind("ajaxSend", function(){
         $("#loading").show();
@@ -161,7 +160,7 @@
                 success: function(data){
 
                             if (data.discount_code){
-                                $('.alert p').html(data['discount_code']).parent().fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+                                $('#discount_alert').show();
 
                                 return false;
                             }
@@ -199,6 +198,13 @@
 {% block main_span_size %}md-9 clearfix{% endblock %}
 {% block panel_span_size %}md-3{% endblock %}
 {% block div_id %}basket{% endblock %}
+
+{% block extra_content%}
+    <div id="discount_alert" class="alert alert-danger" hidden="hidden">
+        <a href="#" class="close" data-dismiss="alert">×</a>
+        <p style="font: 18px/20px Helvetica, Arial, sans-serif;">Invalid discount code is entered.</p>
+    </div>
+{% endblock %}
 
 {% block main %}
 {% if request.cart.has_items %}
@@ -366,12 +372,4 @@
 
 
    
-    
-
-
-
-<div class="alert alert-info modal fade" id="info-box" data-alert="alert">
-    <p></p>
-</div>
-
 {% endblock %}
