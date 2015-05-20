@@ -68,7 +68,7 @@
 	                </div>
 	                <!-- /.image -->
 	                <div class="text">
-	                    <h3><a href="detail.html">{{ product }}</a></h3>
+	                    <h3><a href="{{ product.get_absolute_url }}">{{ product }}</a></h3>
 	                    {% if product.has_price %}
 				            {% if product.on_sale %}
 				            <p class="price">{{ product.unit_price|currency }}</p>
