@@ -511,14 +511,14 @@ else:
 # SOCIAL ICON SETTINGS #
 ########################
 
-SITE_TITLE = "You Name It"
+SITE_TITLE = "CPU Panda"
 
 
 EMAIL_BACKEND = "postmark.backends.PostmarkBackend"
 POSTMARK_API_KEY = "ccd0c96c-f622-4534-9556-432826da53f8"
 POSTMARK_API_USER = "bigelow"
 POSTMARK_API_PASSWORD = "verysecure"
-DEFAULT_FROM_EMAIL = 'admin@you-name-it.net'
+DEFAULT_FROM_EMAIL = 'admin@cpupanda.com'
 SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 
 

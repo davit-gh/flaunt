@@ -204,17 +204,15 @@ def blockchain_callback(request):
 		else:
 			pending, created = Pendingbtcinvoices.objects.get_or_create(invoice_key=invoice_key, transaction_hash=transaction_hash, value_in_btc=value_in_btc)
 			sess = SessionStore(invoice_key)
+			pdb.set_trace()
 			cpk = query['cart_pk']
 			request.session = remove_cart(cpk, sess, invoice_key)
 			return HttpResponse()
 
 def check_request(request):
 	if request.method == 'POST' and request.is_ajax():
-		if request.session.get('order',False):
-			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. It may take about 2 mins for the payment to propagate in the blockchain. Please try again then."}), content_type='application/json')
-		else:
-			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
-			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')
+		messages.info(request, _("Thank you for your order! We will ship it after we receive at least 4 confirmations from blockchain."))
+		return HttpResponse('response')
 
 # `data` is a python dictionary
 def render_to_json(data):

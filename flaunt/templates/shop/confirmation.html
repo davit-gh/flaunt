@@ -49,16 +49,10 @@
                         url: "{% url 'check' %}",
                         data: {csrfmiddlewaretoken: '{{ csrf_token  }}'},
                         type: 'POST',
-                        dataType: 'json',
+                        
                         success: function(data){
-                                if (data['responsito'] == 'redirect'){
-                                    $('a#redir')[0].click();
-                                }
-                                else{
-                                    $('.alert p').html(data['responsito']).parent().addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
-                                    
-                                    
-                                }
+                                $('a#redir')[0].click();
+                                
                         },
                         error: function(data){ 
                                 console.log('error '+JSON.stringify(data));
