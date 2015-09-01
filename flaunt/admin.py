@@ -60,7 +60,7 @@ from flaunt.models import Inboundmail
 from django.utils.html import format_html
 class InboundmailAdmin(admin.ModelAdmin):
 #        fields=('send_date', 'subject', 'html_body', 'reply_to', 'sender')
-        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender')
+        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender', 'attachment')
 
 #        def format_as_html(self,obj):
 #                return format_html(obj.html_body)

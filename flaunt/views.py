@@ -268,6 +268,7 @@ def remove_wishlist_item(request):
 from flaunt.models import Inboundmail
 from postmark_inbound import PostmarkInbound
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 import json
 @csrf_exempt
 def mail_from_postmark(request):
@@ -275,7 +276,13 @@ def mail_from_postmark(request):
                 json_data = request.body
                 body = json.loads(json_data)['HtmlBody']
                 inbound = PostmarkInbound(json=json_data)
-                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
+                attachment = None
+                if inbound.has_attachments():
+                	attachment = inbound.attachments()[0]
+                	with open(settings.MEDIA_URL + '/aa.txt',w) as f:
+                		myFile = File(f)
+                		myFile.write(attachment.read())
+                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=myFile)
                 mail.save()
                 return HttpResponse('OK')
         else:

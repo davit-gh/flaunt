@@ -218,3 +218,4 @@ class Inboundmail(models.Model):
     subject = models.CharField(max_length=100)
     reply_to = models.CharField(max_length=100)
     sender = models.CharField(max_length=100)
+    attachment = models.FileField(upload_to="attachments", blank=True)
