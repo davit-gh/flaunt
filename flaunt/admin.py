@@ -57,10 +57,9 @@ from flaunt.models import Feedback
 admin.site.register(Feedback)
 
 from flaunt.models import Inboundmail
-from django.utils.html import format_html
 class InboundmailAdmin(admin.ModelAdmin):
 #        fields=('send_date', 'subject', 'html_body', 'reply_to', 'sender')
-        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender', 'attachment')
+        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender', 'htmlify')
 
 #        def format_as_html(self,obj):
 #                return format_html(obj.html_body)

@@ -274,15 +274,21 @@ import json
 def mail_from_postmark(request):
         if request.method == 'POST':
                 json_data = request.body
-                body = json.loads(json_data)['HtmlBody']
+                #body = json.loads(json_data)['HtmlBody']
                 inbound = PostmarkInbound(json=json_data)
-                attachment = None
                 if inbound.has_attachments():
                 	attachment = inbound.attachments()[0]
-                	with open(settings.MEDIA_URL + '/aa.txt',w) as f:
+                	name = attachment.name()
+                	name1 = settings.MEDIA_URL + 'attachments/' + name
+                	name2 = settings.MEDIA_ROOT + '/attachments/' + name
+                	#absolue_uri = "<a href='"+request.build_absolute_uri(name1)+"'>" + name + "</a>"
+                	with open(name2,'w') as f:
                 		myFile = File(f)
                 		myFile.write(attachment.read())
-                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=myFile)
+                		mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=name1)
+                		#pdb.set_trace()
+                else:
+                	mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
                 mail.save()
                 return HttpResponse('OK')
         else:
