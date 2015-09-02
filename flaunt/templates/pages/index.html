@@ -10,17 +10,8 @@
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 
 {% endblock %}
-{% block slider_js %}
+{% block slider %}
 
-
-{% endblock %}
-
-{% block extra_js %}
-{% endblock %}
-
-{% block main_span_size %}12{% endblock %}
-{% block main %}{{ block.super }}
-    
     {% if slider_images %}
         <!-- *** SLIDER ***
     ___________________ -->
@@ -40,6 +31,16 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
     <!-- *** SLIDER END *** -->
     {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+{% block main_span_size %}12{% endblock %}
+{% block main %}{{ block.super }}
+    
+    
         <div id="advantages">
 
             <div class="container">

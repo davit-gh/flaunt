@@ -214,7 +214,7 @@ class Pendingbtcinvoices(models.Model):
         return self.invoice_key
 
 class Inboundmail(models.Model):
-    html_body = models.CharField(max_length=800)
+    html_body = models.CharField(max_length=2000)
     send_date = models.DateTimeField()
     subject = models.CharField(max_length=100)
     reply_to = models.CharField(max_length=100)
