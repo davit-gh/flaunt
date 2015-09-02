@@ -222,5 +222,6 @@ class Inboundmail(models.Model):
     attachment = models.CharField(max_length=400,blank=True)
 
     def htmlify(self):
-        return format_html('<a href="{}">{}</a>', self.attachment, self.attachment.split('/')[-1])
+        attachment_array = self.attachment.split(',')
+        return  ' '.join([format_html('<a href="{}">{}</a>', att, att.split('/')[-1]) for att in attachment_array])
     htmlify.allow_tags = True

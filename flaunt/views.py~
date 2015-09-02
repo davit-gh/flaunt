@@ -29,6 +29,13 @@ def ajax_country(request):
 	#return render(request,'shop/cart.html',json.dumps({'carriers_priority':carriers_priority, 'carriers_regular':carriers_regular}), content_type="application/json")
 	return HttpResponse(json.dumps({'carriers_priority':carriers_priority}), content_type="application/json")
 
+def ajax_set_selected_country(request):
+	if request.is_ajax() and request.method == 'POST':
+
+		#message="is ajax"
+		request.session['country'] = request.POST['country']
+	return HttpResponse()
+		
 from cartridge.shop.forms import DiscountForm
 def get_discount_on_update(request, discount_form_class=DiscountForm):
 	discount_form = discount_form_class(request, request.POST or None)
@@ -64,7 +71,7 @@ def update_cart(request):
 			discount = get_discount_on_update(request)
 			grand = "{0:.2f}".format(subtotal - discount)
 			total_qty = int(cart.total_quantity())
-
+			if total_qty == 0: set_shipping(request, "Shipping", 0)
 			return HttpResponse(json.dumps({'sub':sub, 'subtotal' : subtotal, 'grand':grand, 'total_qty':total_qty, 'discount_total':discount}), content_type='application/json')
 		else:
 			error = cart_formset.errors[0]['quantity'][0]
@@ -130,7 +137,7 @@ def save_feedback(request, product_id):
 from cartridge.shop.models import Cart, Order, ProductVariation, DiscountCode
 def remove_cart(cart_pk,session, s_key):
 	try:	
-		pdb.set_trace()
+	    pdb.set_trace()
 	    del session.order.step
             cart = Cart.objects.get(id=cart_pk)
             try:
@@ -197,17 +204,15 @@ def blockchain_callback(request):
 		else:
 			pending, created = Pendingbtcinvoices.objects.get_or_create(invoice_key=invoice_key, transaction_hash=transaction_hash, value_in_btc=value_in_btc)
 			sess = SessionStore(invoice_key)
+			pdb.set_trace()
 			cpk = query['cart_pk']
 			request.session = remove_cart(cpk, sess, invoice_key)
 			return HttpResponse()
 
 def check_request(request):
 	if request.method == 'POST' and request.is_ajax():
-		if request.session.get('order',False):
-			return HttpResponse(json.dumps({'responsito' : "We didn't receive any confirmation yet. It may take about 2 mins for the payment to propagate in the blockchain. Please try again then."}), content_type='application/json')
-		else:
-			request.session["btc"] = "Thank you for your order. We will ship it after we receive at least 4 confirmations from bloc."
-			return HttpResponse(json.dumps({'responsito' : "redirect"}), content_type='application/json')
+		messages.info(request, _("Thank you for your order! We will ship it after we receive at least 4 confirmations from blockchain."))
+		return HttpResponse('response')
 
 # `data` is a python dictionary
 def render_to_json(data):
@@ -263,14 +268,30 @@ def remove_wishlist_item(request):
 from flaunt.models import Inboundmail
 from postmark_inbound import PostmarkInbound
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 import json
 @csrf_exempt
 def mail_from_postmark(request):
         if request.method == 'POST':
                 json_data = request.body
-                body = json.loads(json_data)['HtmlBody']
+                #body = json.loads(json_data)['HtmlBody']
                 inbound = PostmarkInbound(json=json_data)
-                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
+                if inbound.has_attachments():
+                	attachments = inbound.attachments()
+                	names = []
+                	#absolue_uri = "<a href='"+request.build_absolute_uri(name1)+"'>" + name + "</a>"
+                	for attachment in attachments:
+						name = attachment.name()
+						names.append(name)
+						name1 = settings.MEDIA_URL + 'attachments/' + name
+                		name2 = settings.MEDIA_ROOT + '/attachments/' + name                		
+	                	with open(name2,'w') as f:
+	                		myFile = File(f)
+	                		myFile.write(attachment.read())
+	                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=','.join(names))
+                		#pdb.set_trace()
+                else:
+                	mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
                 mail.save()
                 return HttpResponse('OK')
         else:

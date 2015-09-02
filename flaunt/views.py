@@ -277,16 +277,19 @@ def mail_from_postmark(request):
                 #body = json.loads(json_data)['HtmlBody']
                 inbound = PostmarkInbound(json=json_data)
                 if inbound.has_attachments():
-                	attachment = inbound.attachments()[0]
-                	name = attachment.name()
-                	name1 = settings.MEDIA_URL + 'attachments/' + name
-                	name2 = settings.MEDIA_ROOT + '/attachments/' + name
+                	attachments = inbound.attachments()
+                	names = []
                 	#absolue_uri = "<a href='"+request.build_absolute_uri(name1)+"'>" + name + "</a>"
-                	with open(name2,'w') as f:
-                		myFile = File(f)
-                		myFile.write(attachment.read())
-                		mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=name1)
-                		#pdb.set_trace()
+                	for attachment in attachments:
+				name = attachment.name()
+				name1 = settings.MEDIA_URL + 'attachments/' + name
+                		name2 = settings.MEDIA_ROOT + '/attachments/' + name                		
+                		names.append(name1)
+	                	with open(name2,'w') as f:
+	                		myFile = File(f)
+	                		myFile.write(attachment.read())
+	                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=','.join(names))
+                	#pdb.set_trace()
                 else:
                 	mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
                 mail.save()
