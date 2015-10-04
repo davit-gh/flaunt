@@ -191,15 +191,15 @@ _________________________________________________________ -->
                         <hr>
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Log out</a></p>
                     {% else %}
-                        {% login_form as form%}
+                        {% login_form as loginform%}
                         <form action="{% url "signup" %}" method="post">
                             
                             {% csrf_token %}
             
-                            {% for hidden in form.hidden_fields %}
+                            {% for hidden in loginform.hidden_fields %}
                                {{hidden}}
                             {% endfor %}
-                            {% for vis in form.visible_fields %}
+                            {% for vis in loginform.visible_fields %}
                                 <div class="form-group">
                                     {{ vis.label_tag }}{{ vis.errors }}
                                     {% render_field vis class="form-control" %}
