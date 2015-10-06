@@ -130,7 +130,8 @@ _________________________________________________________ -->
                     </li>
                     <li class="{% if page.slug == 'blog' %}active{% endif %}"><a href="{% url 'blog_post_list' %}">Blog</a>
                     </li>
-                    <li class="{% if page.slug == 'faq' %}active{% endif %}"><a href="/faq">FAQ</a>
+                    
+                    <li class="{% if page.slug == 'faq' %}active{% endif %}"><a href="/about">About</a>
                     </li>
                     <li class="{% if page.slug == 'contact' %}active{% endif %}"><a href="/contact">Contact</a>
                     </li>
@@ -152,11 +153,14 @@ _________________________________________________________ -->
             </div>
 
             <div class="navbar-collapse collapse right">
-                <button type="button" class="btn navbar-btn btn-default" data-toggle="modal" data-target="#login-modal">
+                <button type="button" class="btn navbar-btn btn-default btn-sm" style="margin-top:22px" data-toggle="modal" data-target="#login-modal">
                     <span class="sr-only">User login</span>
-                    <i class="fa fa-users"></i>
+                    
+                    Login<br/>Register
+                    
                 </button>
             </div>
+
 
             <div class="collapse clearfix" id="search">
 

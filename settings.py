@@ -31,7 +31,7 @@ SECONDARY_PAYMENT_PROCESSORS = (
     }),
 )
 PAYPAL_CURRENCY = "USD"
-PAYPAL_BUSINESS = "2244022248@qq.com"
+PAYPAL_BUSINESS = "462083@gmail.com"
 PAYPAL_RECEIVER_EMAIL = PAYPAL_BUSINESS
 # Use this to enable https on return URLs.  This is strongly recommended! (Except for sandbox)
 PAYPAL_RETURN_WITH_HTTPS = False
