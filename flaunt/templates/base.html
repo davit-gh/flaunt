@@ -155,8 +155,11 @@ _________________________________________________________ -->
             <div class="navbar-collapse collapse right">
                 <button type="button" class="btn navbar-btn btn-default btn-xs" style="margin-top:22px" data-toggle="modal" data-target="#login-modal">
                     <span class="sr-only">User login</span>
-                    
-                    Login<br/>Register
+                    {% if request.user.is_authenticated %}
+                        User<br/>Center
+                    {% else %}
+                        Login<br/>Register
+                    {% endif %}
                     
                 </button>
             </div>
