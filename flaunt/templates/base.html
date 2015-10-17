@@ -231,8 +231,11 @@ _________________________________________________________ -->
     </div>
 
     <!-- *** LOGIN MODAL END *** -->
-    {% include 'messages.html' %}
-
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            {% include 'messages.html' %}
+        </div>
+        <div class="col-sm-1"></div>
     {% block slider %}{% endblock %}
 	{% block all_content %}
     	    <!--page_container-->
@@ -375,7 +378,7 @@ _________________________________________________________ -->
                             <img src="{% static 'img/btc_accepted_here.png' %}" height="50px" ="150" alt="We accept bitcoin" class="img-responsive center-block">
                         </div>
                         <div class="col-sm-4">
-                            <img src="{% static "img/100moneyback-2.png" %}" width="80%" alt="100% Money Back Guarantee" class="img-responsive center-block">
+                            <img src="{% static "img/100moneyback.png" %}" width="40%" alt="100% Money Back Guarantee" class="img-responsive center-block">
                         </div>
                     </div>
                     <p class="text-center">&copy; 2015. CPU Panda, all rights reserved.</p>
