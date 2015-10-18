@@ -373,6 +373,7 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
+    "robots",
     "cartridge.shop",
     "mezzanine.boot",
     "mezzanine.conf",
@@ -525,3 +526,6 @@ SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 MY_BTC_ADDRESS = '1DcRmYAEGc8CEXiPQr6wqGxWp6H44mH7wX'
 BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
 
+SOUTH_MIGRATION_MODULES = {
+        'robots': 'robots.south_migrations',
+}

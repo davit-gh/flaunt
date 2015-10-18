@@ -6,6 +6,7 @@ from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
 
+from flaunt.sitemaps import FlauntSitemap
 
 admin.autodiscover()
 
@@ -18,6 +19,10 @@ urlpatterns = i18n_patterns("",
     # admin interface, which would be marginally more secure.
     ("^zxcbvahs/", include(admin.site.urls)),
 )
+
+sitemaps = {
+    	'products': FlauntSitemap()
+}
 
 urlpatterns += patterns('',
 
@@ -54,6 +59,7 @@ urlpatterns += patterns('',
     # "/.html" - so for this case, the template "pages/index.html" can
     # be used.
 
+
     url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
     url(r"^ajax_country", "flaunt.views.ajax_country"),
     url(r"^ajax_set_selected_country", "flaunt.views.ajax_set_selected_country", name="set_country"),
@@ -70,7 +76,8 @@ urlpatterns += patterns('',
     (r'^paypal-ipn-4d4k9t485j5d4g1re56t25rr2de/', include('paypal.standard.ipn.urls')),
     
     url(r"^postmark/bounce/$", "postmark.views.bounce", name="postmark_bounce_hook"),
-
+    url(r"^sitemap\.xml$", "django.contrib.sitemaps.views.sitemap", {'sitemaps':sitemaps}),
+    url(r"^robots\.txt$", include("robots.urls")),
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
     # This pattern points the homepage to the blog post listing page,
