@@ -21,12 +21,21 @@ register_setting(
 )
 
 register_setting(
-    name="SOCIAL_LINK_PINTEREST",
-    label=_("Pinterest link"),
-    description=_("If present a Pinterest icon linking here will be in the "
+    name="SOCIAL_LINK_GOOGLE_PLUS",
+    label=_("Google+ link"),
+    description=_("If present a Google+ icon linking here will be in the "
         "header."),
     editable=True,
-    default='http://www.pinterest.com/younameitshop/',
+    default='http://plus.google.com/cpupanda/',
+)
+
+register_setting(
+    name="SOCIAL_LINK_LINKEDIN",
+    label=_("InkedIn link"),
+    description=_("If present a Linkedin icon linking here will be in the "
+        "header."),
+    editable=True,
+    default='http://linkedin.com/cpupanda/',
 )
 
 #appending new defined setting to TEMPLATE_ACCESSIBLE_SETTINGS
@@ -34,6 +43,6 @@ register_setting(
     name="TEMPLATE_ACCESSIBLE_SETTINGS",
     description=_("Sequence of setting names available within templates."),
     editable=False,
-    default=("SOCIAL_LINK_FACEBOOK", "SOCIAL_LINK_TWITTER", "SOCIAL_LINK_PINTEREST"),
+    default=("SOCIAL_LINK_FACEBOOK", "SOCIAL_LINK_TWITTER", "SOCIAL_LINK_GOOGLE_PLUS", "SOCIAL_LINK_LINKEDIN"),
     append=True,
 )

@@ -337,17 +337,20 @@ _________________________________________________________ -->
                     <h4>Stay in touch</h4>
 
                     <p class="social">
+                                        
+                                        {% if settings.SOCIAL_LINK_TWITTER %}
+                                            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter"><i class="fa fa-twitter"></i></a>
+                                        {% endif %}
                                         {% if settings.SOCIAL_LINK_FACEBOOK %}
                                             <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
                                         {% endif %}
 
-                                        {% if settings.BLOGGING_LINK_TUMBRL %}
-                                            <a rel="tooltip" target="_blank" href="{{ settings.BLOGGING_LINK_TUMBRL }}" title="Tumbrl" class="tumbrl">Tumbrl</a>
+                                        {% if settings.SOCIAL_LINK_GOOGLE_PLUS %}
+                                            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_GOOGLE_PLUS }}" title="Google Plus"><i class="fa fa-google-plus"></i></a>
                                         {% endif %}
-                                        {% if settings.SOCIAL_LINK_TWITTER %}
-                                            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter"><i class="fa fa-twitter"></i></a>
+                                        {% if settings.SOCIAL_LINK_LINKEDIN %}
+                                            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_LINKEDIN }}" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
                                         {% endif %}
-                                        
                                         <a rel="tooltip" target="_blank" href="mailto:info@cpupanda.com" title="email us!"><i class="fa fa-envelope"></i></a>
                     </p>
 
