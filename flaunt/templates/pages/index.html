@@ -20,7 +20,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
         {% for image in slider_images %}
             <div class="item">
                 <a href="{{ image.link }}">
-                    <img src="{{ MEDIA_URL }}{{ image.image }}" alt="" class="img-responsive">
+                    <img src="{{ MEDIA_URL }}{% thumbnail image.image 300 300 %}" alt="{{ image.link }}" class="img-responsive">
                 </a>
             </div>
         {% endfor %}
