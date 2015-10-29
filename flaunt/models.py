@@ -111,6 +111,7 @@ class Slide(Orderable):
     A slide in a slider connected to a HomePage
     '''
     homepage = models.ForeignKey(HomePage, related_name="slides")
+    link = models.CharField(max_length=100, blank=False)
     image = FileField(verbose_name=_("Image"),
         upload_to=upload_to("taobay.Slide.image", "slider"),
         format="Image", max_length=255, null=True, blank=True)

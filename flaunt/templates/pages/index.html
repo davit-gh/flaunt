@@ -16,15 +16,15 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
         <!-- *** SLIDER ***
     ___________________ -->
 
-    <div id="intro">
-        <div class="item">
-            <div class="container">
-                <div class="row">
-                    <div class="carousel-caption">
-                    </div>
-                </div>
+    <div id="slider" class="owl-carousel owl-theme">
+        {% for image in slider_images %}
+            <div class="item">
+                <a href="{{ image.link }}">
+                    <img src="{{ MEDIA_URL }}{{ image.image }}" alt="" class="img-responsive">
+                </a>
             </div>
-        </div>
+        {% endfor %}
+
     </div>
     <!-- /#slider -->
 
