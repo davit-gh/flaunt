@@ -155,7 +155,7 @@ button i.fa {
   font-size: 13px;
 }
 #intro {
-  background: url('../../img/slider_old.jpg') no-repeat center top;
+  background: url('../../img/slider.jpg') no-repeat center top;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -1817,4 +1817,8 @@ font-size: 21px;
 
 #id_value{
   padding-left: 0;
+}
+
+#prod_table td{
+  padding: 10px;
 }

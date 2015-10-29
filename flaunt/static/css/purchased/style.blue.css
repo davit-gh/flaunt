@@ -1818,3 +1818,7 @@ font-size: 21px;
 #id_value{
   padding-left: 0;
 }
+
+#prod_table > tbody > tr > td{
+  padding: 10px;
+}
