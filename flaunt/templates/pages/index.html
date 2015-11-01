@@ -133,16 +133,21 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                                                                 <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive">
                                                             </div>
 
-                                                            <div class="ribbon ribbon-quick-view sale">
+                                                            {% if product.on_sale %}
+                                                            <div class="ribbon sale">
                                                                 <div class="theribbon">SALE</div>
                                                                 <div class="ribbon-background"></div>
                                                             </div>
                                                             <!-- /.ribbon -->
+                                                            {% endif %}
 
-                                                            <div class="ribbon ribbon-quick-view new">
+                                                            {% if product|isNewProduct %}
+                                                            <div class="ribbon new">
                                                                 <div class="theribbon">NEW</div>
                                                                 <div class="ribbon-background"></div>
                                                             </div>
+                                                            <!-- /.ribbon -->
+                                                            {% endif %}
                                                             <!-- /.ribbon -->
 
                                                             <div class="row thumbs">
