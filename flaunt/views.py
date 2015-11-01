@@ -325,3 +325,24 @@ def get_discount(request, discount_form_class=DiscountForm):
         else:
         	return HttpResponse(json.dumps(discount_form.errors), content_type="application/json")
 		
+from json import dumps
+def product(request, prod, template="shop/product.html",
+            form_class=AddProductForm):
+    #pdb.set_trace()
+    fields = [f.name for f in ProductVariation.option_fields()]
+    variations = prod.variations.all()
+    variations_json = dumps([dict([(f, getattr(v, f))
+        for f in fields + ["sku", "image_id"]]) for v in variations])
+    to_cart = (request.method == "POST" and
+               request.POST.get("add_wishlist") is None)
+    initial_data = {}
+    initial_data["quantity"] = 1
+    add_product_form = form_class(request.POST or None, product=prod,
+                                  initial=initial_data, to_cart=to_cart)
+        
+    context = {
+        "variations": variations,
+        "add_product_form": add_product_form
+    }
+
+    return context

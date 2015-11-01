@@ -1,6 +1,6 @@
 {% extends "pages/page.html" %}
 
-{% load staticfiles mezzanine_tags shop_tags blog_tags i18n %}
+{% load staticfiles mezzanine_tags shop_tags blog_tags i18n widget_tweaks %}
 {% block body_id %}category{% endblock %}
 
 
@@ -11,7 +11,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
 {% endblock %}
 {% block slider %}
-
+<h3 class="text-uppercase text-center">Our Hot Deals</i></h3>
     {% if slider_images %}
         <!-- *** SLIDER ***
     ___________________ -->
@@ -49,7 +49,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                     <div class="box text-center">
                         <h3 class="text-uppercase">About <i>CPU Panda</i></h3>
 
-                        <p> CPUPanda is a worldwide marketplace for AMD CPUs with <strong>free shipping</strong>. Have your order delivered fast or have it delivered free.</p>
+                        <p> CPU Panda is an online store for AMD & Intel CPUs. <strong>Free shipping</strong> and <strong>decent prices</strong> guaranteed. Have your order delivered fast or have it delivered free.</p>
 
 
 
@@ -94,19 +94,22 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
         <!-- *** ADVANTAGES END *** -->
 
                     <div class="box text-center">
-                        <h3 class="text-uppercase">Recently Added products</h3>
+                        <h3 class="text-uppercase">Our CPU offers</h3>
 
                         <h4 class="text-muted"><span class="accent">Free shipping</span> on all</h4>
                     </div>
 
-                    <div id="grid" class="row shuffle--container shuffle--fluid">   
-                        {% for product in products %}
-                            <div class="col-md-3 col-sm-4" data-groups='{{ product.categories.all|join:", " }}'>
+                    <div class="row products">   
+                        {% for product, var in products.items %}
+                            <div class="col-md-3 col-sm-4">
                                 <div class="product">
                                     <div class="image">
                                         <a href="{{ product.get_absolute_url }}">
                                             <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive image1">
                                         </a>
+                                        <div class="quick-view-button">
+                                            <a href="#" data-toggle="modal" data-target="#product-quick-view-modal{{ product.id }}" class="btn btn-default btn-sm">Quick view</a>
+                                        </div>
                                     </div>
                                     <!-- /.image -->
                                     <div class="text">
@@ -116,10 +119,131 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                                     </div>
                                     <!-- /.text -->
 
-                                    <p class="buttons">
-                                        <a href="{{ product.get_absolute_url }}" class="btn btn-default">View detail</a>
-                                        <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </p>
+                                    <div class="modal fade" id="product-quick-view-modal{{ product.id }}" tabindex="-1" role="dialog" aria-hidden="false">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                    <div class="row quick-view product-main">
+                                                        <div class="col-sm-6">
+                                                        
+                                                            <div class="quick-view-main-image">
+                                                                <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive">
+                                                            </div>
+
+                                                            <div class="ribbon ribbon-quick-view sale">
+                                                                <div class="theribbon">SALE</div>
+                                                                <div class="ribbon-background"></div>
+                                                            </div>
+                                                            <!-- /.ribbon -->
+
+                                                            <div class="ribbon ribbon-quick-view new">
+                                                                <div class="theribbon">NEW</div>
+                                                                <div class="ribbon-background"></div>
+                                                            </div>
+                                                            <!-- /.ribbon -->
+
+                                                            <div class="row thumbs">
+                                                                {% for image in product.images.all %}
+                                                                <div class="col-xs-4">
+                                                                    <a href="#" class="thumb">
+                                                                        <img src="{{ MEDIA_URL }}{{ image.file }}" alt="{{ image.file }}" class="img-responsive">
+                                                                    </a>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-sm-6" id="cont">
+
+                                                            <h2><a href="{{ product.get_absolute_url }}">{{ product }}</a></h2>
+
+                                                            <p class="text-muted text-small text-center">{{ product.additional|richtext_filters|safe }}</p>
+                                                            
+                                                            <div class="box">
+                                                            {% if product.available %}
+                                                                {% errors_for var.add_product_form %}
+
+                                                                    <form method="post" action="{% url 'shop_product' product.slug %}" class="shop-form">
+                                                                        {% csrf_token %}
+
+                                                                        <table class="t1" id="popup-form-table">
+                                                                            <tr>
+                                                                                <td class="td1">
+                                                                             
+                                                                                    {% for field in var.add_product_form %}
+                                                                                        {% if field.is_hidden %}
+                                                                                            {{ field }}
+                                                                                        {% else  %}
+                                                                                            <div class="fields">
+                                                                                                {% if field.label %}
+                                                                                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                                                                {% endif %}
+                                                                                                {% render_field field class="form-control" id=field.label %}
+                                                                                                <br/>
+                                                                                                {% if field.help_text %}
+                                                                                                    <p class="help-block">{{ field.help_text }}</p>
+                                                                                                {% endif %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                        
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <ul id="variations" class="list-unstyled">
+                                                                            {% for variation in var.variations %}
+                                                                            <li id="variation-{{ variation.sku }}"
+                                                                                {% if not variation.default %}style="display:none;"{% endif %}>
+                                                                                {% if variation.has_price %}
+                                                                                    {% if variation.on_sale %}
+                                                                                        <p class="price">{{ variation.unit_price|currency }}</p>
+                                                                                        <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                                                                    {% endif %}
+                                                                                    <p class="price">{{ variation.price|currency }}</p>
+                                                                                {% else %}
+                                                                                    {% if has_available_variations %}
+                                                                                    <span class="error-msg">
+                                                                                    {% trans "The selected options are currently unavailable." %}
+                                                                                    </span>
+                                                                                    {% endif %}
+                                                                                {% endif %}
+                                                                            </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                        <p class="text-center">
+                                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> {% trans "Add to cart" %}</button>
+
+                                                                            <button type="submit" name="add_wishlist" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans "Add to wishlist" %}"><i class="fa fa-heart-o"></i>
+                                                                            </button>
+                                                                        </p>
+                                                                    </form>
+                                                            {% else %}
+                                                                    <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
+                                                            {% endif %}
+                                                            </div>
+                                                            <!-- /.box -->
+
+                                                            <div class="quick-view-social">
+                                                                <h4>Show it to your friends</h4>
+                                                                <p>
+                                                                    <a href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ product.slug }}" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+                                                                    <a href="https://plus.google.com/share?url={{ request.build_absolute_uri}}{{ product.get_absolute_url|urlencode }}" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+                                                                    <a href="http://twitter.com/home?status={{ request.build_absolute_uri}}{{ product.get_absolute_url|urlencode }}%20{{ product.slug }}" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+                                                                    <a href="mailto:?body=Check%20this%20out!&subject={{ request.get_host}}/{{ product.get_absolute_url|urlencode }}%20{{ product.title|urlencode }}" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/.modal-dialog-->
+                                    </div>
                                 </div>
                                 <!-- /.product -->
                             </div>

@@ -7,6 +7,8 @@ from mezzanine.utils.views import paginate
 #for ajax form processor
 from mezzanine.pages.page_processors import processor_for
 from mezzanine.pages.models import Page
+from flaunt.views import product
+from collections import OrderedDict
 import pdb 
 
 
@@ -27,13 +29,11 @@ def home_processor(request, page):
 	products.sort_by = sort_by
 
 	slider_images = Slide.objects.all()
-	
+	product_vars = [product(request, prod) for prod in products]
 	#pdb.set_trace()
-	return {'products':products, 'slider_images': slider_images}
+	return {'products':OrderedDict(zip(products,product_vars)), 'slider_images': slider_images}
 
 @processor_for(FAQPage)
 def home_processor(request, page):
 	qas = FAQ.objects.all()
 	return {'qas': qas}
-
-

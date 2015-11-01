@@ -176,22 +176,22 @@ $("#zoom_03").bind("click", function(e) {
                                 <tr>
                                     <td class="td1">
                                  
-                                    {% for field in add_product_form %}
-                                        {% if field.is_hidden %}
-                                            {{ field }}
-                                        {% else  %}
-                                            <div class="fields">
-                                                {% if field.label %}
-                                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                                                {% endif %}
-                                                {% render_field field class="form-control" id=field.label %}
-                                                <br/>
-                                                {% if field.help_text %}
-                                                    <p class="help-block">{{ field.help_text }}</p>
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                        {% for field in add_product_form %}
+                                            {% if field.is_hidden %}
+                                                {{ field }}
+                                            {% else  %}
+                                                <div class="fields">
+                                                    {% if field.label %}
+                                                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                    {% endif %}
+                                                    {% render_field field class="form-control" id=field.label %}
+                                                    <br/>
+                                                    {% if field.help_text %}
+                                                        <p class="help-block">{{ field.help_text }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
                             
                                     </td>
                                 </tr>
