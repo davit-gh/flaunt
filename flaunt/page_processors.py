@@ -31,7 +31,7 @@ def home_processor(request, page):
 	slider_images = Slide.objects.all()
 	product_vars = [product(request, prod) for prod in products]
 	#pdb.set_trace()
-	return {'products':OrderedDict(zip(products,product_vars)), 'slider_images': slider_images}
+	return {'products':OrderedDict(zip(products,product_vars)), 'slider_images': slider_images, 'products_pagination': products}
 
 @processor_for(FAQPage)
 def home_processor(request, page):
