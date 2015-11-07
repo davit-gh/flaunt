@@ -2,7 +2,7 @@ from cartridge.shop.models import Category
 
 def get_men_women_categories(request):
 	amd_categories = Category.objects.filter(title__startswith="AMD")
-	intel_categories = Category.objects.filter(title__startswith="intel")
+	intel_categories = Category.objects.filter(title__startswith="Intel")
 	#product_categories = Category.objects.get(title="Products").children.published()
 	#product_titles = map(lambda x: x.title, product_categories)
 	amd_titles = map(lambda x: x.title, amd_categories)
