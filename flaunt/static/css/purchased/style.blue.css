@@ -515,6 +515,7 @@ button i.fa {
 
 #content .product .image .quick-view-button {
   position: absolute;
+  border: 1px solid #333;
   top: 50%;
   margin-top: -100px;
   left: 50%;

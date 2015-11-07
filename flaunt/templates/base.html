@@ -119,7 +119,7 @@ _________________________________________________________ -->
                                     </div>
                                 </div>
                                 <div class="footer clearfix hidden-xs">
-                                    <h4 class="pull-right">AMD</h4>
+                                    <h4 class="pull-right">Intel & AMD</h4>
                                     <div class="buttons pull-left">
                                         
                                     </div>
@@ -281,7 +281,7 @@ _________________________________________________________ -->
 
         <div id="footer">
             <div class="container">
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-3 col-sm-6">
                     <h4>Pages</h4>
 
                     <ul>
@@ -312,9 +312,30 @@ _________________________________________________________ -->
                 <!-- /.col-md-3 -->
 
 
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-3 col-sm-6">
                     <h4>Top categories</h4>
-                   {% for key,val in women.items %}
+                   {% for key,val in intel.items %}
+                        <h5>{{ key }}</h5>
+                        <ul>
+                            {% for entry in val %}
+                                <li>
+                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                    
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                </div>
+                <!-- /.col-md-3 -->
+
+                <!-- /.col-md-3 -->
+
+
+                <div class="col-md-3 col-sm-6">
+                    <h4>Top categories</h4>
+                   {% for key,val in amd.items %}
                         <h5>{{ key }}</h5>
                         <ul>
                             {% for entry in val %}
@@ -332,7 +353,7 @@ _________________________________________________________ -->
 
 
 
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-3 col-sm-6">
 
                     <h4>Stay in touch</h4>
 
@@ -371,17 +392,13 @@ _________________________________________________________ -->
             <div class="container">
                 <div class="col-md-12">
                     
-                    <div class="col-sm-12">
-                        <div class="col-sm-4">
-                            <img src="{% static 'img/assets/PayPal_2014_logo.svg' %}" width="70%" alt="We accept Paypal" class="img-responsive center-block">
+                    
+                        <div class="text-center">
+                            <img src="{% static 'img/assets/PayPal_2014_logo.svg' %}" width="10%" alt="We accept Paypal" class="">
+                            <img src="{% static 'img/btc_accepted_here.png' %}" width="7%" alt="We accept bitcoin" class="">
+                        
                         </div>
-                        <div class="col-sm-4">
-                            <img src="{% static 'img/btc_accepted_here.png' %}" height="50px" ="150" alt="We accept bitcoin" class="img-responsive center-block">
-                        </div>
-                        <div class="col-sm-4">
-                            <img src="{% static "img/100moneyback.png" %}" width="40%" alt="100% Money Back Guarantee" class="img-responsive center-block">
-                        </div>
-                    </div>
+                    
                     <p class="text-center">&copy; 2015. CPU Panda, all rights reserved.</p>
                 </div>
             </div>

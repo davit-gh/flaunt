@@ -1865,3 +1865,66 @@ font-size: 21px;
 	font-size: 28px;
 	margin: 20px 0;
 }
+
+#content .quick-view-social,
+#content #product-social {
+  text-align: center;
+}
+#content .quick-view-social h4,
+#content #product-social h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+#content .quick-view-social p,
+#content #product-social p {
+  line-height: 26px;
+}
+#content .quick-view-social p a,
+#content #product-social p a {
+  margin: 0 10px 0 0;
+  color: #fff;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  line-height: 26px;
+  font-size: 15px;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  vertical-align: bottom;
+}
+#content .quick-view-social p a i,
+#content #product-social p a i {
+  vertical-align: bottom;
+  line-height: 26px;
+}
+#content .quick-view-social p a.facebook,
+#content #product-social p a.facebook {
+  background-color: #4460ae;
+}
+#content .quick-view-social p a.gplus,
+#content #product-social p a.gplus {
+  background-color: #c21f25;
+}
+#content .quick-view-social p a.twitter,
+#content #product-social p a.twitter {
+  background-color: #3cf;
+}
+#content .quick-view-social p a.instagram,
+#content #product-social p a.instagram {
+  background-color: #cd4378;
+}
+#content .quick-view-social p a.email,
+#content #product-social p a.email {
+  background-color: #4a7f45;
+}
+@media (max-width: 991px) {
+  #content .quick-view-social,
+  #content #product-social {
+    text-align: center;
+  }
+}
