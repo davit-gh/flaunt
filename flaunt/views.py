@@ -19,8 +19,8 @@ def ajax_country(request):
 		#message="is ajax"
 		countrylist_country = Countrylist.objects.get(country=request.POST['country'])
 		carriers_priority=map(lambda x: x.carrier,countrylist_country.carrierlistpriority_set.all())
-		carriers_priority=[c_p[1:-1].split(', ') for c_p in carriers_priority]
-		carriers_priority=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_priority]
+		#carriers_priority=[c_p[1:-1].split(', ') for c_p in carriers_priority]
+		#carriers_priority=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_priority]
 		#carriers_regular = map(lambda x: x.carrier, countrylist_country.carrierlistregular_set.all())
 		#carriers_regular=[c_p[1:-1].split(', ') for c_p in carriers_regular]
 		#carriers_regular=[cp[0] + '  '+cp[1]+' days '+'$'+cp[2] for cp in carriers_regular]
