@@ -114,7 +114,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                                     <!-- /.image -->
                                     <div class="text">
                                         <h3><a href="{{ product.get_absolute_url }}">{{ product }}</a></h3>
-                                        <p class="price">{{ product.price|currency }}</p>
+                                        <p class="price">{% if product.on_sale %}<del>{{ product.unit_price|currency }}</del>{% endif %} {{ product.price|currency }}</p>
 
                                     </div>
                                     <!-- /.text -->

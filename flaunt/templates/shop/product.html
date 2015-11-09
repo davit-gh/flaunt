@@ -202,7 +202,7 @@ $("#zoom_03").bind("click", function(e) {
                                                     {% if not variation.default %}style="display:none;"{% endif %}>
                                                     {% if variation.has_price %}
                                                         {% if variation.on_sale %}
-                                                            <p class="price">{{ variation.unit_price|currency }}</p>
+                                                            <p class="text-center"><del>{{ variation.unit_price|currency }}</del></p>
                                                             <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
                                                         {% endif %}
                                                         <p class="price">{{ variation.price|currency }}</p>
