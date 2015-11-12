@@ -102,7 +102,21 @@ _________________________________________________________ -->
                                 <div class="yamm-content">
                                     <div class="row">
                                         
-                                        {% for key,val in women.items %}
+                                        {% for key,val in intel.items %}
+                                            <div class="col-sm-3">
+                                                <h3>{{ key }}</h3>
+                                                <ul>
+                                                    {% for entry in val %}
+                                                        <li>
+                                                            <a href="{% url 'page' entry|last %}">
+                                                                {{ entry|first }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endfor %}
+                                        {% for key,val in amd.items %}
                                             <div class="col-sm-3">
                                                 <h3>{{ key }}</h3>
                                                 <ul>
