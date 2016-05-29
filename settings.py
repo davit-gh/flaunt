@@ -258,7 +258,7 @@ DEBUG = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SITE_ID = 1
-
+MEZZANINE_SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = False
@@ -511,7 +511,7 @@ else:
 # SOCIAL ICON SETTINGS #
 ########################
 
-SITE_TITLE = "CPU Panda"
+SITE_TITLE = "Cart4brand"
 
 
 EMAIL_BACKEND = "postmark.backends.PostmarkBackend"
