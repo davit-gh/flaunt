@@ -257,7 +257,7 @@ DEBUG = False
 # Whether a user's session cookie expires when the Web browser is closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SITE_ID = 2
+SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -477,7 +477,6 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 #     "SECRET_KEY": SECRET_KEY,
 #     "NEVERCACHE_KEY": NEVERCACHE_KEY,
 # }
-SITE_ID=1
 
 ##################
 # LOCAL SETTINGS #
