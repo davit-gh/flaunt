@@ -1791,7 +1791,6 @@ content .icon.icon-lg {
 }
 
 #content .icon {
-  display: inline-block;
   width: 80px;
   height: 80px;
   color: #fff;
@@ -1932,4 +1931,8 @@ font-size: 21px;
 
 #blog-p{
   font-size: 1.6vw;
+}
+
+.text-center{
+  text-align: center;
 }

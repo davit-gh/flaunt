@@ -153,18 +153,18 @@ SHOP_OPTION_TYPE_CHOICES = (
 # ``django.models.db.`` can be omitted for regular Django model fields.
 #
 EXTRA_MODEL_FIELDS = (
-      (
-    	  "cartridge.shop.models.Product.short_desc",
-    	  "TextField",
-    	  ("Short desc",),
-    	  {"blank": True},
-      ),
-      (
-          "cartridge.shop.models.Product.additional",
-          "mezzanine.core.fields.RichTextField",
-          ("Additional Info",),
-          {"blank": True},
-      ),
+      # (
+    	 #  "cartridge.shop.models.Product.short_desc",
+    	 #  "TextField",
+    	 #  ("Short desc",),
+    	 #  {"blank": True},
+      # ),
+      # (
+      #     "cartridge.shop.models.Product.additional",
+      #     "mezzanine.core.fields.RichTextField",
+      #     ("Additional Info",),
+      #     {"blank": True},
+      # ),
       (
         "cartridge.shop.models.Order.callback_uuid",
         "django.db.models.CharField",
@@ -477,7 +477,7 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 #     "SECRET_KEY": SECRET_KEY,
 #     "NEVERCACHE_KEY": NEVERCACHE_KEY,
 # }
-
+SITE_ID=1
 
 ##################
 # LOCAL SETTINGS #

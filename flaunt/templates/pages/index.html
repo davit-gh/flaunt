@@ -55,18 +55,18 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 
                         <div class="same-height-row row">
                             <div class="col-sm-6">
-                                <div class="box same-height no-border text-center-xs text-center-sm">
-                                    <div class="icon"><i class="fa fa-heart-o"></i>
+                                <div class="box same-height no-border">
+                                    <div class="icon center-block"><i class="fa fa-heart-o"></i>
                                     </div>
-                                    <h4>{% trans "Satisfied customers" %}</h4>
+                                    <h4 class="text-center">{% trans "Satisfied customers" %}</h4>
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
-                                <div class="box same-height no-border text-center-xs text-center-sm">
-                                    <div class="icon"><i class="fa fa-tags"></i>
+                                <div class="box same-height no-border text-center-xs text-center-sm text-center-md">
+                                    <div class="icon center-block"><i class="fa fa-tags"></i>
                                     </div>
-                                    <h4>{% trans "Best prices" %}</h4>
+                                    <h4 class="text-center">{% trans "Best prices" %}</h4>
                                 </div>
                             </div>
 
@@ -135,13 +135,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
                                                             <!-- /.ribbon -->
                                                             {% endif %}
 
-                                                            {% if product|isNewProduct %}
-                                                            <div class="ribbon new">
-                                                                <div class="theribbon">NEW</div>
-                                                                <div class="ribbon-background"></div>
-                                                            </div>
-                                                            <!-- /.ribbon -->
-                                                            {% endif %}
+                                                            
                                                             <!-- /.ribbon -->
 
                                                             <div class="row thumbs">
@@ -278,13 +272,7 @@ _________________________________________________________ -->
                 <div class="col-sm-12">
                     <!-- *** BLOG HOMEPAGE *** -->
 
-                    <div class="box text-center">
-                        <h3 class="text-uppercase">From our blog</h3>
-
-                        <p class="text-italic text-large">What's new in the world of CPUs? <span class="accent"><a href="{% url 'blog_post_list' %}">Check our blog!</a></span>
-                        </p>
-                    </div>
-
+                    
                     <div id="blog-homepage" class="row">
                       {% blog_recent_posts 2 as recent_posts %}
                       {% for post in recent_posts %}
