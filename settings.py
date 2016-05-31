@@ -529,3 +529,7 @@ BTC_SECRET = 'so3vi54cibusqx71yerjiqvpk2n5wov3cd29paz4'
 SOUTH_MIGRATION_MODULES = {
         'robots': 'robots.south_migrations',
 }
+
+HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
+               ('cart4brand.com', 'flaunt'),
+               ('games4parties.com', 'partygames')]
