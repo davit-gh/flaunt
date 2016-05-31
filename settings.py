@@ -363,6 +363,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
     "flaunt",
+    "partygames",
     "postmark",
     "widget_tweaks",
     "django.contrib.admin",

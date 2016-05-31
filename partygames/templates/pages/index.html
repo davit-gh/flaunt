@@ -1,0 +1,315 @@
+{% extends "pages/page.html" %}
+
+{% load staticfiles mezzanine_tags shop_tags blog_tags i18n widget_tweaks get_range %}
+{% block body_id %}category{% endblock %}
+
+
+{% block extra_css %}
+{{ block.super }}
+<!-- make the corners of select tag for sorting round and move it 
+upper to allign with its left div. cart/checkout block also moves up (panel class)-->
+
+{% endblock %}
+{% block slider %}
+<h3 class="text-uppercase text-center">Our Hot Deals</i></h3>
+    {% if slider_images %}
+        <!-- *** SLIDER ***
+    ___________________ -->
+
+    <div id="slider" class="owl-carousel owl-theme">
+        {% for image in slider_images %}
+            <div class="item">
+                <a href="{{ image.link }}">
+                    <img src="{{ MEDIA_URL }}{% thumbnail image.image 300 300 %}" alt="{{ image.link }}" class="img-responsive">
+                </a>
+            </div>
+        {% endfor %}
+
+    </div>
+    <!-- /#slider -->
+
+    <!-- *** SLIDER END *** -->
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+{% block main_span_size %}12{% endblock %}
+{% block main %}{{ block.super }}
+    
+    
+        <div id="advantages">
+
+            <div class="container">
+
+                <div class="col-md-12">
+
+                    <div class="box text-center">
+                        <h3 class="text-uppercase">About <i>CPU Panda</i></h3>
+
+                        <p> Games for your parties. Have fun!</p>
+
+
+
+                        <div class="same-height-row row">
+                            <div class="col-sm-6">
+                                <div class="box same-height no-border">
+                                    <div class="icon center-block"><i class="fa fa-heart-o"></i>
+                                    </div>
+                                    <h4 class="text-center">{% trans "Satisfied customers" %}</h4>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="box same-height no-border text-center-xs text-center-sm text-center-md">
+                                    <div class="icon center-block"><i class="fa fa-tags"></i>
+                                    </div>
+                                    <h4 class="text-center">{% trans "Best prices" %}</h4>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                        <!-- /.row -->
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <!-- /.container -->
+
+        </div>
+        <!-- /#advantages -->
+
+        <!-- *** ADVANTAGES END *** -->
+
+                    <div class="box text-center">
+                        <h3 class="text-uppercase">Our CPU offers</h3>
+
+                        <h4 class="text-muted"><span class="accent">Free shipping</span> on all</h4>
+                    </div>
+
+                    <div class="row products">   
+                        {% for product, var in products.items %}
+                            <div class="col-md-3 col-sm-4">
+                                <div class="product">
+                                    <div class="image">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive image1">
+                                        </a>
+                                        <div class="quick-view-button">
+                                            <a href="#" data-toggle="modal" data-target="#product-quick-view-modal{{ product.id }}" class="btn btn-default btn-sm">Quick view</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.image -->
+                                    <div class="text">
+                                        <h3><a href="{{ product.get_absolute_url }}">{{ product }}</a></h3>
+                                        <p class="price">{% if product.on_sale %}<del>{{ product.unit_price|currency }}</del>{% endif %} {{ product.price|currency }}</p>
+
+                                    </div>
+                                    <!-- /.text -->
+
+                                    <div class="modal fade" id="product-quick-view-modal{{ product.id }}" tabindex="-1" role="dialog" aria-hidden="false">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                    <div class="row quick-view product-main">
+                                                        <div class="col-sm-6">
+                                                        
+                                                            <div class="quick-view-main-image">
+                                                                <img src="{{ MEDIA_URL }}{% thumbnail product.image 450 450 %}" alt="" class="img-responsive">
+                                                            </div>
+
+                                                            {% if product.on_sale %}
+                                                            <div class="ribbon sale">
+                                                                <div class="theribbon">SALE</div>
+                                                                <div class="ribbon-background"></div>
+                                                            </div>
+                                                            <!-- /.ribbon -->
+                                                            {% endif %}
+
+                                                            
+                                                            <!-- /.ribbon -->
+
+                                                            <div class="row thumbs">
+                                                                {% for image in product.images.all %}
+                                                                <div class="col-xs-4">
+                                                                    <a href="#" class="thumb">
+                                                                        <img src="{{ MEDIA_URL }}{{ image.file }}" alt="{{ image.file }}" class="img-responsive">
+                                                                    </a>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-sm-6" id="cont">
+
+                                                            <h2><a href="{{ product.get_absolute_url }}">{{ product }}</a></h2>
+
+                                                            <p class="text-muted text-small text-center">{{ product.additional|richtext_filters|safe }}</p>
+                                                            
+                                                            <div class="box">
+                                                            {% if product.available %}
+                                                                {% errors_for var.add_product_form %}
+
+                                                                    <form method="post" action="{% url 'shop_product' product.slug %}" class="shop-form">
+                                                                        {% csrf_token %}
+
+                                                                        <table class="t1" id="popup-form-table">
+                                                                            <tr>
+                                                                                <td class="td1">
+                                                                             
+                                                                                    {% for field in var.add_product_form %}
+                                                                                        {% if field.is_hidden %}
+                                                                                            {{ field }}
+                                                                                        {% else  %}
+                                                                                            <div class="fields">
+                                                                                                {% if field.label %}
+                                                                                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                                                                {% endif %}
+                                                                                                {% render_field field class="form-control" id=field.label %}
+                                                                                                <br/>
+                                                                                                {% if field.help_text %}
+                                                                                                    <p class="help-block">{{ field.help_text }}</p>
+                                                                                                {% endif %}
+                                                                                            </div>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                        
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <ul id="variations" class="list-unstyled">
+                                                                            {% for variation in var.variations %}
+                                                                            <li id="variation-{{ variation.sku }}"
+                                                                                {% if not variation.default %}style="display:none;"{% endif %}>
+                                                                                {% if variation.has_price %}
+                                                                                    {% if variation.on_sale %}
+                                                                                        <p class="text-center"><del>{{ variation.unit_price|currency }}</del></p>
+                                                                                        <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
+                                                                                    {% endif %}
+                                                                                    <p class="price">{{ variation.price|currency }}</p>
+                                                                                {% else %}
+                                                                                    {% if has_available_variations %}
+                                                                                    <span class="error-msg">
+                                                                                    {% trans "The selected options are currently unavailable." %}
+                                                                                    </span>
+                                                                                    {% endif %}
+                                                                                {% endif %}
+                                                                            </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                        <p class="text-center">
+                                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> {% trans "Add to cart" %}</button>
+
+                                                                            <button type="submit" name="add_wishlist" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans "Add to wishlist" %}"><i class="fa fa-heart-o"></i>
+                                                                            </button>
+                                                                        </p>
+                                                                    </form>
+                                                            {% else %}
+                                                                    <p class="error-msg">{% trans "This product is currently unavailable." %}</p>
+                                                            {% endif %}
+                                                            </div>
+                                                            <!-- /.box -->
+
+                                                            <div class="quick-view-social">
+                                                                <h4>Show it to your friends</h4>
+                                                                <p>
+                                                                    <a href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ product.slug }}" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+                                                                    <a href="https://plus.google.com/share?url={{ request.build_absolute_uri}}{{ product.get_absolute_url|urlencode }}" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+                                                                    <a href="http://twitter.com/home?status={{ request.build_absolute_uri}}{{ product.get_absolute_url|urlencode }}%20{{ product.slug }}" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+                                                                    <a href="mailto:?body=Check%20this%20out!&subject={{ request.get_host}}/{{ product.get_absolute_url|urlencode }}%20{{ product.title|urlencode }}" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/.modal-dialog-->
+                                    </div>
+                                </div>
+                                <!-- /.product -->
+                            </div>
+                        {% endfor %}                            
+                    </div>
+                    <div class="span6">
+                        {% pagination_for products_pagination %}
+                    </div>
+
+                                <!-- *** PROMO BAR ***
+_________________________________________________________ -->
+
+            <div class="bar background-image-fixed-2 no-mb color-white text-center">
+                <div class="dark-mask"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="icon icon-lg"><i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <h1>Did you know our website is responsive?</h1>
+                            <p class="lead">You can shop on CPU Panda on your mobile and tablet devices!</p>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- *** PROMO BAR END *** -->
+
+
+            <div class="container">
+                <div class="col-sm-12">
+                    <!-- *** BLOG HOMEPAGE *** -->
+
+                    
+                    <div id="blog-homepage" class="row">
+                      {% blog_recent_posts 2 as recent_posts %}
+                      {% for post in recent_posts %}
+                        <div class="col-sm-6">
+                            <div class="post">
+                                <h4><a href="{{ post.get_absolute_url }}">{{ blog.title }}</a></h4>
+                                {% with post.user as author %}
+                                  <p class="author-category">By <a href="{% url "blog_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a> in 
+                                  {% with blog_post.categories.all as categories %}
+                                      {% if categories %}
+                                          {% for category in categories %}
+                                              <a href="{% url "blog_post_list_category" category.slug %}">{{ category }}</a>
+                                              {% if not forloop.last %}, {% endif %}
+                                          {% endfor %}
+                                      {% endif %}
+                                  {% endwith %}
+                                  </p>
+                                {% endwith %}
+                                <hr>
+                                <p class="intro">{{ post.description_from_content|safe|truncatewords_html:48 }}</p>
+                                <p class="read-more"><a href="{{ post.get_absolute_url }}" class="btn btn-primary">Continue reading</a>
+                                </p>
+                            </div>
+
+                        </div>
+                      {% endfor %}
+                    </div>
+                    <!-- /#blog-homepage -->
+
+                    <!-- *** BLOG HOMEPAGE END *** -->
+
+                </div>
+            </div>
+           
+    
+    
+{% endblock %}
+{% block right_panel_wrapper %}
+    
+{% endblock %}
