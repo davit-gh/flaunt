@@ -37,6 +37,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('_order', self.gf('django.db.models.fields.IntegerField')(null=True)),
             ('homepage', self.gf('django.db.models.fields.related.ForeignKey')(related_name='slides', to=orm['flaunt.HomePage'])),
+            ('link', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('image', self.gf('mezzanine.core.fields.FileField')(max_length=255, null=True, blank=True)),
         ))
         db.send_create_signal(u'flaunt', ['Slide'])
@@ -166,12 +167,12 @@ class Migration(SchemaMigration):
         # Adding model 'Inboundmail'
         db.create_table(u'flaunt_inboundmail', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('html_body', self.gf('django.db.models.fields.CharField')(max_length=800)),
+            ('html_body', self.gf('django.db.models.fields.CharField')(max_length=2000)),
             ('send_date', self.gf('django.db.models.fields.DateTimeField')()),
             ('subject', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('reply_to', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('sender', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('attachment', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            ('attachment', self.gf('django.db.models.fields.CharField')(max_length=400, blank=True)),
         ))
         db.send_create_signal(u'flaunt', ['Inboundmail'])
 
@@ -332,8 +333,8 @@ class Migration(SchemaMigration):
         },
         u'flaunt.inboundmail': {
             'Meta': {'object_name': 'Inboundmail'},
-            'attachment': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
-            'html_body': ('django.db.models.fields.CharField', [], {'max_length': '800'}),
+            'attachment': ('django.db.models.fields.CharField', [], {'max_length': '400', 'blank': 'True'}),
+            'html_body': ('django.db.models.fields.CharField', [], {'max_length': '2000'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'reply_to': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'send_date': ('django.db.models.fields.DateTimeField', [], {}),
@@ -381,7 +382,8 @@ class Migration(SchemaMigration):
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'homepage': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'slides'", 'to': u"orm['flaunt.HomePage']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('mezzanine.core.fields.FileField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
+            'image': ('mezzanine.core.fields.FileField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'link': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'pages.page': {
             'Meta': {'ordering': "(u'titles',)", 'object_name': 'Page'},
