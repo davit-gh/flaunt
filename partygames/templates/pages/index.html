@@ -6,10 +6,6 @@
 
 {% block extra_css %}
 {{ block.super }}
-
-{% block logos %}
-    
-{% endblock %}
 <!-- make the corners of select tag for sorting round and move it 
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 
@@ -316,4 +312,11 @@ _________________________________________________________ -->
 {% endblock %}
 {% block right_panel_wrapper %}
     
+{% endblock %}
+
+{% block logos %}
+    <a class="navbar-brand home" href="/">
+        <img src="{% static "img/logo.jpg" %}" height="80" alt="Minimal logo" class="hidden-xs hidden-sm">
+        <img src="{% static "img/h4p.png" %}" height="52" alt="Minimal logo" class="visible-xs visible-sm"><span class="sr-only">Games4Parties - go to homepage</span>
+    </a>    
 {% endblock %}
