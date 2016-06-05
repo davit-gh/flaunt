@@ -531,4 +531,6 @@ SOUTH_MIGRATION_MODULES = {
 
 HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
                ('cart4brand.com', 'flaunt'),
-               ('games4parties.com', 'partygames')]
+               ('games4parties.com', 'partygames'),
+               ('c4b.com', 'flaunt'),
+               ('g4p.com', 'partygames')]
