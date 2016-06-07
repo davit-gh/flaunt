@@ -91,55 +91,6 @@ _________________________________________________________ -->
                     <li class="{% if page.slug == '/' %}active{% endif %}"><a href="/">Home</a>
                     </li>
                     
-                    <li class="dropdown yamm-fw">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <div class="yamm-content">
-                                    <div class="row">
-                                        
-                                        {% for key,val in intel.items %}
-                                            <div class="col-sm-3">
-                                                <h3>{{ key }}</h3>
-                                                <ul>
-                                                    {% for entry in val %}
-                                                        <li>
-                                                            <a href="{% url 'page' entry|last %}">
-                                                                {{ entry|first }}
-                                                            </a>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endfor %}
-                                        {% for key,val in amd.items %}
-                                            <div class="col-sm-3">
-                                                <h3>{{ key }}</h3>
-                                                <ul>
-                                                    {% for entry in val %}
-                                                        <li>
-                                                            <a href="{% url 'page' entry|last %}">
-                                                                {{ entry|first }}
-                                                            </a>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="footer clearfix hidden-xs">
-                                    <h4 class="pull-right">Party Games</h4>
-                                    <div class="buttons pull-left">
-                                        
-                                    </div>
-                                </div>
-
-                            </li>
-                        </ul>
-                    </li>
-                    
                     <li class="{% if page.slug == 'contact' %}active{% endif %}"><a href="/contact">Contact</a>
                     </li>
                 </ul>
@@ -288,7 +239,7 @@ _________________________________________________________ -->
 
         <div id="footer">
             <div class="container">
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <h4>Pages</h4>
 
                     <ul>
@@ -302,8 +253,12 @@ _________________________________________________________ -->
                         </li>
                     </ul>
 
-                    <hr>
+                    <hr class="hidden-md hidden-lg hidden-sm">
+                </div>
+                <!-- /.col-md-3 -->
 
+
+                <div class="col-md-4 col-sm-6">
                     <h4>User section</h4>
 
                     <ul>
@@ -314,51 +269,10 @@ _________________________________________________________ -->
                     </ul>
 
                     <hr class="hidden-md hidden-lg hidden-sm">
-
-                </div>
-                <!-- /.col-md-3 -->
-
-
-                <div class="col-md-3 col-sm-6">
-                    <h4>Top categories</h4>
-                   {% for key,val in intel.items %}
-                        <h5>{{ key }}</h5>
-                        <ul>
-                            {% for entry in val %}
-                                <li>
-                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                    
-                    <hr class="hidden-md hidden-lg hidden-sm">
-
                 </div>
                 <!-- /.col-md-3 -->
 
                 <!-- /.col-md-3 -->
-
-
-                <div class="col-md-3 col-sm-6">
-                    <h4>Top categories</h4>
-                   {% for key,val in amd.items %}
-                        <h5>{{ key }}</h5>
-                        <ul>
-                            {% for entry in val %}
-                                <li>
-                                    <a href="{% url 'page' entry|last %}">{{ entry|first }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                    
-                    <hr class="hidden-md hidden-lg hidden-sm">
-
-                </div>
-                <!-- /.col-md-3 -->
-
-
 
                 <div class="col-md-3 col-sm-6">
 

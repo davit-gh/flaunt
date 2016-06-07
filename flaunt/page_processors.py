@@ -27,11 +27,11 @@ def home_processor(request, page):
 		                settings.SHOP_PER_PAGE_CATEGORY,
 		                settings.MAX_PAGING_LINKS)
 	products.sort_by = sort_by
-
-	slider_images = Slide.objects.all()
 	product_vars = [product(request, prod) for prod in products]
-	#pdb.set_trace()
-	return {'products':OrderedDict(zip(products,product_vars)), 'slider_images': slider_images, 'products_pagination': products}
+	# slider_images = Slide.objects.all()
+	
+	# pdb.set_trace()
+	return {'products':OrderedDict(zip(products,product_vars)), 'products_pagination': products}
 
 @processor_for(FAQPage)
 def home_processor(request, page):
