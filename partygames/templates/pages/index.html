@@ -12,12 +12,12 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 {% endblock %}
 {% block slider %}
 <h3 class="text-uppercase text-center">Our Hot Deals</i></h3>
-    {% if slider_images %}
+    
         <!-- *** SLIDER ***
     ___________________ -->
 
     <div id="slider" class="owl-carousel owl-theme">
-        {% for image in slider_images %}
+        {% for image in page.homepage.slides.all %}
             <div class="item">
                 <a href="{{ image.link }}">
                     <img src="{{ MEDIA_URL }}{% thumbnail image.image 300 300 %}" alt="{{ image.link }}" class="img-responsive">
@@ -29,7 +29,7 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
     <!-- /#slider -->
 
     <!-- *** SLIDER END *** -->
-    {% endif %}
+    
 
 {% endblock %}
 
