@@ -249,26 +249,8 @@ $("#zoom_03").bind("click", function(e) {
                         
                             <h4>Product details</h4>
                             {% editable product.additional %}
-                                {{ product.additional|richtext_filters|safe }}
-                                <div class="panel-group" id="accordion">
-                                
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#1">
-                                                    Click here for more information.
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="1" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                {{ product.content|richtext_filters|safe }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-         <!--                       {{ product.additional|richtext_filters|safe }}  -->
+                                {{ product.content|richtext_filters|safe }}
+
                             {% endeditable %}
                     </div>
 
