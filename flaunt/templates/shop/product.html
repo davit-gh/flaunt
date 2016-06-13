@@ -304,5 +304,12 @@ $("#zoom_03").bind("click", function(e) {
 {% block right_panel %}
                         <!-- *** MENUS AND FILTERS ***
  _________________________________________________________ -->
-                    
+                    <div class="panel panel-default sidebar-menu">
+
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Pages</h3>
+                        </div>
+                        {% page_menu "pages/menus/footer.html" %}
+                    </div>
+                            
 {% endblock %}
