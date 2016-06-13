@@ -131,7 +131,7 @@ $("#zoom_03").bind("click", function(e) {
                                     {% editable product.title %}{{ product.title }}{% endeditable %}
                                 {% endblock %}
                                 
-                                <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to CPU detailed information</a>
+                                <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product detailed information</a>
                                 </p>
                             </div>
                         </div>
@@ -248,7 +248,7 @@ $("#zoom_03").bind("click", function(e) {
                     <div class="box" id="details">
                         
                             <h4>Product details</h4>
-                            {% editable product.additional %}
+                            {% editable product.content %}
                                 {{ product.content|richtext_filters|safe }}
 
                             {% endeditable %}
@@ -304,12 +304,5 @@ $("#zoom_03").bind("click", function(e) {
 {% block right_panel %}
                         <!-- *** MENUS AND FILTERS ***
  _________________________________________________________ -->
-                    <div class="panel panel-default sidebar-menu">
-
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Categories</h3>
-                        </div>
-                        {% page_menu "pages/menus/footer.html" %}
-                    </div>
-                            
+                    
 {% endblock %}
