@@ -1,0 +1,79 @@
+{% extends "pages/page.html" %}
+
+{% load i18n mezzanine_tags staticfiles %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block extra_js %}
+	
+{% endblock %}
+{% block main_span_size %}md-9 clearfix{% endblock %}
+ <!-- https://gist.github.com/joshcartme/5130702 -->
+
+{% block extra_content %}
+	<div class="box text-center">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h1>Frequently asked questions</h1>
+
+                <p>On this page we tried to anticipate the questions you may come across while shopping with us. Feel free to contact us if you haven't found answers to your questions.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+ {% block main %}
+ 	<div class="box" id="text-page">
+ 		<div class="panel-group" id="accordion">
+ 	{% for qa in qas %}
+ 		<div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+				    <a data-toggle="collapse" data-parent="#accordion" href="#{{ qa.id }}">
+						{{ forloop.counter }}. {{ qa.question }}
+				    </a>
+				</h4>
+            </div>
+	        <div id="{{ qa.id }}" class="panel-collapse collapse">
+	            <div class="panel-body">
+	                {{ qa.content|richtext_filters|safe }}
+	            </div>
+	        </div>
+	    </div>
+            <!-- /.panel -->
+ 	{% endfor %}
+ 		</div>
+        <p class="text-muted">In case you haven't found the answer for your question please feel free to <a href="/contact">contact us</a>, our customer support will be happy to help you.</p>
+ 	</div>
+	
+{% endblock %}
+
+{% block right_panel %}
+	<div class="panel panel-default sidebar-menu">
+
+        <div class="panel-heading">
+            <h3 class="panel-title">Pages</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="/about">About us</a>
+                </li>
+                <li>
+                    <a href="/contact">Contact us</a>
+                </li>
+                <li class="active">
+                    <a href="">FAQ</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- *** PAGES MENU END *** -->
+
+
+{% endblock %}
