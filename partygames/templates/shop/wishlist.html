@@ -132,21 +132,17 @@
 
 {% block logos %}
     <a class="navbar-brand home" href="/">
-        <img src="{% static "img/logo.png" %}" height="80" alt="Minimal logo" class="hidden-xs hidden-sm">
-        <img src="{% static "img/c4b.png" %}" height="52" alt="Minimal logo" class="visible-xs visible-sm"><span class="sr-only">Cart4Brand - go to homepage</span>
+        <img src="{% static "img/logo.jpg" %}" height="50" width="250" alt="Games4Parties logo" class="hidden-xs hidden-sm">
+        <img src="{% static "img/h4p.png" %}" height="52" alt="Games4Parties logo" class="visible-xs visible-sm"><span class="sr-only">Games4Parties - go to homepage</span>
     </a>    
 {% endblock %}
 
 {% block copyright %}
-    &copy; 2016. Cart4Brand, all rights reserved.
+    &copy; 2016. Games4Parties, all rights reserved.
 {% endblock %}
 
 {% block social %}
-    <p class="social">                
-        
-        <a rel="tooltip" target="_blank" href="mailto:info@cart4brand.com" title="email us!"><i class="fa fa-envelope"></i></a>
+    <p class="social">                       
+        <a rel="tooltip" target="_blank" href="mailto:info@games4parties.com" title="email us!"><i class="fa fa-envelope"></i></a>
     </p>
-    {% if settings.SOCIAL_LINK_FACEBOOK %}
-        <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
-    {% endif %}
 {% endblock %}

@@ -33,7 +33,3 @@ def home_processor(request, page):
 	# pdb.set_trace()
 	return {'products':OrderedDict(zip(products,product_vars)), 'products_pagination': products}
 
-@processor_for(FAQPage)
-def home_processor(request, page):
-	qas = FAQ.objects.all()
-	return {'qas': qas}
