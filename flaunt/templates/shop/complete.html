@@ -117,10 +117,9 @@ _gaq.push(['_trackTrans']);
 
 {% block social %}
     <p class="social">                
-        
         <a rel="tooltip" target="_blank" href="mailto:info@cart4brand.com" title="email us!"><i class="fa fa-envelope"></i></a>
+        {% if settings.SOCIAL_LINK_FACEBOOK %}
+            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
+        {% endif %}
     </p>
-    {% if settings.SOCIAL_LINK_FACEBOOK %}
-        <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
-    {% endif %}
 {% endblock %}
