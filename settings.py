@@ -515,10 +515,10 @@ SITE_TITLE = "Cart4brand"
 
 
 EMAIL_BACKEND = "postmark.backends.PostmarkBackend"
-POSTMARK_API_KEY = "ccd0c96c-f622-4534-9556-432826da53f8"
+POSTMARK_API_KEY = "42eb9eb5-4012-4f34-b747-ecd64cfef567"
 POSTMARK_API_USER = "bigelow"
 POSTMARK_API_PASSWORD = "verysecure"
-DEFAULT_FROM_EMAIL = 'admin@cpupanda.com'
+DEFAULT_FROM_EMAIL = 'info@cart4brand.com'
 SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
 
 
