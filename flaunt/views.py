@@ -294,8 +294,9 @@ def mail_from_postmark(request):
                 else:
                 	mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
                 send_mail(
-				    inbound.subject() + " From: " + inbound.reply_to(),
-				    inbound.text_body(),
+				    inbound.subject(),
+				    inbound.text_body() + '\n\n' + 'Email: ' + inbound.sender().get('Email')
+				    					+ '\n' + 'Name: ' + inbound.sender().get('Name'),
 				    'info@cart4brand.com',
 				    ['davsmile@yahoo.com'],
 				    fail_silently=True,
