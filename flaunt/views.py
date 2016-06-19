@@ -289,16 +289,16 @@ def mail_from_postmark(request):
 	                	with open(name2,'w') as f:
 	                		myFile = File(f)
 	                		myFile.write(attachment.read())
-	                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())#, attachment=','.join(names))
+	                mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=','.join(names))
                 	#pdb.set_trace()
                 else:
                 	mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
                 send_mail(
-				    inbound.subject() + "From: " + ", ".join(inbound.sender()),
+				    inbound.subject() + " From: " + inbound.reply_to(),
 				    inbound.text_body(),
 				    'info@cart4brand.com',
 				    ['davsmile@yahoo.com'],
-				    fail_silently=False,
+				    fail_silently=True,
 				)
                 mail.save()
                 return HttpResponse('OK')
