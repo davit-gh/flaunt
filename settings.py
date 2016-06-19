@@ -534,3 +534,5 @@ HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
                ('games4parties.com', 'partygames'),
                ('localhost', 'flaunt'),
                ('127.0.0.1', 'partygames')]
+
+SHOP_HANDLER_PAYMENT = 'flaunt.checkout.default_payment_handler'

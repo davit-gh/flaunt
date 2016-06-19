@@ -25,7 +25,7 @@
 {% if request.GET.sent %}
     {% editable page.form.response %}
     	 <p style="font-family: 'Montserrat Alternates', sans-serif; font-size: 18px; color:#7f7f7f;">
-    	 	<img width="120" height="120" style="float: left;  margin-top: -25px;" src="/static/media/uploads/shop/thanks.png"></img>
+    	 	<img width="120" height="120" style="float: left;  margin-top: -25px;" src="{% static 'img/thanks.png' %}"></img>
      		for getting in touch with us. We'll get back to you as soon as possible!
 		</p>
     {% endeditable %}

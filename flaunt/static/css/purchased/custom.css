@@ -2,3 +2,7 @@
 .icon.shopping-cart{
 	display: inline-block;
 }
+
+div#all{
+	min-height: 300px;
+}
