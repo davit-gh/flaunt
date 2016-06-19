@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load i18n future %}
+{% load i18n future staticfiles %}
 
 {% block body_id %}complete{% endblock %}
 
@@ -101,14 +101,6 @@ _gaq.push(['_trackTrans']);
     <input type="submit" class="btn btn-default" value="{% trans "Re-send order email" %}">
 </form>
 <hr>
-{% endblock %}
-
-
-{% block logos %}
-    <a class="navbar-brand home" href="/">
-        <img src="{% static "img/logo.png" %}" height="80" alt="Minimal logo" class="hidden-xs hidden-sm">
-        <img src="{% static "img/c4b.png" %}" height="52" alt="Minimal logo" class="visible-xs visible-sm"><span class="sr-only">Cart4Brand - go to homepage</span>
-    </a>    
 {% endblock %}
 
 {% block logos %}
