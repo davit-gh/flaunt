@@ -214,13 +214,7 @@ def blockchain_callback(request):
 def check_request(request):
 	if request.method == 'POST' and request.is_ajax():
 		messages.info(request, _("Thank you for your order! We will ship it after we receive at least 4 confirmations from blockchain."))
-		send_mail(
-	        u"Ծախվե՜՜՜ց",
-	        u"Գոհարի՜՜՜՜՜՜՜՜՜՜կ, արագ մտի նայի, bitcoin-ով ծախվել ա։",
-	        'info@cart4brand.com',
-	        ['davsmile@yahoo.com'],
-	        fail_silently=True,
-	    )
+		
 		return HttpResponse('response')
 
 # `data` is a python dictionary
