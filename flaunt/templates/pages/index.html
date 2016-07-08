@@ -304,3 +304,10 @@ _________________________________________________________ -->
     </p>
 {% endblock %}
 
+{% block fav %}
+    <link rel="shortcut icon" href="{% static "img/assets/favicon.ico" %}">
+{% endblock %}
+
+{% block title %}
+    {{ block.super }} | Cart4Brand
+{% endblock %}

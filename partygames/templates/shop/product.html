@@ -1,7 +1,7 @@
 {% extends "shop/base.html" %}
 {% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range widget_tweaks pages_tags %}
 
-{% block meta_title %}{{ product.meta_title }}{% endblock %}
+{% block meta_title %}{{ product.meta_title }} | Games4Parties{% endblock %}
 {% block body_id %}category{% endblock %}
 
 {% block meta_keywords %}{% metablock %}
@@ -128,7 +128,7 @@ $("#zoom_03").bind("click", function(e) {
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
                                 {% block title %}
-                                    {% editable product.title %}{{ product.title }}{% endeditable %}
+                                    {% editable product.title %}{{ product.title }} | Games4Parties{% endeditable %}
                                 {% endblock %}
                                 
                                 <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product detailed information</a>

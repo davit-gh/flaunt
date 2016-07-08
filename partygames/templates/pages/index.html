@@ -330,3 +330,11 @@ _________________________________________________________ -->
         <a rel="tooltip" target="_blank" href="mailto:info@games4parties.com" title="email us!"><i class="fa fa-envelope"></i></a>
     </p>
 {% endblock %}
+
+{% block fav %}
+    <link rel="shortcut icon" href="{% static "img/assets/favicon1.ico" %}">
+{% endblock %}
+
+{% block title %}
+    {{ block.super }} | Games4Parties
+{% endblock %}
