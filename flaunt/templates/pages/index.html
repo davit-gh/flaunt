@@ -301,6 +301,9 @@ _________________________________________________________ -->
         {% if settings.SOCIAL_LINK_FACEBOOK %}
             <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
         {% endif %}
+        {% if settings.SOCIAL_LINK_TWITTER %}
+            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter"><i class="fa fa-twitter-square"></i></a>
+        {% endif %}
     </p>
 {% endblock %}
 
