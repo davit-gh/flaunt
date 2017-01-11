@@ -6,3 +6,12 @@
 div#all{
 	min-height: 300px;
 }
+
+i.fa.fa-star{
+	color: gold;
+	margin-right: -5px
+}
+
+table#testimonials td{
+	padding-right: 5px;
+}
