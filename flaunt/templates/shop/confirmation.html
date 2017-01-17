@@ -188,7 +188,6 @@
 
 {% block after-form %}
     <div class="box" id="payment">
-        <h4>Pay with</h4>
         <div class="row">
             <div class="col-sm-6">
             {% multipayment_forms request form as multipayment_forms %}
@@ -197,13 +196,13 @@
                         {% for name,multiform in multipayment_forms %}
                             {{ multiform.as_p }}
                         {% endfor %}
-                        <input type="image" value="{% trans name %}" src="{% static 'img/assets/paypal.jpg' %}" class="img-responsive">
+                        <input type="image" value="{% trans name %}" src="{% static 'img/assets/paypal-checkout.png' %}" class="img-responsive">
                     </form>
                 {% endif %}
                 
             </div>
             <div class="col-sm-6">
-                <a id="pay_btc_button" class="btn-custom" href="#" data-toggle="modal" data-target="#myModal"><img src="{% static 'img/assets/btc.png' %}" class="img-responsive"></a>      
+                <a id="pay_btc_button" class="btn-custom" href="#" data-toggle="modal" data-target="#myModal"><img src="{% static 'img/assets/btc-checkout.png' %}" class="img-responsive"></a>      
             </div>
         </div>
     </div>
