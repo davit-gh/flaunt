@@ -363,7 +363,7 @@ _________________________________________________________ -->
     
     <!--//footer-->    
 
-    {% block no_compress %}
+    {% compress js %}
     <script src="{% static "js/purchased/bootstrap.min.js" %}"></script>
     <script src="{% static "js/purchased/jquery.cookie.js" %}"></script>
     <script src="{% static "js/purchased/front.js" %}"></script>
@@ -392,7 +392,7 @@ _________________________________________________________ -->
 
 {% include "includes/footer_scripts.html" %}
 
-{% endblock %}
+
 
 <!-- begin olark code -->
 <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
@@ -414,7 +414,9 @@ loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure"
 /* custom configuration goes here (www.olark.com/documentation) */
 olark.identify('3778-127-10-6917');/*]]>*/</script><noscript><a href="https://www.olark.com/site/3778-127-10-6917/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
 <!-- end olark code -->
+{% endcompress %}
 
     {% editable_loader %}
+
 </body>
 </html>
