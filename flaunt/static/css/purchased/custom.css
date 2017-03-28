@@ -15,3 +15,20 @@ i.fa.fa-star{
 table#testimonials td{
 	padding-right: 5px;
 }
+
+.price_aud{
+	font-size: 22px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+#content #productMain .price {
+    font-size: 40px;
+    text-align: center;
+    margin: 0
+}
+
+.delusd{
+	font-size: 18px;
+}

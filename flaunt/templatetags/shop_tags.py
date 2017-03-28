@@ -13,32 +13,13 @@ from cartridge.shop.utils import set_locale
 
 register = template.Library()
 
+@register.filter
+def convertToAUD(price):
+  return 1.31*float(price)
 
 @register.filter
 def currency(value):
-    """
-    Format a value as currency according to locale.
-    """
-    set_locale()
-    if not value:
-        value = 0
-    if hasattr(locale, "currency"):
-        value = locale.currency(Decimal(value), grouping=True)
-        if platform.system() == 'Windows':
-            try:
-                value = str(value, encoding='iso_8859_1')
-            except TypeError:
-                pass
-    else:
-        # based on locale.currency() in python >= 2.5
-        conv = locale.localeconv()
-        value = [conv["currency_symbol"], conv["p_sep_by_space"] and " " or "",
-            (("%%.%sf" % conv["frac_digits"]) % value).replace(".",
-            conv["mon_decimal_point"])]
-        if not conv["p_cs_precedes"]:
-            value.reverse()
-        value = "".join(value)
-    return value
+  return "USD {}".format(str(value))
 
 
 def _order_totals(context):

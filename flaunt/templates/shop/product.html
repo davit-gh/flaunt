@@ -1,5 +1,5 @@
 {% extends "shop/base.html" %}
-{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range widget_tweaks pages_tags %}
+{% load staticfiles mezzanine_tags shop_tags rating_tags i18n get_range widget_tweaks pages_tags  %}
 
 {% block meta_title %}{{ product.meta_title }}{% endblock %}
 {% block body_id %}category{% endblock %}
@@ -202,10 +202,16 @@ $("#zoom_03").bind("click", function(e) {
                                                     {% if not variation.default %}style="display:none;"{% endif %}>
                                                     {% if variation.has_price %}
                                                         {% if variation.on_sale %}
-                                                            <p class="text-center"><del>{{ variation.unit_price|currency }}</del></p>
+                                                            <p class="text-center">
+                                                                <del class="delusd">{{ variation.unit_price|currency }}</del>
+                                                            </p>
+                                                            <p class="text-center">
+                                                                <del class="delaud">AUD {{ variation.unit_price|convertToAUD }}</del>
+                                                            </p>    
                                                             <span style='color: rgba(50, 200, 41, 1); font-size: 20px; font-weight: bold;'>{% trans "On sale:" %}</span>
                                                         {% endif %}
                                                         <p class="price">{{ variation.price|currency }}</p>
+                                                        <p class="price_aud">AUD {{ variation.price|convertToAUD }}</p>
                                                     {% else %}
                                                         {% if has_available_variations %}
                                                         <span class="error-msg">
