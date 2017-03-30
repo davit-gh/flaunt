@@ -88,7 +88,7 @@ $(document).ready(function(){
                         });
                         var count = $("#id_items-TOTAL_FORMS").val();
                         if (count === '0'){
-                            $('div.box').html('<h4>{% trans "Your Cart is empty." %}</h4>');
+                            $('div.box').html('<h4>Your Cart is empty.</h4>');
                             $('a.dropdown-toggle > span#cart_menu').html(' 0 items in cart, total: $0.00');
 
                         }
