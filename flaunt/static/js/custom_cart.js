@@ -135,7 +135,7 @@ $(document).ready(function(){
         $('#discount_button').click(function(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'disc' %}",
+                url: '/getdiscount',
                 data: {'discount_code':$('#id_discount_code').val()}, 
                 success: function(data){
 
