@@ -300,7 +300,7 @@ def mail_from_postmark(request):
 				    inbound.text_body() + '\n\n' + 'Email: ' + inbound.sender().get('Email')
 				    					+ '\n' + 'Name: ' + inbound.sender().get('Name'),
 				    'info@cart4brand.com',
-				    ['davsmile@yahoo.com'],
+				    ['g.kartashyan@iset.ge'],
 				    fail_silently=True,
 				)
                 mail.save()
