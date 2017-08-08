@@ -532,6 +532,7 @@ SOUTH_MIGRATION_MODULES = {
 HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
                ('cart4brand.com', 'flaunt'),
                ('games4parties.com', 'partygames'),
+               ('breezg.com', 'breezg'),
                ('localhost', 'flaunt'),
-               ('127.0.0.1', 'partygames')]
+               ('127.0.0.1', 'breezg')]
 
