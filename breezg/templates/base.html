@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles shop_tags accounts_tags widget_tweaks %}
+
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<meta name="google-site-verification" content="6B-t-Jors9ARQIDAQCAdzte6WFGu3NA-YxbWtEDJ2l8" />
+<title>{% block title %}{% block meta_title %}{% endblock %}{% endblock %}</title>
+
+{% ifinstalled mezzanine.blog %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+{% endifinstalled %}
+
+    
+{% compress css %}
+
+<!-- Theme stylesheet -->
+
+    <link href="{% static "css/purchased/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "css/purchased/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/purchased/style.blue.css" %}" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- Custom stylesheet - for your changes -->
+    <link href="{% static "css/purchased/custom.css" %}" rel="stylesheet">
+
+    <!-- Responsivity for older IE -->
+    <script src="{% static "js/purchased/respond.min.js" %}"></script>
+
+    <!-- Favicon -->
+    {% block fav %}
+    {% endblock %}
+    
+    <!-- owl carousel css -->
+
+    <link href="{% static "css/purchased/owl.carousel.css" %}" rel="stylesheet">
+    <link href="{% static "css/purchased/owl.theme.css" %}" rel="stylesheet">
+
+{% endcompress %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+{% block extra_css %}
+    
+{% endblock %}
+
+
+
+<!--[if lt IE 9]>
+<script src="{% static "js/html5shiv.js" %}"></script>
+<script src="{% static "js/respond.min.js" %}"></script>
+<![endif]-->
+
+{% block extra_head %}{% endblock %}
+</head>
+
+<body id="{% block body_id %}body{% endblock %}">
+        <!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+    <div class="navbar navbar-default navbar-fixed-top yamm" role="navigation" id="navbar">
+        <div class="container">
+            <div class="navbar-header">
+
+                <a class="navbar-brand home" href="/">
+                    <h2>BreezG</h2>
+                </a>    
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse" data-target="#navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <a class="btn btn-primary navbar-toggle" href="{% url "shop_cart" %}">
+                        <i class="fa fa-shopping-cart"></i>  <span class="badge">{{request.cart.total_quantity}}</span>
+                    </a>
+                    <button type="button" class="navbar-toggle btn-default" data-toggle="collapse" data-target="#search">
+                        <span class="sr-only">Toggle search</span>
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <button type="button" class="navbar-toggle btn-default" data-toggle="modal" data-target="#login-modal">
+                        <span class="sr-only">User login</span>
+                        <i class="fa fa-users"></i>
+                    </button>
+
+                </div>
+            </div>
+            <!--/.navbar-header -->
+            <div class="navbar-collapse collapse" id="navigation">
+
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="{% if page.slug == '/' %}active{% endif %}"><a href="/">Home</a>
+                    </li>
+                    
+                    <li class="{% if page.slug == 'contact' %}active{% endif %}"><a href="/contact">Contact</a>
+                    </li>
+                    <li class="{% if page.slug == 'about-us' %}active{% endif %}"><a href="/about-us">About Us</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+
+            <div class="navbar-collapse collapse right" id="basket-overview">
+                <a href="{% url "shop_cart" %}" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span class="hidden-sm" id="cart_menu">{% blocktrans count request.cart.total_quantity as cart_quantity %}1 item {% plural %}{{ cart_quantity }} items {% endblocktrans %}<span class="hidden-md">{% order_totals_text %}</span></span></a>
+            </div>
+            <!--/.nav-collapse -->
+
+            <div class="navbar-collapse collapse right">
+                <button type="button" class="btn navbar-btn btn-default" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <div class="navbar-collapse collapse right">
+                <button type="button" class="btn navbar-btn btn-default btn-xs" style="margin-top:22px" data-toggle="modal" data-target="#login-modal">
+                    <span class="sr-only">User login</span>
+                    {% if request.user.is_authenticated %}
+                        User<br/>Center
+                    {% else %}
+                        Login<br/>Register
+                    {% endif %}
+                    
+                </button>
+            </div>
+
+
+            <div class="collapse clearfix" id="search">
+
+                {% search_form "shop.Product" %}
+            </div>
+            <!--/.nav-collapse -->
+
+        </div>
+
+
+    </div>
+    <!-- /#navbar -->
+
+    <!-- *** NAVBAR END *** -->
+	
+        <!-- *** LOGIN MODAL ***
+_________________________________________________________ -->
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">{% if request.user.is_authenticated %}{% trans "Hello" %} {{ request.user.username }}!{% else %}{% trans "Customer login" %}{% endif %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% if request.user.is_authenticated %}
+                        
+                        <a href="{% url "shop_order_history" %}" class="btn btn-default center-block">{% trans "Order History" %}</a>
+                        <a id="update_profile" href="{% url "profile_update" %}" class="btn btn-default center-block">{% trans "Update Profile" %}</a>
+                        <hr>
+                        <p class="text-center"><a class="center-block" href="{% url "logout" %}">Log out</a></p>
+                    {% else %}
+                        {% login_form as loginform%}
+                        <form action="{% url "signup" %}" method="post">
+                            
+                            {% csrf_token %}
+            
+                            {% for hidden in loginform.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in loginform.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{{ vis.errors }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                            <input type="hidden" value="from_popup" name="from_popup" />
+                            <p class="text-center">
+                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                            </p>
+
+                        </form>
+                        <a href="{% url 'mezzanine_password_reset' %}?next={% url 'profile_update' %}">Forgot your password?</a>
+                        <p class="text-center text-muted">Not registered yet?</p>
+                        <p class="text-center text-muted"><a href="{% url "signup" %}"><strong>Register now</a>
+                            </strong>! It is easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+                    {% endif %}
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** LOGIN MODAL END *** -->
+    <div class="col-sm-8 col-sm-offset-2">
+        {% include 'messages.html' %}
+    </div>
+    {% block slider %}{% endblock %}
+	{% block all_content %}
+    	    <!--page_container-->
+    
+	<div id="all">
+
+                <!-- *** ADVANTAGES ***
+_________________________________________________________ -->
+
+        
+        <!-- *** CONTENT ***
+        _________________________________________________________
+        _________________________________________________________
+        -->
+        <div>
+            <ul class="breadcrumb">
+                {% spaceless %}
+                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                {% endspaceless %}
+            </ul>
+        </div>
+		<div id="content">
+            <div class="container">
+                {% block extra_content %}
+                {% endblock %}
+				{% block main_wrapper %}
+					<div class="col-{% block main_span_size %}sm-9{% endblock %}" id="{% block div_id%}{% endblock %}">
+						{% block main %}{% endblock %}
+	    				</div>
+				{% endblock main_wrapper%}
+				{% block right_panel_wrapper %}
+					<div class="col-{% block panel_span_size %}sm-3{% endblock %}">
+						{% block right_panel %}
+						{% endblock %}
+					</div>
+				{% endblock right_panel_wrapper %}
+			</div>
+		</div>
+	</div>
+
+    <!--//page_container-->
+    {% endblock all_content %}
+    <!-- *** FOOTER ***
+_________________________________________________________ -->
+
+        <div id="footer">
+            <div class="container">
+                <div class="col-md-4 col-sm-6">
+                    <h4>Pages</h4>
+
+                    <ul>
+                        <li><a href="/terms-and-condtions">Terms and conditions</a>
+                        </li>
+                        <li><a href="/faq">FAQ</a>
+                        </li>
+                        <li><a href="/contact">Contact us</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                    <h4>User section</h4>
+
+                    <ul>
+                        <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        </li>
+                        <li><a href="{% url "signup" %}">Regiter</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg hidden-sm">
+                </div>
+                <!-- /.col-md-3 -->
+
+                <div class="col-md-4 col-sm-6">
+
+                    <h4>Stay in touch</h4>
+                        {% block social %}
+
+                        {% endblock %}
+
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+
+                    <h4>Our Amazon clients' feedbacks</h4>
+                        <table id="testimonials">
+                            <tr>
+                                <td nowrap>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <i>"It was awesome! Big surprise though...came from overseas. Well packed and a surprise gift was enclosed. Very happy with purchase, and would recommend if you don't need it for a Christmas present."</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    By BFF Diamonds on March 4, 2017
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <i>"Arrived before 12/25/16. Very pleased. It's beautiful. Very happy."</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    By Cat on January 14, 2017.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <i>"Very helful seller!!"</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    By Amazon Customer on January 3, 2017
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <i>"Love them!"</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    By Crystal on December 12, 2016
+                                </td>
+                            </tr>
+                        </table>    
+                            <span>
+                                
+                            </span>
+                            
+
+                </div>
+                <!-- /.col-md-3 -->
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#footer -->
+
+        <!-- *** FOOTER END *** -->
+
+        <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+
+        <div id="copyright">
+            <div class="container">
+                <div class="col-md-12">
+                    
+                    
+                        <div class="text-center">
+                            <img src="{% static 'img/assets/PayPal_2014_logo.svg' %}" width="10%" alt="We accept Paypal" class="">
+                            <img src="{% static 'img/btc_accepted_here.png' %}" width="7%" alt="We accept bitcoin" class="">
+                            <img src="{% static 'img/secure.png' %}" width="8%" alt="Secure shopping">
+                        </div>
+                    
+                    <p class="text-center">{% block copyright %}{% endblock %}</p>
+                </div>
+            </div>
+        </div>
+        <!-- /#copyright -->
+
+        <!-- *** COPYRIGHT END *** -->
+
+    <!--footer-->
+        
+        
+    
+    <!--//footer-->    
+
+    {% compress js %}
+    <script src="{% static "js/purchased/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/purchased/jquery.cookie.js" %}"></script>
+    <script src="{% static "js/purchased/front.js" %}"></script>
+    <!-- owl carousel -->
+    <script src="{% static "js/purchased/owl.carousel.min.js" %}"></script>
+
+
+    {% block slider_js %}{% endblock %}
+    <script type="text/javascript">
+        $(document).ready(function(){   
+            
+            {% if messages %}
+                $('#message-box').addClass('in').fadeTo('slow',1).delay(4000).fadeTo('slow',0);
+
+            {% endif %}
+            
+            {% block extra_js %}{% endblock %}
+            
+            
+            
+                                    
+        });     
+    </script>
+
+    
+
+{% include "includes/footer_scripts.html" %}
+
+
+
+<!-- begin olark code -->
+<script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+f[z]=function(){
+(a.s=a.s||[]).push(arguments)};var a=f[z]._={
+},q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
+f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={
+0:+new Date};a.P=function(u){
+a.p[u]=new Date-a.p[0]};function s(){
+a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){
+hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){
+return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){
+b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{
+b.contentWindow[g].open()}catch(w){
+c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{
+var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
+b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
+loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
+/* custom configuration goes here (www.olark.com/documentation) */
+olark.identify('3778-127-10-6917');/*]]>*/</script><noscript><a href="https://www.olark.com/site/3778-127-10-6917/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+<!-- end olark code -->
+{% endcompress %}
+
+    {% editable_loader %}
+
+</body>
+</html>

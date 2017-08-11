@@ -257,7 +257,7 @@ DEBUG = False
 # Whether a user's session cookie expires when the Web browser is closed.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SITE_ID = 2
+SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = False
@@ -363,6 +363,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 INSTALLED_APPS = (
     "flaunt",
     "partygames",
+    "breezg",
     "postmark",
     "widget_tweaks",
     "django.contrib.admin",
@@ -532,7 +533,8 @@ SOUTH_MIGRATION_MODULES = {
 HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
                ('cart4brand.com', 'flaunt'),
                ('games4parties.com', 'partygames'),
+               ('www.breezg.com', 'breezg'),
                ('breezg.com', 'breezg'),
-               ('localhost', 'flaunt'),
-               ('127.0.0.1', 'breezg')]
+               ('c4b.com', 'flaunt'),
+               ('g4p.com', 'breezgx')]
 
