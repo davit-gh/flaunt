@@ -1,0 +1,150 @@
+{% extends "shop/checkout.html" %}
+{% load staticfiles i18n future mezzanine_tags widget_tweaks %}
+{% block extra_head %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/billing_shipping.css"%}">
+	<script src="{% static "cartridge/js/shipping_fields.js" %}"></script>
+{% endblock %}
+
+{% block slider_js %}
+	
+	<script type="text/javascript">
+		$(function(){
+			var sameShipping = $('#id_same_billing_shipping');
+
+		    // show/hide shipping fields on change of "same as" checkbox and call on load
+		    sameShipping.change(function() {
+		        $("#shipping").toggle();
+		        console.log("asas");
+		    }).change();
+
+		});
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$('input#id_billing_detail_country').val("{{ request.session.country }}");
+			$('input#id_billing_detail_country').prop("readonly", true);
+			$('input#id_shipping_detail_country').val("{{ request.session.country }}");
+			$('input#id_shipping_detail_country').prop("readonly", true);
+		});
+	</script>
+{% endblock %}
+
+{% block fields %}
+	{% if request.cart.has_items %}
+		{% if not request.user.is_authenticated %}
+			{% ifinstalled mezzanine.accounts %}
+			<p>
+				{% url "login" as login_url %}
+				{% url "signup" as signup_url %}
+				{% with request.path as next %}
+				{% blocktrans %}
+				If you have an existing account or would like to create one, please
+				<a href="{{ login_url }}?next={{ next }}">log in</a> or
+				<a href="{{ signup_url }}?next={{ next }}">sign up</a>.
+				{% endblocktrans %}
+				{% endwith %}
+			</p>
+			{% endifinstalled %}
+		{% endif %}
+
+		{% errors_for form %}
+
+		<ul class="nav nav-pills nav-justified">
+            <li class="active"><a href="#"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="disabled"><a href="#"><i class="fa fa-eye"><i class="fa fa-money"></i></i><br> Review & Payment</a>
+            </li>
+            
+            <li class="disabled"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
+            </li>
+        </ul>
+        
+        	<fieldset>
+    			<legend>{% trans "Billing Details" %}</legend>
+			        <div class="row">
+			        	{% with form.billing_detail_fields as fields%}
+			            	{% for field in fields %}
+							                <div class="col-sm-4">
+							                    <div class="form-group">
+							                        {{ field.label_tag }}
+							                        {% for er in field.errors %}
+							                        	<div id='required' style='color:red; font-size: 16px'>
+							                        		{{ er }}
+							                        	</div>
+							                        {% endfor %}
+							                        {% render_field field class="form-control" %}
+							                    </div>
+							                </div>
+							                	{% if forloop.last %}
+											      </div>
+											    {% else %}
+											      {% if forloop.counter|divisibleby:"3" %}
+											        </div><div class="row">
+											      {% endif %}
+											    {% endif %}				        
+			                {% endfor %}
+			            {% endwith %}
+	        </fieldset>
+       
+		    {% for f in form.same_billing_shipping_field %}
+		    	{{ f.label_tag }}
+				{% render_field f checked="checked" %}
+		    {% endfor %}
+		    <hr>
+		<fieldset id="shipping">
+		    <legend>{% trans "Delivery Details" %}</legend>
+
+			<div class="row">
+	        	{% with form.shipping_detail_fields as ship_fields%}
+	            	{% for field in ship_fields %}
+					                <div class="col-sm-4">
+					                    <div class="form-group">
+					                        {{ field.label_tag }}
+					                        {% for er in field.errors %}
+					                        	<div id='required' style='color:red; font-size: 16px'>
+					                        		{{ er }}
+					                        	</div>
+					                        {% endfor %}
+					                        {% render_field field class="form-control" %}
+					                    </div>
+					                </div>
+					                	{% if forloop.last %}
+									      </div>
+									    {% else %}
+									      {% if forloop.counter|divisibleby:"3" %}
+									        </div><div class="row">
+									      {% endif %}
+									    {% endif %}				        
+	                {% endfor %}
+	            {% endwith %}
+		</fieldset>
+	        
+
+		    
+		    {% fields_for form.additional_instructions_field %}
+		    {% fields_for form.remember_field %}
+
+		{% if not settings.SHOP_CHECKOUT_STEPS_SPLIT and settings.SHOP_PAYMENT_STEP_ENABLED %}
+			{% include "shop/includes/payment_fields.html" %}
+		{% endif %}
+
+		
+{% endif %}
+{% endblock %}
+
+{% block logos %}
+    <a class="navbar-brand home" href="/">
+        <h2>BreezG</h2>
+    </a>    
+{% endblock %}
+
+{% block copyright %}
+    &copy; 2017. BreezG. The rights of the brand names represented on this website belong to their owner.
+{% endblock %}
+
+{% block social %}
+    <p class="social">                       
+        <a rel="tooltip" target="_blank" href="mailto:info@BreezG.com" title="email us!"><i class="fa fa-envelope"></i></a>
+    </p>
+{% endblock %}

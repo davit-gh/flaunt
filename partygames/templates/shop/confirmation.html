@@ -1,0 +1,210 @@
+{% extends "shop/checkout.html" %}
+{% load i18n shop_tags staticfiles multipayment_forms cart_obj %}
+
+{% block extra_css %}
+<style type="text/css">
+    .box .box-footer {
+        margin: 10px -20px -20px;
+    }
+    div#payment.box{
+        margin-top: 3em;
+    }
+</style>
+{% endblock %}
+
+{% block slider_js %}
+<script src="{% static "js/custom_confirmation.js" %}"></script>
+<script type="text/javascript">
+    $(function(){
+        $('a#address').click(function(){
+            $('button#bck').click();
+        });
+
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+
+    $(window).load(load_qr());
+    
+    
+    $('#confirm_payment').click(function(){
+                
+                $.ajax({
+                        url: "{% url 'check' %}",
+                        data: {csrfmiddlewaretoken: '{{ csrf_token  }}'},
+                        type: 'POST',
+                        
+                        success: function(data){
+                                $('a#redir')[0].click();
+                                
+                        },
+                        error: function(data){ 
+                                console.log('error '+JSON.stringify(data));
+                        }
+                });
+                return false;
+    });
+    
+{% endblock %}
+
+{% block fields %}
+{% if request.cart.has_items %}
+
+        <ul class="nav nav-pills nav-justified">
+            <li><a id="address" href="#" name="back"><i class="fa fa-map-marker"></i><br>Address</a>
+            </li>
+            <li class="active"><a href="#"><i class="fa fa-eye"><i class="fa fa-money"></i></i><br> Review & Payment</a>
+            </li>
+            
+            <li class="disabled"><a href="#"><i class="fa fa-check-square-o"></i><br>Complete</a>
+            </li>
+        </ul>
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="box payment-method">
+                        <h4>{% trans "Billing Details" %}</h4>
+                        <ul class="list-unstyled">
+                            {% for field, value in form.billing_detail_fields.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+    
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="box payment-method">
+
+                        <h4>{% trans "Shipping Details" %}</h4>
+                        <ul class="list-unstyled">
+                            {% for field, value in form.shipping_detail_fields.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                            {% for field, value in form.additional_instructions_field.values %}
+                                <li><label>{{ field }}:</label> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% get_cart_object request as cart_discount %}
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Product</th>
+                            <th>Quantity</th>
+                            <th>Unit price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_discount.cart %}
+                            <tr>
+                                <td>
+                                    <a href="{{ item.url }}">
+                                        <img src="{{ MEDIA_URL }}{{ item.image }}" alt="{{ item.description }}">
+                                    </a>
+                                </td>
+                                <td><a href="{{ item.get_absolute_url }}">{{ item.description }}</a>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.unit_price }}</td>
+                                <td>{{ item.total_price }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">{% trans "Discount" %}</th>
+                            <th>{{ cart_discount.discount|currency }}</th>
+                        </tr>
+                        
+                        <tr>
+                            <th colspan="5">{% trans "Total" %}</th>
+                            <th>{{ cart_discount.cart.total_price|currency }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+{% if settings.SHOP_PAYMENT_STEP_ENABLED %}
+{% comment %}
+<br style="clear:both;">
+<div class="confirmation col-md-6">
+    <div class="panel panel-default">
+    <div class="panel-body">
+    <h3>{% trans "Payment Details" %}</h3>
+    <ul class="list-unstyled">
+        {% for field, value in form.card_name_field.values %}
+            <li><label>{{ field }}:</label> {{ value }}</li>
+            {% endfor %}
+        {% for field, value in form.card_type_field.values %}
+            <li><label>{{ field }}:</label> {{ value }}</li>
+            {% endfor %}
+            <li>
+                {% with form.card_expiry_fields.values as expiry_fields %}
+                    {% with expiry_fields.next as month_field %}
+                    <label>{{ month_field.0 }}:</label> {{ month_field.1 }}/{{ expiry_fields.next.1 }}
+                    {% endwith %}
+                {% endwith %}
+            </li>
+        {% for field, value in form.card_fields.values %}
+            <li><label>{{ field }}:</label> {{ value }}</li>
+            {% endfor %}
+    </ul>
+    </div>
+    </div>
+</div>
+{% endcomment %}
+{% endif %}
+<br style="clear:both;">
+
+{% for field in form %}{{ field }}{% endfor %}
+
+{% endif %}
+{% endblock %}
+
+{% block after-form %}
+    <div class="box" id="payment">
+        <div class="row">
+            <div class="col-sm-6">
+            {% multipayment_forms request form as multipayment_forms %}
+                {% if multipayment_forms %}
+                    <form method="post" action="https://www.paypal.com/cgi-bin/webscr">
+                        {% for name,multiform in multipayment_forms %}
+                            {{ multiform.as_p }}
+                        {% endfor %}
+                        <input type="image" value="{% trans name %}" src="{% static 'img/assets/paypal-checkout.png' %}" class="img-responsive">
+                    </form>
+                {% endif %}
+                
+            </div>
+           
+        </div>
+    </div>
+    {% include "shop/includes/btc_popup.html" %}
+{% endblock %}
+
+{% block logos %}
+    <a class="navbar-brand home" href="/">
+        <h2>BreezG</h2>
+    </a>    
+{% endblock %}
+
+{% block copyright %}
+    &copy; 2017. BreezG. The rights of the brand names represented on this website belong to their owner.
+{% endblock %}
+
+{% block social %}
+    <p class="social">                       
+        <a rel="tooltip" target="_blank" href="mailto:info@BreezG.com" title="email us!"><i class="fa fa-envelope"></i></a>
+    </p>
+{% endblock %}

@@ -1,36 +1,33 @@
 {% extends "pages/page.html" %}
 
-{% load staticfiles mezzanine_tags shop_tags blog_tags i18n widget_tweaks get_range %}
+{% load staticfiles mezzanine_tags shop_tags i18n widget_tweaks get_range %}
 {% block body_id %}category{% endblock %}
 
 
 {% block extra_css %}
 {{ block.super }}
+
 <!-- make the corners of select tag for sorting round and move it 
 upper to allign with its left div. cart/checkout block also moves up (panel class)-->
 
 {% endblock %}
 {% block slider %}
-<h3 class="text-uppercase text-center">Our Hot Deals</i></h3>
-    
-        <!-- *** SLIDER ***
-    ___________________ -->
+    <!-- *** INTRO IMAGE ***
+    _________________________________________________________ -->
+    <div id="intro">
+        <div class="item">
+            <div class="container">
+                <div class="row">
+                    <div class="carousel-caption">
 
-    <div id="slider" class="owl-carousel owl-theme">
-        {% for image in page.homepage.slides.all %}
-            <div class="item">
-                <a href="{{ image.link }}">
-                    <img src="{{ MEDIA_URL }}{% thumbnail image.image 300 300 %}" alt="{{ image.link }}" class="img-responsive">
-                </a>
+                        
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-
+        </div>
     </div>
-    <!-- /#slider -->
 
-    <!-- *** SLIDER END *** -->
-    
-
+    <!-- *** INTRO IMAGE END *** -->
 {% endblock %}
 
 {% block extra_js %}
@@ -40,55 +37,9 @@ upper to allign with its left div. cart/checkout block also moves up (panel clas
 {% block main %}{{ block.super }}
     
     
-        <div id="advantages">
-
-            <div class="container">
-
-                <div class="col-md-12">
-
+        
                     <div class="box text-center">
-                        <h3 class="text-uppercase">About Us</h3>
-
-                        <p> As you may have guessed from our name we offer games to make your parties fun and engaging! We have games like jenga, croquet, skittle and more! You can play these games with your family members or friends. We want you to have a real fun!</p>
-
-
-
-                        <div class="same-height-row row">
-                            <div class="col-sm-6">
-                                <div class="box same-height no-border">
-                                    <div class="icon center-block"><i class="fa fa-heart-o"></i>
-                                    </div>
-                                    <h4 class="text-center">{% trans "Satisfied customers" %}</h4>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="box same-height no-border text-center-xs text-center-sm text-center-md">
-                                    <div class="icon center-block"><i class="fa fa-tags"></i>
-                                    </div>
-                                    <h4 class="text-center">{% trans "Best prices" %}</h4>
-                                </div>
-                            </div>
-
-                            
-                        </div>
-                        <!-- /.row -->
-
-                    </div>
-
-                </div>
-
-
-            </div>
-            <!-- /.container -->
-
-        </div>
-        <!-- /#advantages -->
-
-        <!-- *** ADVANTAGES END *** -->
-
-                    <div class="box text-center">
-                        <h3 class="text-uppercase">Games we offer</h3>
+                        <h3 class="text-uppercase">Our offers</h3>
 
                         <h4 class="text-muted"><span class="accent">Free shipping</span> on all</h4>
                     </div>
@@ -257,7 +208,7 @@ _________________________________________________________ -->
                             <div class="icon shopping-cart icon-lg"><i class="fa fa-shopping-cart"></i>
                             </div>
                             <h1>Did you know our website is responsive?</h1>
-                            <p class="lead">You can shop on Games4Parties on your mobile and tablet devices!</p>
+                            <p class="lead">You can shop on BreezG on your mobile and tablet devices!</p>
                             
                         </div>
 
@@ -267,47 +218,6 @@ _________________________________________________________ -->
 
             <!-- *** PROMO BAR END *** -->
 
-
-            <div class="container">
-                <div class="col-sm-12">
-                    <!-- *** BLOG HOMEPAGE *** -->
-
-                    
-                    <div id="blog-homepage" class="row">
-                      {% blog_recent_posts 2 as recent_posts %}
-                      {% for post in recent_posts %}
-                        <div class="col-sm-6">
-                            <div class="post">
-                                <h4><a href="{{ post.get_absolute_url }}">{{ blog.title }}</a></h4>
-                                {% with post.user as author %}
-                                  <p class="author-category">By <a href="{% url "blog_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a> in 
-                                  {% with blog_post.categories.all as categories %}
-                                      {% if categories %}
-                                          {% for category in categories %}
-                                              <a href="{% url "blog_post_list_category" category.slug %}">{{ category }}</a>
-                                              {% if not forloop.last %}, {% endif %}
-                                          {% endfor %}
-                                      {% endif %}
-                                  {% endwith %}
-                                  </p>
-                                {% endwith %}
-                                <hr>
-                                <p class="intro">{{ post.description_from_content|safe|truncatewords_html:48 }}</p>
-                                <p class="read-more"><a href="{{ post.get_absolute_url }}" class="btn btn-primary">Continue reading</a>
-                                </p>
-                            </div>
-
-                        </div>
-                      {% endfor %}
-                    </div>
-                    <!-- /#blog-homepage -->
-
-                    <!-- *** BLOG HOMEPAGE END *** -->
-
-                </div>
-            </div>
-           
-    
     
 {% endblock %}
 {% block right_panel_wrapper %}
@@ -316,25 +226,30 @@ _________________________________________________________ -->
 
 {% block logos %}
     <a class="navbar-brand home" href="/">
-        <img src="{% static "img/logo.jpg" %}" height="50" width="250" alt="Games4Parties logo" class="hidden-xs hidden-sm">
-        <img src="{% static "img/h4p.png" %}" height="52" alt="Games4Parties logo" class="visible-xs visible-sm"><span class="sr-only">Games4Parties - go to homepage</span>
+        <h2>BreezG</h2>
     </a>    
 {% endblock %}
 
 {% block copyright %}
-    &copy; 2016. Games4Parties, all rights reserved.
+    &copy; 2017. BreezG. The rights of the brand names represented on this website belong to their owner.
 {% endblock %}
 
 {% block social %}
-    <p class="social">                       
-        <a rel="tooltip" target="_blank" href="mailto:info@games4parties.com" title="email us!"><i class="fa fa-envelope"></i></a>
+    <p class="social">                
+        <a rel="tooltip" target="_blank" href="mailto:info@BreezG.com" title="email us!"><i class="fa fa-envelope"></i></a>
+        {% if settings.SOCIAL_LINK_FACEBOOK %}
+            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_FACEBOOK }}" title="Facebook"><i class="fa fa-facebook-square"></i></a>
+        {% endif %}
+        {% if settings.SOCIAL_LINK_TWITTER %}
+            <a rel="tooltip" target="_blank" href="{{ settings.SOCIAL_LINK_TWITTER }}" title="Twitter"><i class="fa fa-twitter-square"></i></a>
+        {% endif %}
     </p>
 {% endblock %}
 
 {% block fav %}
-    <link rel="shortcut icon" href="{% static "img/assets/favicon1.ico" %}">
+    <link rel="shortcut icon" href="{% static "img/assets/favicon.ico" %}">
 {% endblock %}
 
 {% block title %}
-    {{ block.super }} | Games4Parties
+    BreezG
 {% endblock %}

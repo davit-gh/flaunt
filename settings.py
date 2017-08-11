@@ -512,7 +512,7 @@ else:
 # SOCIAL ICON SETTINGS #
 ########################
 
-SITE_TITLE = "Cart4brand"
+#SITE_TITLE = "Cart4brand"
 
 
 EMAIL_BACKEND = "postmark.backends.PostmarkBackend"
@@ -532,9 +532,8 @@ SOUTH_MIGRATION_MODULES = {
 
 HOST_THEMES = [('www.cart4brand.com', 'flaunt'),
                ('cart4brand.com', 'flaunt'),
-               ('games4parties.com', 'partygames'),
-               ('www.breezg.com', 'breezg'),
-               ('breezg.com', 'breezg'),
+               ('www.breezg.com', 'partygames'),
+               ('breezg.com', 'partygames'),
                ('c4b.com', 'flaunt'),
-               ('g4p.com', 'breezgx')]
+               ('g4p.com', 'partygames')]
 
